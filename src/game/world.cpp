@@ -128,6 +128,7 @@ void World::update(float seconds_elapsed) {
 	else {
 
 		player->update(seconds_elapsed);
+
 		Vector3 eye;
 		Vector3 center;
 
@@ -208,15 +209,19 @@ sCollisionData  World::ray_cast(const Vector3& origin, const Vector3& direction,
 
 		else
 		{
-			if (!ec->mesh->testRayCollision(ec->model, origin, direction, col_point, col_normal, max_ray_dist)) {
-				continue;
-			}
+		if (!ec->mesh->testRayCollision(ec->model, origin, direction, col_point, col_normal, max_ray_dist)) {
+			continue;
+		}
 		}
 
+		data.collided = true;
 
 		if (col_point.y > 0) {
 			data.collided = true;
 			data.col_point = col_point;
+			data.col_normal = col_normal;
+			data.distance = new_distance;
+			data.collider = ec;
 		}
 
 		//float new_distance = (col_point - origin).length();
