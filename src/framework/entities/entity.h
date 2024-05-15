@@ -2,8 +2,31 @@
 
 #include "framework/includes.h"
 #include "framework/framework.h"
-
 class Camera;
+
+class EntityCollider;
+
+struct sCollisionData {
+
+	Vector3 col_point;
+	Vector3 col_normal;
+	float distance = 0.f;
+	bool collided;
+	EntityCollider* collider;
+};
+
+
+
+enum eCollisionFilter {
+	NONE = 0,
+	FLOOR = 1 << 0,
+	WALL = 1 << 1,
+	PLAYER = 1 << 2,
+	ENEMY = 1 << 3,
+	SCENARIO = WALL | FLOOR,
+	ALL = 0xFF
+};
+
 
 class Entity {
 

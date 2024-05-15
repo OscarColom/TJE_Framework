@@ -7,9 +7,11 @@ class Shader;
 class Texture;
 
 class Material {
+
 public:
 	Shader* shader = nullptr;
 	Vector4 color = Vector4(1.f);
+	//Vector4 color = nullptr;
 	Texture* diffuse = nullptr;
 };
 
