@@ -12,10 +12,15 @@
 Mesh* mesh = NULL;
 Texture* texture = NULL;
 Shader* shader = NULL;
-float angle = 0;
+//float angle = 0;
 float mouse_speed = 100.0f;
 
+//World* world = nullptr; 
+
+
 Game* Game::instance = NULL;
+
+
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
@@ -36,18 +41,22 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	glEnable( GL_DEPTH_TEST ); //check the occlusions using the Z buffer
 
 	// Create our camera
-	camera = new Camera();
-	camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
-	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
+	//camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
+	//camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
+
+
+	//world
+	world = new World();
+
 
 	// Load one texture using the Texture Manager
-	texture = Texture::Get("data/textures/texture.tga");
+	//texture = Texture::Get("data/textures/texture.tga");
 
 	// Example of loading Mesh from Mesh Manager
-	mesh = Mesh::Get("data/meshes/box.ASE");
+	//mesh = Mesh::Get("data/meshes/box.ASE");
 
 	// Example of shader loading using the shaders manager
-	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	//shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 
 	// Hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -63,35 +72,35 @@ void Game::render(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set the camera as default
-	camera->enable();
+	//camera->enable();
 
 	// Set flags
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	// 
+	//glDisable(GL_BLEND);
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_CULL_FACE);/////////////////////////nidea
    
 	// Create model matrix for cube
-	Matrix44 m;
-	m.rotate(angle*DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
+	world->render();
 
-	if(shader)
-	{
-		// Enable shader
-		shader->enable();
+	//if(shader)
+	//{
+	//	// Enable shader
+	//	shader->enable();
 
-		// Upload uniforms
-		shader->setUniform("u_color", Vector4(1,1,1,1));
-		shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
-		shader->setUniform("u_texture", texture, 0);
-		shader->setUniform("u_model", m);
-		shader->setUniform("u_time", time);
+	//	// Upload uniforms
+	//	shader->setUniform("u_color", Vector4(1,1,1,1));
+	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
+	//	shader->setUniform("u_texture", texture, 0);
+	//	shader->setUniform("u_model", m);
+	//	shader->setUniform("u_time", time);
 
-		// Do the draw call
-		mesh->render( GL_TRIANGLES );
+	//	// Do the draw call
+	//	mesh->render( GL_TRIANGLES );
 
-		// Disable shader
-		shader->disable();
-	}
+	//	// Disable shader
+	//	shader->disable();
+	//}
 
 	// Draw the floor grid
 	drawGrid();
@@ -105,24 +114,28 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
-	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
-	// Example
-	angle += (float)seconds_elapsed * 10.0f;
+	world->update(seconds_elapsed);
 
-	// Mouse input to rotate the cam
-	if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
-	{
-		camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
-		camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
-	}
 
-	// Async input to move the camera around
-	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT) ) speed *= 10; //move faster with left shift
-	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f,0.0f, 0.0f) * speed);
+	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
+
+	//// Example
+	//angle += (float)seconds_elapsed * 10.0f;
+
+	//// Mouse input to rotate the cam
+	//if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
+	//{
+	//	camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
+	//	camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
+	//}
+
+	//// Async input to move the camera around
+	//if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT) ) speed *= 10; //move faster with left shift
+	//if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
+	//if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
+	//if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
+	//if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f,0.0f, 0.0f) * speed);
 }
 
 //Keyboard event handler (sync input)
@@ -133,6 +146,8 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
 		case SDLK_F1: Shader::ReloadAll(); break; 
 	}
+
+	world->OnKeyDown(event);
 }
 
 void Game::onKeyUp(SDL_KeyboardEvent event)
@@ -155,6 +170,9 @@ void Game::onMouseButtonUp(SDL_MouseButtonEvent event)
 
 }
 
+//bool free_cam = World::get_instance()->free_camera;
+
+
 void Game::onMouseWheel(SDL_MouseWheelEvent event)
 {
 	mouse_speed *= event.y > 0 ? 1.1f : 0.9f;
@@ -174,6 +192,8 @@ void Game::onResize(int width, int height)
 {
     std::cout << "window resized: " << width << "," << height << std::endl;
 	glViewport( 0,0, width, height );
+	camera = Camera::current;//No estaab, al pasar camera a world poner cual se usta usando 
+
 	camera->aspect =  width / (float)height;
 	window_width = width;
 	window_height = height;
