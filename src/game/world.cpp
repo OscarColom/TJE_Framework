@@ -135,7 +135,7 @@ void World::update(float seconds_elapsed) {
 		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f ;
 
 
-		camera_pitch = clamp(camera_pitch, -PI * 0.3f, PI * 0.3f);
+		camera_pitch = clamp(camera_pitch, -PI * 0.4f, PI * 0.4f);
 
 
 
