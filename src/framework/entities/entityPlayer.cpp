@@ -133,11 +133,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (!is_grounded) {
-		velocity.y -= (20.8f * seconds_elapsed );
+		velocity.y -= (50.8f * seconds_elapsed );
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 12.f;
+		velocity.y = 30.f;
 	}
 
 	//Env collisions

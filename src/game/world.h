@@ -49,7 +49,7 @@ public:
 	float camera_speed = 2.0f;
 	float mouse_speed = 10.f;
 
-	bool free_camera = true;
+	bool free_camera = false;
 
 
 	float  sphere_radius = 1.0f;

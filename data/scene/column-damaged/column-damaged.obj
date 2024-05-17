@@ -1,7 +1,7 @@
 # Blender 4.1.1
 # www.blender.org
 mtllib column-damaged.mtl
-o column-damaged
+o column-damaged.001
 v 0.300000 -0.250000 -0.150000
 v 0.300000 -0.250000 0.000000
 v 0.300000 0.250000 -0.150000

@@ -29,7 +29,7 @@ World::World() {
 	player_material.diffuse->load("data/final_character/survivorFemaleA.png");
 	Mesh* player_mesh = Mesh::Get("data/final_character/character.obj");
 	player = new EntityPlayer(player_mesh, player_material, "player");
-	player->model.translate(0.f, 70.f, 0.f);
+	player->model.translate(0.f, 10.f, 0.f);
 
 
 
