@@ -49,12 +49,12 @@ public:
 	float camera_speed = 2.0f;
 	float mouse_speed = 10.f;
 
-	bool free_camera = false;
+	bool free_camera = true;
 
 
 	float  sphere_radius = 1.0f;
 	float sphere_grow = .3f;;
-	float player_height = 2.5f;
+	float player_height = 3.0f;
 
 	Vector3 current_checkpoint = Vector3(0.0f, 5.0f, 0.0f);
 

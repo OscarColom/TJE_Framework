@@ -89,9 +89,10 @@ void World::render() {
 
 
 	//player->render_player(camera);
-	player->render(camera);
 
 	root.render(camera);
+
+	player->render(camera);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -112,7 +113,7 @@ void World::update(float seconds_elapsed) {
 
 
 	//Update the player
-	//player->update(seconds_elapsed);
+	player->update(seconds_elapsed);
 
 
 	if (free_camera) {
@@ -131,7 +132,7 @@ void World::update(float seconds_elapsed) {
 	}
 	else {
 
-		player->update(seconds_elapsed);
+		//player->update(seconds_elapsed);
 
 		Vector3 eye;
 		Vector3 center;
@@ -156,7 +157,7 @@ void World::update(float seconds_elapsed) {
 
 		Vector3 front = (mpitch * myaw).frontVector().normalize();
 
-		float orbit_dist = 4.f;
+		float orbit_dist = 8.f;
 		//eye = (player->model.getTranslation() - front * orbit_dist) + Vector3(0.f , 25.5f , -15.f );
 		//center = player->getGlobalMatrix() * Vector3(0.f , 25.5f , -15.f );;
 		Vector3 corrector = Vector3(0.f, 4.1f, 0.f);

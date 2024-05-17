@@ -56,7 +56,15 @@ void EntityPlayer::render(Camera* camera) {
 		mesh->render(GL_LINES);
 	}
 
+
+	std::string str_stam = "Stamina: " + std::to_string(stamina);
+	drawText(20, 20, str_stam, Vector3(1, 1, 1), 2);
+
 	shader->disable();
+
+
+
+	
 }
 
 void EntityPlayer::update(float seconds_elapsed) {
@@ -85,18 +93,27 @@ void EntityPlayer::update(float seconds_elapsed) {
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) move_dir -= right;
 
 	float speed_mult = walk_speed;
-	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) {
-		t_sprint += seconds_elapsed;
-		if (t_sprint > 5.f) {
-			printf("f%", seconds_elapsed);
+
+
+	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT) && stamina > 0.0f) {
+		// El jugador está esprintando y tiene resistencia
+		is_sprinting = true;
+		stamina -= stamina_consumption_rate * seconds_elapsed; // Reduce la resistencia
+		stamina = std::max(0.0f, stamina); // Asegúrate de que la resistencia no sea negativa
+
+
+		if (stamina > 0.0f) {
+			speed_mult *= 1.8f; 
 		}
 		else {
-			speed_mult *= 1.8f;
-			//printf("%f", seconds_elapsed);
+			is_sprinting = false;
 		}
-
 	}
-	t_sprint *= 0.999f;
+	else {
+		// El jugador no está esprintando, recupera resistencia
+		stamina += stamina_recovery_rate * seconds_elapsed; // Recupera resistencia
+		stamina = std::min(max_stamina, stamina); // Asegúrate de que la resistencia no supere el máximo
+	}
 
 	move_dir.normalize();
 	move_dir *= speed_mult;
@@ -126,7 +143,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 			is_grounded = true;
 		}
 
-		if (collision.col_point.y  > (position.y + velocity.y * seconds_elapsed)  ) {
+		if (collision.col_point.y  > (position.y )  ) {
 
 			position.y = collision.col_point.y;
 		}
@@ -137,7 +154,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 30.f;
+		velocity.y = 25.f;
 	}
 
 	//Env collisions
