@@ -27,7 +27,7 @@ void EntityCollider::getCollisionsWithModel(const Matrix44& m, const Vector3& ta
 		collisions.push_back({ collision_point, collision_normal.normalize(), character_center_target.distance(collision_point) });
 	}
 
-	Vector3 character_center = center_char + Vector3(0.f, player_height, 0.f);
+	Vector3 character_center = center_char + Vector3(0.f, player_height-0.2f, 0.f);
 	//Check if grounded... SI EL CHAR_CENTER (DESDE DNDE SE TIRA EL RAYO MUY GRANDE SUBE DIRECTAMENTE A OBJETOS TIPO MUROS ESCALERAS)
 	if (mesh->testRayCollision(m, character_center, Vector3(0, -1, 0), collision_point, collision_normal, player_height )) {
 		ground_collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });

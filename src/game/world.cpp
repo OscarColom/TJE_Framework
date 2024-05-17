@@ -157,7 +157,7 @@ void World::update(float seconds_elapsed) {
 
 		Vector3 front = (mpitch * myaw).frontVector().normalize();
 
-		float orbit_dist = 8.f;
+		float orbit_dist = 6.f;
 		//eye = (player->model.getTranslation() - front * orbit_dist) + Vector3(0.f , 25.5f , -15.f );
 		//center = player->getGlobalMatrix() * Vector3(0.f , 25.5f , -15.f );;
 		Vector3 corrector = Vector3(0.f, 4.1f, 0.f);
