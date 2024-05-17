@@ -85,7 +85,18 @@ void EntityPlayer::update(float seconds_elapsed) {
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) move_dir -= right;
 
 	float speed_mult = walk_speed;
-	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 1.8f;
+	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) {
+		t_sprint += seconds_elapsed;
+		if (t_sprint > 5.f) {
+			printf("f%", seconds_elapsed);
+		}
+		else {
+			speed_mult *= 1.8f;
+			//printf("%f", seconds_elapsed);
+		}
+
+	}
+	t_sprint *= 0.999f;
 
 	move_dir.normalize();
 	move_dir *= speed_mult;
@@ -144,13 +155,23 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	position.x += (velocity.x * seconds_elapsed);
 	position.z += (velocity.z * seconds_elapsed);
-
 	position.y += (velocity.y * seconds_elapsed );
 
+	if (position.y < -1) {
+		position = World::get_instance()->current_checkpoint;
+		lifes -= 1;
+	}
+
+	if (lifes == 0) {
+		//enviar a pantalla de inicio
+		position = Vector3(0.f, 200.f, 0.f);
+	}
 
 	//Update player position
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
+
+
 
 	model.setTranslation(position);
 

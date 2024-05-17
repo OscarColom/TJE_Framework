@@ -71,6 +71,8 @@ void Game::render(void)
 	// Clear the window and the depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//6x14,  7x10, 3x7, 1x18, 1x5 = 198
+
 	// Set the camera as default
 	//camera->enable();
 
@@ -107,6 +109,7 @@ void Game::render(void)
 
 	// Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
+	
 
 	// Swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
@@ -159,9 +162,9 @@ void Game::onMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_MIDDLE) //middle mouse
 	{
-		mouse_locked = !mouse_locked;
-		SDL_ShowCursor(!mouse_locked);
-		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+		//mouse_locked = !mouse_locked;
+		//SDL_ShowCursor(!mouse_locked);
+		//SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
 	}
 }
 
