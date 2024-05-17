@@ -56,6 +56,7 @@ World::World() {
 
 	//escenarios models resources
 	//Nueva clase entity_Collider
+
 }
 
 
@@ -68,6 +69,9 @@ void World::OnKeyDown(SDL_KeyboardEvent event) {
 	{
 	case SDLK_TAB:
 		free_camera = !free_camera;
+		mouse_locked = !mouse_locked;
+		SDL_ShowCursor(!mouse_locked);
+		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
 		break;
 	}
 
@@ -128,14 +132,18 @@ void World::update(float seconds_elapsed) {
 	else {
 
 		player->update(seconds_elapsed);
+
 		Vector3 eye;
 		Vector3 center;
+
+		SDL_ShowCursor(!mouse_locked);
+		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
 
 		camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f ;
 		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f ;
 
 
-		camera_pitch = clamp(camera_pitch, -PI * 0.3f, PI * 0.3f);
+		camera_pitch = clamp(camera_pitch, -PI * 0.4f, PI * 0.4f);
 
 
 
@@ -179,6 +187,8 @@ void World::update(float seconds_elapsed) {
 	root.update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
 }
+
+
 
 
 sCollisionData  World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist) {

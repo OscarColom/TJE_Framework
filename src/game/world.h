@@ -9,6 +9,8 @@ class Camera;
 class EntityPlayer;
 class EntityMesh;
 
+
+
 class World {
 
 	static World* instance;
@@ -53,6 +55,8 @@ public:
 	float  sphere_radius = 1.0f;
 	float sphere_grow = .3f;;
 	float player_height = 2.5f;
+
+	Vector3 current_checkpoint = Vector3(0.0f, 5.0f, 0.0f);
 
 	void render();
 	void update(float seconds_elapsed);

@@ -8,6 +8,8 @@ public:
 	float walk_speed = 8.f;
 	Vector3 velocity = Vector3(0.0f);
 	Vector3 position;
+	int lifes = 3; 
+	float t_sprint = 0;
 
 	EntityPlayer() {};
 	EntityPlayer(Mesh* player_mesh, const Material& player_material, const std::string& name) ;

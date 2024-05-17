@@ -23,12 +23,12 @@ void EntityCollider::getCollisionsWithModel(const Matrix44& m, const Vector3& ta
 
 	//Check wall collisions
 	Vector3 character_center = center + Vector3(0.f, player_height, 0.f);  //tendria que ir sphere_radius
-	if (mesh->testSphereCollision(m, character_center, sphere_radius - 0.9, collision_point, collision_normal)) {
+	if (mesh->testSphereCollision(m, character_center, sphere_radius - 0.85, collision_point, collision_normal)) {
 		collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });
 	}
 
 	//Check if grounded... SI EL CHAR_CENTER (DESDE DNDE SE TIRA EL RAYO MUY GRANDE SUBE DIRECTAMENTE A OBJETOS TIPO MUROS ESCALERAS)
-	if (mesh->testRayCollision(m, character_center, Vector3(0, -1, 0), collision_point, collision_normal, player_height +0.01f)) {
+	if (mesh->testRayCollision(m, character_center, Vector3(0, -1, 0), collision_point, collision_normal, player_height )) {
 		ground_collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });
 	}
 
