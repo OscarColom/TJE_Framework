@@ -3,7 +3,6 @@
 
 class EntityCollider : public EntityMesh {
 	void getCollisionsWithModel(const Matrix44& m, const Vector3& target_position, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions);
-//
 	int layer = eCollisionFilter::SCENARIO;
 
 public:

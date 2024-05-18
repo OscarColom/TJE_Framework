@@ -9,7 +9,9 @@ public:
 	Vector3 velocity = Vector3(0.0f);
 	Vector3 position;
 
-	int lifes = 3; 
+	int lifes = 3;
+	float fall = 0.f;
+	bool is_on_plataform = false;
 
 	float stamina = 20.0f; // Resistencia inicial
 	float max_stamina = 20.0f; // Máxima resistencia

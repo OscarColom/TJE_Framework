@@ -31,14 +31,12 @@ void EntityMesh::render(Camera* camera) {
 		Vector3 center_world = model * mesh->box.center;
 		float aabb_radius = mesh->box.halfsize.length();
 
-		if (!camera->testSphereInFrustum(center_world, aabb_radius + 20)) { //preguntar, prueba suelo
+		if (!camera->testSphereInFrustum(center_world, aabb_radius)) { //preguntar, prueba suelo
 			return;
 		} 
 	}
 
-
 	if (!material.shader) {
-		//	//material.shader->Shader::Get(isInstanced ? "data/shaders/instanced.vsf");
 		if (isInstanced) {
 			material.shader = Shader::Get("data/shaders/instanced.vs", "data/shaders/phongVC.fs");
 		}
@@ -48,7 +46,6 @@ void EntityMesh::render(Camera* camera) {
 		
 	}
 
-
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
@@ -57,28 +54,23 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->enable();
 
 	material.shader->setUniform("u_color", material.color);
-
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-
 	if (material.diffuse) {
 		material.shader->setUniform("u_texture", material.diffuse, 0);
 	}
 	
-
 	if (!isInstanced) {
 		material.shader->setUniform("u_model", getGlobalMatrix());
 
 	}
-
 	material.shader->setUniform("u_camera_position", camera->eye);
-
 	material.shader->setUniform("u_light_pos", Vector3(0, 200, 0));
-
 	material.shader->setUniform("u_time", time);
 
 	Mesh* final_mesh = mesh;
+	
+	//The LOD (if it's far, a less quality image)
 	float distance = camera->eye.distance(model.getTranslation());
-
 	for (int i = 0; i < mesh_lods.size(); ++i) {
 		sMeshLOD mesh_lod = mesh_lods[i];
 		if (distance > mesh_lod.distance) {
@@ -99,39 +91,29 @@ void EntityMesh::render(Camera* camera) {
 	for (int i = 0; i < children.size(); i++) {
 		children[i]->render(camera);
 	}
-
-/////////////////////////////////////////////////////////////////////////////
-
 };
 
 
 void EntityMesh::render_player(Camera* camera) {
-
-
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
 	if (!material.shader) {
-		//	//material.shader->Shader::Get(isInstanced ? "data/shaders/instanced.vsf");
 		material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	}
 
 	material.shader->enable();
 
 	material.shader->setUniform("u_color", material.color);
-
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-
 	material.shader->setUniform("u_texture", material.diffuse, 0);
-
 	material.shader->setUniform("u_model", getGlobalMatrix());
+	material.shader->setUniform("u_time", time);
 	material.shader->setUniform("u_camera_position", camera->eye);
 
 	mesh->render(GL_TRIANGLES);
 	material.shader->disable();
-
-
 };
 
 

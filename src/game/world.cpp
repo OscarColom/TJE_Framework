@@ -31,9 +31,6 @@ World::World() {
 	player = new EntityPlayer(player_mesh, player_material, "player");
 	player->model.translate(0.f, 10.f, 0.f);
 
-
-
-
 	//Skybox
 	Material sky_cubemap;
 	sky_cubemap.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -48,7 +45,7 @@ World::World() {
 		});
 	Mesh* skybox_mesh = Mesh::Get("data/meshes/cubemap.ASE");
 	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
-
+	skybox->model.scale(70.f, 70.f, 70.f);
 
 	//Add meshes to root.
 	//root.addChild(isla);
@@ -78,7 +75,6 @@ void World::OnKeyDown(SDL_KeyboardEvent event) {
 }
 
 void World::render() {
-
 	camera->enable();
 
 	glDisable(GL_DEPTH_TEST);
@@ -87,11 +83,8 @@ void World::render() {
 	skybox->render(camera);
 	glEnable(GL_DEPTH_TEST);
 
-
 	//player->render_player(camera);
-
 	root.render(camera);
-
 	player->render(camera);
 
 	glDisable(GL_BLEND);
@@ -106,15 +99,9 @@ void World::update(float seconds_elapsed) {
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
 	// Example
-
 	//skybox->model.setTranslation(camera->eye);
 	
-	// Mouse input to rotate the cam
-
-
-	//Update the player
-	player->update(seconds_elapsed);
-
+	// Mouse input to rotate the camera
 
 	if (free_camera) {
 		if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
@@ -132,7 +119,7 @@ void World::update(float seconds_elapsed) {
 	}
 	else {
 
-		//player->update(seconds_elapsed);
+		player->update(seconds_elapsed);
 
 		Vector3 eye;
 		Vector3 center;
@@ -143,56 +130,38 @@ void World::update(float seconds_elapsed) {
 		camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f ;
 		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f ;
 
-
-		camera_pitch = clamp(camera_pitch, -PI * 0.4f, PI * 0.4f);
-
-
+		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI * 0.4f);
 
 		Matrix44 myaw;
-		myaw.setRotation(camera_yaw, Vector3(0.f, 1.f, 0.f));
+		myaw.setRotation(camera_yaw, Vector3(0, 1, 0));
 
 		Matrix44 mpitch;
-		mpitch.setRotation(camera_pitch, Vector3(-1.f, 0.f, 0.f));
-
+		mpitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
 
 		Vector3 front = (mpitch * myaw).frontVector().normalize();
 
 		float orbit_dist = 6.f;
-		//eye = (player->model.getTranslation() - front * orbit_dist) + Vector3(0.f , 25.5f , -15.f );
-		//center = player->getGlobalMatrix() * Vector3(0.f , 25.5f , -15.f );;
 		Vector3 corrector = Vector3(0.f, 4.1f, 0.f);
 		eye = (player->model.getTranslation() - front * orbit_dist) + corrector;
 		center = player->model.getTranslation()  + Vector3(0.f, 4.1f, 0.f); //The last vector is bc we cound be pointing at the char feet otherwise
-		 //tirar rayos desde jugador a la camara
 
-
-		Vector3 dir = eye - center;
+		//Vector3 dir = eye - center;
 		//Vector3 dir = center - eye;
 		//sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), ALL, dir.length());
-		sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::SCENARIO, dir.length());
+		//sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());
 
-		if (data.collided) {
+		/*if (data.collided) {
 			eye = data.col_point;
-		}
-
+		}*/
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
-
-		//Game::instance->mouse_locked = true;
-
-
 	}
-
-	//skybox->model.setTranslation(camera->getRayDirection(Input::mouse_delta.x, Input::mouse_delta.y, window_width, window_height));
-
 	root.update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
 }
 
 
-
-
-sCollisionData  World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist) {
+sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist) {
 
 	sCollisionData data;
 	data.collided = false;
@@ -239,13 +208,10 @@ sCollisionData  World::ray_cast(const Vector3& origin, const Vector3& direction,
 		//	//data.collider = ec;
 		//}
 
-
 	}
 
 	return data;
 }
-
-
 
 bool World::parseScene(const char* filename, Entity* root)
 {

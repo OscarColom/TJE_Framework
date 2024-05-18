@@ -3,8 +3,6 @@
 #include "framework/input.h"
 #include "framework/entities/entity_collider.h"
 
-
-
 EntityPlayer::EntityPlayer(Mesh* player_mesh, const Material& player_material, const std::string& name) {
 	this->mesh = player_mesh;
 	this->material = player_material;
@@ -15,11 +13,10 @@ EntityPlayer::~EntityPlayer() {
 
 }
 
-
-
 void EntityPlayer::render(Camera* camera) {
 
 	EntityMesh::render(camera);
+	int world_width = World::get_instance()->window_width;
 
 	float sphere_radius = World::get_instance()->sphere_radius;
 	float sphere_ground_radius = World::get_instance()->sphere_grow;
@@ -56,15 +53,13 @@ void EntityPlayer::render(Camera* camera) {
 		mesh->render(GL_LINES);
 	}
 
-
 	std::string str_stam = "Stamina: " + std::to_string(stamina);
 	drawText(20, 20, str_stam, Vector3(1, 1, 1), 2);
 
-	shader->disable();
+	std::string str_lifes = "Lifes: " + std::to_string(lifes);
+	drawText(world_width - 100, 20, str_lifes, Vector3(1, 1, 1), 2);
 
-
-
-	
+	shader->disable();	
 }
 
 void EntityPlayer::update(float seconds_elapsed) {
@@ -75,17 +70,13 @@ void EntityPlayer::update(float seconds_elapsed) {
 	mYaw.setRotation(camera_yaw, Vector3(0, 1, 0));
 
 	//Axes where the char is gonna move
-	/*Vector3 front = Vector3(0, 0, -1);
-	Vector3 right = Vector3(1, 0, 0);*/
 	Vector3 front = mYaw.frontVector();
 	Vector3 right = mYaw.rightVector();
-
 
 	//Where the character is
 	position = model.getTranslation();
 
 	Vector3 move_dir;
-	
 
 	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) move_dir += front;
 	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) move_dir -= front;
@@ -94,13 +85,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	float speed_mult = walk_speed;
 
-
 	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT) && stamina > 0.0f) {
 		// El jugador está esprintando y tiene resistencia
 		is_sprinting = true;
 		stamina -= stamina_consumption_rate * seconds_elapsed; // Reduce la resistencia
 		stamina = std::max(0.0f, stamina); // Asegúrate de que la resistencia no sea negativa
-
 
 		if (stamina > 0.0f) {
 			speed_mult *= 1.8f; 
@@ -121,17 +110,15 @@ void EntityPlayer::update(float seconds_elapsed) {
 	velocity += move_dir;
 
 	//CHECK COLLISIONS
-
 	std::vector<sCollisionData> collisions;
 	std::vector<sCollisionData> ground_collisions;
 
 	for (auto e : World::get_instance()->root.children) {
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
 		if (ec != nullptr) {
-			ec->getCollisions(position + (velocity * seconds_elapsed ), collisions, ground_collisions, ALL);
+			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);
 		}
 	}
-
 
 	//Ground collsisons
 	bool is_grounded = false;
@@ -143,55 +130,51 @@ void EntityPlayer::update(float seconds_elapsed) {
 			is_grounded = true;
 		}
 
-		if (collision.col_point.y  > (position.y )  ) {
-
+		if (collision.col_point.y  > (position.y + velocity.y * seconds_elapsed)) {
 			position.y = collision.col_point.y;
 		}
 	}
 
 	if (!is_grounded) {
-		velocity.y -= (50.8f * seconds_elapsed );
+		velocity.y -= 50.f * seconds_elapsed;
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 29.f;
+		velocity.y = 25.f;
 	}
 
 	//Env collisions
 	for (const sCollisionData& collision : collisions) {
-
-		//move along wall when colliding
+		//Move along wall when colliding
 		Vector3  newDir = velocity.dot(collision.col_normal) * collision.col_normal;
-
 		velocity.x -= newDir.x;
 		velocity.z -= newDir.z;
-
-
 	}
 
+	position += velocity * seconds_elapsed;
 
-	position.x += (velocity.x * seconds_elapsed);
-	position.z += (velocity.z * seconds_elapsed);
-	position.y += (velocity.y * seconds_elapsed );
-
-	if (position.y < -1) {
-		position = World::get_instance()->current_checkpoint;
+	//Por si el jugador se cae
+	if (position.y < -1 || (position.y < 23.f && is_on_plataform)) {
+		//position = World::get_instance()->current_checkpoint;
 		lifes -= 1;
+		is_on_plataform = false;
 	}
 
 	if (lifes == 0) {
 		//enviar a pantalla de inicio
-		position = Vector3(0.f, 200.f, 0.f);
+		position = World::get_instance()->current_checkpoint;
+		lifes = 3;
+	}
+
+	if (position.y > 24.f) {
+		is_on_plataform = true;
 	}
 
 	//Update player position
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
 
-
-
 	model.setTranslation(position);
-
 	model.rotate(camera_yaw, Vector3(0, 1, 0));
 
 	EntityMesh::update(seconds_elapsed);
