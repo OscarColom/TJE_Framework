@@ -1,7 +1,7 @@
 # Blender 4.1.1
 # www.blender.org
 mtllib stairs-corner.mtl
-o stairs-corner.012
+o stairs-corner.002
 v 0.500000 -0.500000 0.000000
 v 0.500000 0.450000 0.000000
 v 0.500000 -0.500000 -0.166667
