@@ -1,7 +1,7 @@
 # Blender 4.1.1
 # www.blender.org
 mtllib stairs-stone-square.mtl
-o stairs-stone-square.001
+o stairs-stone-square
 v 0.116250 -0.136500 -0.225000
 v -0.116250 -0.136500 -0.225000
 v 0.116250 -0.204750 -0.225000
@@ -74,7 +74,7 @@ vt 0.843750 0.141667
 vt 0.843750 0.158333
 vt 0.843750 0.208333
 s 0
-usemtl colormap.007
+usemtl colormap.012
 f 3/1/1 2/1/1 1/1/1
 f 2/1/1 3/1/1 4/1/1
 f 7/2/1 6/2/1 5/2/1

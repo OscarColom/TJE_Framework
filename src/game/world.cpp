@@ -145,14 +145,12 @@ void World::update(float seconds_elapsed) {
 		eye = (player->model.getTranslation() - front * orbit_dist) + corrector;
 		center = player->model.getTranslation()  + Vector3(0.f, 4.1f, 0.f); //The last vector is bc we cound be pointing at the char feet otherwise
 
-		//Vector3 dir = eye - center;
-		//Vector3 dir = center - eye;
-		//sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), ALL, dir.length());
-		//sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());
+		Vector3 dir = eye - center;
+		sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());
 
-		/*if (data.collided) {
+		if (data.collided) {
 			eye = data.col_point;
-		}*/
+		}
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
