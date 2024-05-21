@@ -140,7 +140,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 25.f;
+		velocity.y = 20.f;
 	}
 
 	//Env collisions

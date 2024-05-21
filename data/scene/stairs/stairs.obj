@@ -1,7 +1,7 @@
 # Blender 4.1.1
 # www.blender.org
 mtllib stairs.mtl
-o stairs
+o stairs.001
 v 0.500000 0.166667 -0.166667
 v -0.500000 0.166667 -0.166667
 v 0.500000 0.166667 -0.333333
