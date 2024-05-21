@@ -148,13 +148,14 @@ void EntityPlayer::update(float seconds_elapsed) {
 		//Move along wall when colliding
 		Vector3  newDir = velocity.dot(collision.col_normal) * collision.col_normal;
 		velocity.x -= newDir.x;
+		velocity.y -= newDir.y;
 		velocity.z -= newDir.z;
 	}
 
 	position += velocity * seconds_elapsed;
 
 	//Por si el jugador se cae
-	if (position.y < -1 || (position.y < 23.f && is_on_plataform)) {
+	if (position.y < -100 || (position.y < 23.f && is_on_plataform)) {
 		//position = World::get_instance()->current_checkpoint;
 		lifes -= 1;
 		is_on_plataform = false;
