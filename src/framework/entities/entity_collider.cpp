@@ -18,7 +18,7 @@ void EntityCollider::getCollisionsWithModel(const Matrix44& m, const Vector3& ta
 	Vector3 floor_sphere_center = center + Vector3(0.f, sphere_ground_radius, 0.f);
 
 
-	if (mesh->testSphereCollision(m, floor_sphere_center, sphere_ground_radius - 0.25f, collision_point, collision_normal)) {
+	if (mesh->testSphereCollision(m, floor_sphere_center, sphere_ground_radius - 0.9f, collision_point, collision_normal)) {
 		collisions.push_back({ collision_point, collision_normal.normalize(), floor_sphere_center.distance(collision_point) });
 	}
 
