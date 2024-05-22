@@ -7,6 +7,8 @@ EntityPlayer::EntityPlayer(Mesh* player_mesh, const Material& player_material, c
 	this->mesh = player_mesh;
 	this->material = player_material;
 	this->name = name;
+
+	animator.playAnimation("data/final_character/animations/idle.skanim");
 }
 
 EntityPlayer::~EntityPlayer() {
@@ -152,18 +154,39 @@ void EntityPlayer::update(float seconds_elapsed) {
 		velocity.z -= newDir.z;
 	}
 
+	//Animation
+	if (animation_state == eAnimationState::IDLE && velocity.length() > 1.f) {
+		animator.playAnimation("data/final_character/animations/walk.skanim");
+		animation_state = eAnimationState::WALKING;
+		printf("Walking");
+	} 
+	
+	if (animation_state == eAnimationState::RUNNING && velocity.length() < 1.f) {
+			animator.playAnimation("data/final_character/animations/idle.skanim");
+			animation_state = eAnimationState::IDLE;
+	}
+	
+	if (animation_state == eAnimationState::IDLE && velocity.length() > 1.f && !is_grounded) {
+		animator.playAnimation("data/final_character/animations/jump.skanim");
+		animation_state = eAnimationState::JUMP;
+	}
+	
+	if ((animation_state == eAnimationState::IDLE || animation_state == eAnimationState::WALKING) && velocity.length() > 1.f && is_sprinting) {
+		animator.playAnimation("data/final_character/animations/run.skanim");
+		animation_state = eAnimationState::RUNNING;
+	}
+	
+	// Update players position
 	position += velocity * seconds_elapsed;
 
 	//Por si el jugador se cae
 	if (position.y < -100 || (position.y < 23.f && is_on_plataform)) {
-		//position = World::get_instance()->current_checkpoint;
 		lifes -= 1;
 		is_on_plataform = false;
 	}
 
 	if (lifes == 0) {
-		//enviar a pantalla de inicio
-		position = World::get_instance()->current_checkpoint;
+		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
 		lifes = 3;
 	}
 

@@ -21,15 +21,16 @@ World::World() {
 	camera->lookAt(Vector3(0.f, 1.f, 1.f), Vector3(0.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f));
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f);
 
-
 	//Player
 	Material player_material;
-	player_material.shader = Shader::Get("data/shaders/basic.vs", "data/shader/texture.fs");
+	player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shader/texture.fs");
 	player_material.diffuse = new Texture();
 	player_material.diffuse->load("data/final_character/survivorFemaleA.png");
-	Mesh* player_mesh = Mesh::Get("data/final_character/character.obj");
+	Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
+	
 	player = new EntityPlayer(player_mesh, player_material, "player");
-	player->model.translate(0.f, 40.f, 0.f);
+	player->model.translate(0.f, 5.f, 0.f);
+	player->isAnimated = true;
 
 	//Skybox
 	Material sky_cubemap;
@@ -47,13 +48,7 @@ World::World() {
 	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
 	skybox->model.scale(70.f, 70.f, 70.f);
 
-	//Add meshes to root.
-	//root.addChild(isla);
 	parseScene("data/myscene.scene", &root);
-
-	//escenarios models resources
-	//Nueva clase entity_Collider
-
 }
 
 
@@ -97,11 +92,6 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
-
-	// Example
-	//skybox->model.setTranslation(camera->eye);
-	
-	// Mouse input to rotate the camera
 
 	if (free_camera) {
 		if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?

@@ -7,15 +7,12 @@
 #include <algorithm>
 
 
-
 void EntityMesh::render(Camera* camera) {
 
 	if (!mesh) return;
 
-
 	std::vector<Matrix44> models_instanced;
 	std::vector<Matrix44>* final_models = &models;
-
 
 	if (isInstanced) {
 		for (int i = 0; i < models.size(); i++) {
@@ -68,7 +65,7 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_time", time);
 
 	Mesh* final_mesh = mesh;
-	
+
 	//The LOD (if it's far, a less quality image)
 	float distance = camera->eye.distance(model.getTranslation());
 	for (int i = 0; i < mesh_lods.size(); ++i) {
@@ -78,11 +75,17 @@ void EntityMesh::render(Camera* camera) {
 		}
 	}
 
-	if (isInstanced)
+	if (isInstanced) {
 		final_mesh->renderInstanced(GL_TRIANGLES, final_models->data(), models.size());
-	else
-		final_mesh->render(GL_TRIANGLES);
-
+	}
+	else {
+		if (isAnimated) {
+			final_mesh->renderAnimated(GL_TRIANGLES, &animator.getCurrentSkeleton());
+		}
+		else {
+			final_mesh->render(GL_TRIANGLES);
+		}
+	}
 
 	// Disable shader after finishing rendering
 	material.shader->disable();
@@ -118,9 +121,15 @@ void EntityMesh::render_player(Camera* camera) {
 
 
 void EntityMesh::update(float delta_time) {
+	if (isAnimated) {
+		animator.update(delta_time);
+	}
+
 	for (int i = 0; i < children.size(); ++i) {
 		children[i]->update(delta_time);
 	}
+
+	Entity::update(delta_time);
 }
 
 void EntityMesh::addInstance(const Matrix44& model) {

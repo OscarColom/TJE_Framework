@@ -3,6 +3,7 @@
 #include "framework/entities/entity.h"
 #include "graphics/material.h"
 #include "graphics/texture.h"
+#include "framework/animation.h"
 
 class Texture;
 class Mesh;
@@ -29,9 +30,10 @@ public:
 	Mesh* mesh = nullptr;
 	Material material;
 	std::string name;
-	//Texture* texture = nullptr;
-	//Shader* shader = nullptr;
-	//Vector4 color;
+	
+	//Animation
+	Animator animator;
+	bool isAnimated = false;
 
 	//Instancing
 	bool isInstanced = false;
