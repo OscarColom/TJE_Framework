@@ -28,7 +28,7 @@ void EntityMesh::render(Camera* camera) {
 		Vector3 center_world = model * mesh->box.center;
 		float aabb_radius = mesh->box.halfsize.length();
 
-		if (!camera->testSphereInFrustum(center_world, aabb_radius)) { //preguntar, prueba suelo
+		if (!camera->testSphereInFrustum(center_world, aabb_radius+2.f)) { //preguntar, prueba suelo
 			return;
 		} 
 	}

@@ -49,6 +49,16 @@ World::World() {
 	skybox->model.scale(70.f, 70.f, 70.f);
 
 	parseScene("data/myscene.scene", &root);
+
+	//	//Crear entity_ui
+	//herda de entitymesh
+	//2 constuctores
+	//, pos , size , material butonide con un enum, 
+	//En world cerar camara 2d ortografica
+	//como renderizar: en el reder de ui: hacer los set_uniform, no usar depth_buffer,,n no usar cull_face word, i viewproj = camera2s->view:projectionmatrix.
+	//al acabar rende hacer , y volver a dejar gl como antes entity::render(camersa2s).
+
+
 }
 
 
