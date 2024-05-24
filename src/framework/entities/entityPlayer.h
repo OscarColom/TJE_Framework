@@ -22,8 +22,8 @@ public:
 	float fall = 0.f;
 	bool is_on_plataform = false;
 
-	float stamina = 20.0f; // Resistencia inicial
-	float max_stamina = 20.0f; // Máxima resistencia
+	float stamina = 50.0f; // Resistencia inicial
+	float max_stamina = 50.0f; // Máxima resistencia
 	float stamina_consumption_rate = 20.0f; // Tasa de consumo por segundo
 	float stamina_recovery_rate = 10.0f; // Tasa de recuperación por segundo
 	bool is_sprinting = false; // Indica si el jugador está esprintando

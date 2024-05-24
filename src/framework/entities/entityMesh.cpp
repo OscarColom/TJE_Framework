@@ -52,6 +52,7 @@ void EntityMesh::render(Camera* camera) {
 
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+
 	if (material.diffuse) {
 		material.shader->setUniform("u_texture", material.diffuse, 0);
 	}
@@ -91,9 +92,12 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->disable();
 
 
+
 	for (int i = 0; i < children.size(); i++) {
 		children[i]->render(camera);
 	}
+
+	Entity::render(camera);
 };
 
 
@@ -121,6 +125,7 @@ void EntityMesh::render_player(Camera* camera) {
 
 
 void EntityMesh::update(float delta_time) {
+
 	if (isAnimated) {
 		animator.update(delta_time);
 	}

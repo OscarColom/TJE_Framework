@@ -8,6 +8,7 @@
 class Camera;
 class EntityPlayer;
 class EntityMesh;
+class Stage;
 
 class World {
 
@@ -15,6 +16,12 @@ class World {
 
 public:
 	
+	Stage* current_stage = nullptr;
+	std::map<int, Stage*> stages;
+	Stage* menu_stage = nullptr;
+	Stage* game_stage = nullptr;
+
+
 	static World* get_instance() {
 		if (instance != nullptr) return instance;
 		instance = new World();
@@ -28,8 +35,6 @@ public:
 
 	EntityPlayer* player = nullptr;
 
-	EntityMesh* isla = nullptr;
-	EntityMesh* agua = nullptr;
 	EntityMesh* skybox = nullptr;
 
 	int window_width;
@@ -63,5 +68,5 @@ public:
 	bool parseScene(const char* filename, Entity* root);
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
-	void OnKeyDown(SDL_KeyboardEvent event);
+	//void OnKeyDown(SDL_KeyboardEvent event);
 };

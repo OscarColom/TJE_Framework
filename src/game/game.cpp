@@ -48,7 +48,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//world
 	world = new World();
 
-
+	Camera::current = World::get_instance()->camera;
 	// Load one texture using the Texture Manager
 	//texture = Texture::Get("data/textures/texture.tga");
 
@@ -150,7 +150,7 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_F1: Shader::ReloadAll(); break; 
 	}
 
-	world->OnKeyDown(event);
+	//world->OnKeyDown(event);
 }
 
 void Game::onKeyUp(SDL_KeyboardEvent event)

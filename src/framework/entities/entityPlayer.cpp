@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "framework/input.h"
 #include "framework/entities/entity_collider.h"
+#include "game/stage.h"
 
 EntityPlayer::EntityPlayer(Mesh* player_mesh, const Material& player_material, const std::string& name) {
 	this->mesh = player_mesh;
@@ -20,40 +21,40 @@ void EntityPlayer::render(Camera* camera) {
 	EntityMesh::render(camera);
 	int world_width = World::get_instance()->window_width;
 
-	float sphere_radius = World::get_instance()->sphere_radius;
-	float sphere_ground_radius = World::get_instance()->sphere_grow;
-	float player_height = World::get_instance()->player_height;
+	//float sphere_radius = World::get_instance()->sphere_radius;
+	//float sphere_ground_radius = World::get_instance()->sphere_grow;
+	//float player_height = World::get_instance()->player_height;
 
-	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
-	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
-	Matrix44 m = model;
+	//Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
+	//Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
+	//Matrix44 m = model;
 
-	shader->enable();
+	//shader->enable();
 
-	//1st sphere
-	{
-		m.translate(0.0f, sphere_ground_radius, 0.0f);
-		m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
+	////1st sphere
+	//{
+	//	m.translate(0.0f, sphere_ground_radius, 0.0f);
+	//	m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
 
-		shader->setUniform("u_color", Vector4(1.0f, 1.0f, 0.0f, 1.0f));
-		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-		shader->setUniform("u_model", m);
+	//	shader->setUniform("u_color", Vector4(1.0f, 1.0f, 0.0f, 1.0f));
+	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+	//	shader->setUniform("u_model", m);
 
-		mesh->render(GL_LINES);
-	}
+	//	mesh->render(GL_LINES);
+	//}
 
-	//2nd sphere
-	{
-		m = model;
-		m.translate(0.0f, player_height, 0.0f);
-		m.scale(sphere_radius, sphere_radius, sphere_radius);
+	////2nd sphere
+	//{
+	//	m = model;
+	//	m.translate(0.0f, player_height, 0.0f);
+	//	m.scale(sphere_radius, sphere_radius, sphere_radius);
 
-		shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-		shader->setUniform("u_model", m);
+	//	shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+	//	shader->setUniform("u_model", m);
 
-		mesh->render(GL_LINES);
-	}
+	//	mesh->render(GL_LINES);
+	//}
 
 	std::string str_stam = "Stamina: " + std::to_string(stamina);
 	drawText(20, 20, str_stam, Vector3(1, 1, 1), 2);
@@ -61,11 +62,11 @@ void EntityPlayer::render(Camera* camera) {
 	std::string str_lifes = "Lifes: " + std::to_string(lifes);
 	drawText(world_width - 100, 20, str_lifes, Vector3(1, 1, 1), 2);
 
-	shader->disable();	
+	//shader->disable();	
 }
 
 void EntityPlayer::update(float seconds_elapsed) {
-	float camera_yaw = World::get_instance()->camera_yaw;
+	float camera_yaw = GamePlay::get_instance()->camera_yaw;
 	//float camera_yaw = Game::instance->camera_yaw;
 
 	Matrix44 mYaw;
@@ -104,6 +105,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		// El jugador no está esprintando, recupera resistencia
 		stamina += stamina_recovery_rate * seconds_elapsed; // Recupera resistencia
 		stamina = std::min(max_stamina, stamina); // Asegúrate de que la resistencia no supere el máximo
+		is_sprinting = false;
 	}
 
 	move_dir.normalize();
@@ -143,6 +145,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
 		velocity.y = 20.f;
+		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false);
+		animation_state = eAnimationState::JUMP;
+
 	}
 
 	//Env collisions
@@ -155,26 +160,23 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	//Animation
-	//if (animation_state == eAnimationState::IDLE && velocity.length() > 1.f) {
-	//	animator.playAnimation("data/final_character/animations/walk.skanim");
-	//	animation_state = eAnimationState::WALKING;
-	//	printf("Walking");
-	//} 
-	//
-	//if (animation_state == eAnimationState::RUNNING && velocity.length() < 1.f) {
-	//		animator.playAnimation("data/final_character/animations/idle.skanim");
-	//		animation_state = eAnimationState::IDLE;
-	//}
-	//
-	//if (animation_state == eAnimationState::IDLE && velocity.length() > 1.f && !is_grounded) {
-	//	animator.playAnimation("data/final_character/animations/jump.skanim");
-	//	animation_state = eAnimationState::JUMP;
-	//}
-	//
-	//if ((animation_state == eAnimationState::IDLE || animation_state == eAnimationState::WALKING) && velocity.length() > 1.f && is_sprinting) {
-	//	animator.playAnimation("data/final_character/animations/run.skanim");
-	//	animation_state = eAnimationState::RUNNING;
-	//}
+	if ( (animation_state == eAnimationState::IDLE || animation_state == eAnimationState::RUNNING )  && velocity.length() > 1.f && !is_sprinting) {
+		animator.playAnimation("data/final_character/animations/walk.skanim");
+		animation_state = eAnimationState::WALKING;
+		printf("Walking");
+	} 
+	
+	if (velocity.length() < 0.05f && is_grounded) {
+		animator.playAnimation("data/final_character/animations/idle.skanim");
+		animation_state = eAnimationState::IDLE;
+		printf("idle");
+	}
+
+
+	if (( animation_state == eAnimationState::WALKING) && velocity.length() > 1.f && is_sprinting) {
+		animator.playAnimation("data/final_character/animations/run.skanim");
+		animation_state = eAnimationState::RUNNING;
+	}
 	
 	// Update players position
 	position += velocity * seconds_elapsed;
