@@ -68,5 +68,5 @@ public:
 	bool parseScene(const char* filename, Entity* root);
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
-	//void OnKeyDown(SDL_KeyboardEvent event);
+	void OnKeyDown(SDL_KeyboardEvent event);
 };

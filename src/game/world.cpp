@@ -31,7 +31,7 @@ World::World() {
 	menu_stage->init();
 	game_stage->init();
 
-	current_stage = game_stage;
+	current_stage = menu_stage;
 
 
 
@@ -81,18 +81,18 @@ World::~World() {
 
 }
 
-//void World::OnKeyDown(SDL_KeyboardEvent event) {
-//	switch (event.keysym.sym)
-//	{
-//	case SDLK_TAB:
-//		free_camera = !free_camera;
-//		mouse_locked = !mouse_locked;
-//		SDL_ShowCursor(!mouse_locked);
-//		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
-//		break;
-//	}
-//
-//}
+void World::OnKeyDown(SDL_KeyboardEvent event) {
+	switch (event.keysym.sym)
+	{
+	case SDLK_TAB:
+		free_camera = !free_camera;
+		mouse_locked = !mouse_locked;
+		SDL_ShowCursor(!mouse_locked);
+		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+		break;
+	}
+
+}
 
 void World::render() {
 	current_stage->render();

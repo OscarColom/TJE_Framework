@@ -150,7 +150,7 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_F1: Shader::ReloadAll(); break; 
 	}
 
-	//world->OnKeyDown(event);
+	world->OnKeyDown(event);
 }
 
 void Game::onKeyUp(SDL_KeyboardEvent event)

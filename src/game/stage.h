@@ -61,7 +61,7 @@ public:
 	void init();
 	void restart();
 	void render();
-	void update();
+	void update(float seconds_elapsed);
 };
 
 

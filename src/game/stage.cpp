@@ -38,15 +38,15 @@ void Menu::restart() {
 void Menu::render() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	drawText(world_width/2, world_height /2, "Este es el menu , apreta C para entarr al juego", Vector3(1, 1, 1), 2);
+	drawText(world_width/2, world_height /2, "Clica para entarr al juego", Vector3(1, 1, 1), 2);
 	//SDL_GL_SwapWindow(this->window);
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 }
 
-void Menu::update() {
-	if (Input::wasKeyPressed(SDL_SCANCODE_C)) {
+void Menu::update(float seconds_elapsed) {
+	if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 		World* world = World::get_instance();
 		world->current_stage = world->game_stage;
 	}
@@ -93,18 +93,18 @@ void GamePlay::init() {
 
 }
 
-void GamePlay::OnKeyDown(SDL_KeyboardEvent event) {
-	switch (event.keysym.sym)
-	{
-	case SDLK_TAB:
-		free_camera = !free_camera;
-		mouse_locked = !mouse_locked;
-		SDL_ShowCursor(!mouse_locked);
-		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
-		break;
-	}
-
-}
+//void GamePlay::OnKeyDown(SDL_KeyboardEvent event) {
+//	switch (event.keysym.sym)
+//	{
+//	case SDLK_TAB:
+//		free_camera = !free_camera;
+//		mouse_locked = !mouse_locked;
+//		SDL_ShowCursor(!mouse_locked);
+//		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+//		break;
+//	}
+//
+//}
 
 void GamePlay::restart() {
 
@@ -132,7 +132,8 @@ void GamePlay::render() {
 
 void GamePlay::update(float seconds_elapsed) {
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
-
+	free_camera = World::get_instance()->free_camera;
+	mouse_locked = World::get_instance()->mouse_locked;
 	if (free_camera) {
 		if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
 		{
