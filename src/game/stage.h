@@ -82,6 +82,7 @@ public:
 
 	EntityPlayer* player = nullptr;
 	EntityMesh* skybox = nullptr;
+	EntityMesh* key = nullptr;
 
 	int window_width;
 	int window_height;

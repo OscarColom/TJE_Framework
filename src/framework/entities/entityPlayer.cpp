@@ -145,9 +145,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
 		velocity.y = 20.f;
-		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false);
+		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
-
 	}
 
 	//Env collisions
@@ -160,21 +159,21 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	//Animation
-	if ( (animation_state == eAnimationState::IDLE || animation_state == eAnimationState::RUNNING )  && velocity.length() > 1.f && !is_sprinting) {
-		animator.playAnimation("data/final_character/animations/walk.skanim");
+	if ( (animation_state == eAnimationState::IDLE || animation_state == eAnimationState::RUNNING) && velocity.length() > 1.f && !is_sprinting) {
+		animator.playAnimation("data/final_character/animations/walk.skanim", true, 0.6f);
 		animation_state = eAnimationState::WALKING;
-		printf("Walking");
+		//printf("Walking");
 	} 
 	
-	if (velocity.length() < 0.05f && is_grounded) {
-		animator.playAnimation("data/final_character/animations/idle.skanim");
+	if (velocity.length() < 1.f && is_grounded) {
+		animator.playAnimation("data/final_character/animations/idle.skanim", true, 0.6f);
 		animation_state = eAnimationState::IDLE;
-		printf("idle");
+		//printf("idle");
+		printf("%f", velocity.length());
 	}
 
-
-	if (( animation_state == eAnimationState::WALKING) && velocity.length() > 1.f && is_sprinting) {
-		animator.playAnimation("data/final_character/animations/run.skanim");
+	if (animation_state == eAnimationState::WALKING && velocity.length() > 20.f && is_sprinting && is_grounded) {
+		animator.playAnimation("data/final_character/animations/run.skanim", true, 0.6f);
 		animation_state = eAnimationState::RUNNING;
 	}
 	

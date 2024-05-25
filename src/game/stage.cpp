@@ -62,6 +62,18 @@ void GamePlay::init() {
 	instance = this;
 	//camera = World::get_instance()->camera;
 
+	//Key
+	Material key_material;
+	key_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	key_material.diffuse = new Texture();
+	key_material.diffuse->load("data/key/Key_Material.png");
+	Mesh* key_mesh = Mesh::Get("data/key/key.obj");
+	
+	key = new EntityMesh(key_mesh, key_material, "key");
+	//key->model.scale(20.f, 50.f, 10.f);
+	//key->model.translate(0.f, 5.f, 0.f);
+	//key->model.translate(9.120f, 95.33f, 53.f);
+	
 	//Player
 	Material player_material;
 	player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shaders/texture.fs");
@@ -88,8 +100,6 @@ void GamePlay::init() {
 	Mesh* skybox_mesh = Mesh::Get("data/meshes/cubemap.ASE");
 	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
 	skybox->model.scale(70.f, 70.f, 70.f);
-
-
 
 }
 
@@ -122,6 +132,7 @@ void GamePlay::render() {
 
 	root = World::get_instance()->root;
 	root.render(camera);
+	key->render(camera);
 	player->render(camera);
 
 	glDisable(GL_BLEND);
@@ -186,6 +197,7 @@ void GamePlay::update(float seconds_elapsed) {
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
 	root.update(seconds_elapsed);
+	key->update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
 
 }
