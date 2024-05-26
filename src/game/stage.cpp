@@ -74,6 +74,20 @@ void GamePlay::init() {
 	//key->model.scale(20.f, 50.f, 0.f); 
 	key->model.translate(6.55f, 55.61f, -94.64f);
 	
+	//Gate
+
+	//Heart
+	Material heart_material;
+	heart_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	heart_material.diffuse = new Texture();
+	heart_material.diffuse->load("data/heart/heart.png");
+	Mesh* heart_mesh = Mesh::Get("data/heart/heart.obj");
+
+	heart = new EntityKey(heart_mesh, heart_material, "heart");
+	//key->model.scale(20.f, 50.f, 0.f); 
+	heart->model.translate(0.f, 5.f, 0.f);
+
+	
 	
 	//Player
 	Material player_material;

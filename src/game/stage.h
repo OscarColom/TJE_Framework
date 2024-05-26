@@ -79,6 +79,7 @@ public:
 
 	EntityMesh* skybox = nullptr;
 	EntityKey* key = nullptr;
+	EntityKey* heart = nullptr;
 
 	int window_width;
 	int window_height;
