@@ -81,6 +81,8 @@ public:
 	EntityKey* key = nullptr;
 	EntityKey* heart = nullptr;
 
+	EntityCollider* gate = nullptr;
+
 	int window_width;
 	int window_height;
 

@@ -34,6 +34,8 @@ public:
 
 	Entity root; 
 
+	//Entity Gate;
+
 	EntityPlayer* player = nullptr;
 
 	EntityMesh* skybox = nullptr;

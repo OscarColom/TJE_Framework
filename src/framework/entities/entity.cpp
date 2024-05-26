@@ -48,6 +48,8 @@ void Entity::removeChild(Entity* child)
 	child->parent = nullptr;
 }
 
+
+
 Matrix44 Entity::getGlobalMatrix()
 {
 	if (parent)

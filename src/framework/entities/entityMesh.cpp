@@ -35,10 +35,10 @@ void EntityMesh::render(Camera* camera) {
 
 	if (!material.shader) {
 		if (isInstanced) {
-			material.shader = Shader::Get("data/shaders/instanced.vs", "data/shaders/phongVC.fs");
+			material.shader = Shader::Get("data/shaders/instanced.vs", "data/shaders/phong.fs");
 		}
 		else {
-			material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/phongVC.fs");
+			material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/phong.fs");
 		}
 		
 	}

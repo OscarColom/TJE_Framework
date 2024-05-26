@@ -65,6 +65,11 @@ World::World() {
 
 	parseScene("data/myscene.scene", &root);
 
+	//cargar l agate
+	//parseScene("data/myGate.scene", &Gate);
+
+
+	// Nombre de la entidad que deseas encontrar
 	//	//Crear entity_ui
 	//herda de entitymesh
 	//2 constuctores
@@ -213,14 +218,6 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 			data.col_point = col_point;
 		}
 
-		//float new_distance = (col_point - origin).length();
-		//if (new_distance < data.distance) {
-		//	data.collided = true;
-		//	data.col_point = col_point;
-		//	data.col_normal = col_normal;
-		//	data.distance = new_distance;
-		//	//data.collider = ec;
-		//}
 
 	}
 

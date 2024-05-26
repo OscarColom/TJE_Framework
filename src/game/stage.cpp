@@ -2,6 +2,8 @@
 #include "framework/input.h"
 #include "framework/entities/entityPlayer.h"
 #include "framework/entities/entityKey.h"
+#include "framework/entities/entity_Gate.h"
+
 
 
 //STAGE BASE CLASS
@@ -40,6 +42,8 @@ void Menu::render() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	drawText(world_width/2, world_height /2, "Clica para entarr al juego", Vector3(1, 1, 1), 2);
+	drawText(world_width / 2, (world_height / 2  )+20, "Apreta G para cojer la llave cuando estes cerca de ella", Vector3(1, 1, 1), 2);
+
 	//SDL_GL_SwapWindow(this->window);
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -75,6 +79,16 @@ void GamePlay::init() {
 	key->model.translate(6.55f, 55.61f, -94.64f);
 	
 	//Gate
+	Material gate_material;
+	gate_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	gate_material.diffuse = new Texture();
+	gate_material.diffuse->load("data/wall-gate/colormap.png");
+	Mesh* gate_mesh = Mesh::Get("data/wall-gate/wall-gate.obj");
+
+	gate = new EntityGate(gate_mesh, gate_material, "gate");
+	//key->model.scale(20.f, 50.f, 0.f); 
+	gate->model.translate(0.0f, 15.85f, -189.79f);
+	//gate->model.rotate(PI, Vector3(1, 0, 1));
 
 	//Heart
 	Material heart_material;
@@ -146,7 +160,17 @@ void GamePlay::render() {
 	glEnable(GL_DEPTH_TEST);
 
 	root = World::get_instance()->root;
+	//gate = World::get_instance()->Gate;
 	root.render(camera);
+
+	gate->model.rotate(PI, Vector3(0, 1, 0));
+	gate->model.rotate(PI/2, Vector3(0, 0, 1));
+	//gate->model.rotate(PI, Vector3(1, 0, 1));
+
+	gate->model.scale(25.f, 25.f, 25.f);
+	gate->render(camera);
+
+	key->model.scale(4.f, 4.f, 4.f);
 	key->render(camera);
 	player->render(camera);
 
@@ -216,6 +240,13 @@ void GamePlay::update(float seconds_elapsed) {
 			key->with_player = true;
 		}
 
+		if (key->with_player && gate->distance(player) < 40.f) {
+			gate->~EntityCollider();
+
+		}
+
+		//if(key->with_player && )
+
 		//Cheat mode: k vagi a la pos de la clau
 		if (Input::isKeyPressed(SDL_SCANCODE_T)) {
 			player->model.setTranslation(key->model.getTranslation());
@@ -223,6 +254,8 @@ void GamePlay::update(float seconds_elapsed) {
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
+
+	gate->update(seconds_elapsed);
 	root.update(seconds_elapsed);
 	key->update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
