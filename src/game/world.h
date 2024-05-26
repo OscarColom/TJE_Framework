@@ -3,6 +3,7 @@
 #include "graphics/texture.h"
 #include "graphics/shader.h"
 #include "framework/entities/entity.h"
+#include "framework/entities/entityKey.h"
 #include "graphics/material.h"
 
 class Camera;

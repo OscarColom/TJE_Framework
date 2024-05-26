@@ -144,7 +144,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 20.f;
+		velocity.y = 30.f;
 		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
 	}
@@ -169,7 +169,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		animator.playAnimation("data/final_character/animations/idle.skanim", true, 0.6f);
 		animation_state = eAnimationState::IDLE;
 		//printf("idle");
-		printf("%f", velocity.length());
+		//printf("%f", velocity.length());
 	}
 
 	if (animation_state == eAnimationState::WALKING && velocity.length() > 20.f && is_sprinting && is_grounded) {
@@ -181,7 +181,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	position += velocity * seconds_elapsed;
 
 	//Por si el jugador se cae
-	if (position.y < -100 || (position.y < 23.f && is_on_plataform)) {
+	if (position.y < -100 || (position.y < 34.f && is_on_plataform)) {
 		lifes -= 1;
 		is_on_plataform = false;
 	}
@@ -191,7 +191,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		lifes = 3;
 	}
 
-	if (position.y > 24.f) {
+	if (position.y > 34.f) {
 		is_on_plataform = true;
 	}
 
@@ -201,6 +201,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	model.setTranslation(position);
 	model.rotate(camera_yaw, Vector3(0, 1, 0));
+
+	if (Input::wasKeyPressed(SDL_SCANCODE_L)) {
+		printf("x = %f, y = %f, z = %f", position.x, position.y, position.z);
+	}
+	printf("x = %f, y = %f, z = %f \n", position.x, position.y, position.z);
 
 	EntityMesh::update(seconds_elapsed);
 }

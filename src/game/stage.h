@@ -3,21 +3,20 @@
 #include "world.h"
 #include "game.h"
 
-//enum eStages {
-//	UNDEFINED,
-//	MENU,
-//	GAMEPLAY,
-//	FINAL
-//
-//};
+enum eStages {
+	UNDEFINED,
+	MENU,
+	GAMEPLAY,
+	FINAL
+};
 
 class Stage {
-
-	//eStages type = UNDEFINED;
+	eStages type = UNDEFINED;
 public:
 	Stage();
 	virtual ~Stage();
 
+	EntityPlayer* player = nullptr;
 
 	bool canPress;
 	bool isFinished;
@@ -48,9 +47,7 @@ public:
 
 class Menu : public Stage {
 
-	//eStages type = MENU;
-
-
+	eStages type = MENU;
 public:
 	Menu() {};
 
@@ -68,7 +65,7 @@ public:
 class GamePlay : public Stage {
 	static GamePlay* instance;
 
-	//eStages type = GAMEPLAY;
+	eStages type = GAMEPLAY;
 public:
 
 	static GamePlay* get_instance() {
@@ -80,9 +77,8 @@ public:
 
 	Entity root;
 
-	EntityPlayer* player = nullptr;
 	EntityMesh* skybox = nullptr;
-	EntityMesh* key = nullptr;
+	EntityKey* key = nullptr;
 
 	int window_width;
 	int window_height;

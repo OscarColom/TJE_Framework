@@ -1,6 +1,7 @@
 #include "stage.h"
 #include "framework/input.h"
 #include "framework/entities/entityPlayer.h"
+#include "framework/entities/entityKey.h"
 
 
 //STAGE BASE CLASS
@@ -69,10 +70,10 @@ void GamePlay::init() {
 	key_material.diffuse->load("data/key/Key_Material.png");
 	Mesh* key_mesh = Mesh::Get("data/key/key.obj");
 	
-	key = new EntityMesh(key_mesh, key_material, "key");
-	//key->model.scale(20.f, 50.f, 10.f);
-	//key->model.translate(0.f, 5.f, 0.f);
-	//key->model.translate(9.120f, 95.33f, 53.f);
+	key = new EntityKey(key_mesh, key_material, "key");
+	//key->model.scale(20.f, 50.f, 0.f); 
+	key->model.translate(6.55f, 55.61f, -94.64f);
+	
 	
 	//Player
 	Material player_material;
@@ -192,6 +193,18 @@ void GamePlay::update(float seconds_elapsed) {
 
 		if (data.collided) {
 			eye = data.col_point;
+		}
+
+		//Key grab
+		Vector3 key_distance = player->position.distance(key->position);
+		//printf("%f \n", key_distance.length());
+		if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
+			key->with_player = true;
+		}
+
+		//Cheat mode: k vagi a la pos de la clau
+		if (Input::isKeyPressed(SDL_SCANCODE_T)) {
+			player->model.setTranslation(key->model.getTranslation());
 		}
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
