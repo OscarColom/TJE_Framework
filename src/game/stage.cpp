@@ -65,9 +65,8 @@ void GamePlay::init() {
 	window_height = World::get_instance()->window_height;
 
 	instance = this;
-	//camera = World::get_instance()->camera;
 
-	//Key
+	//Key Level 1
 	Material key_material;
 	key_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	key_material.diffuse = new Texture();
@@ -77,7 +76,7 @@ void GamePlay::init() {
 	key = new EntityKey(key_mesh, key_material, "key"); 
 	key->model.translate(6.55f, 55.f, -94.64f);
 	
-	//Gate
+	//Gate Level 1
 	Material gate_material;
 	gate_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	gate_material.diffuse = new Texture();
@@ -86,9 +85,8 @@ void GamePlay::init() {
 
 	gate = new EntityGate(gate_mesh, gate_material, "gate"); 
 	gate->model.translate(0.0f, 15.85f, -189.79f);
-	//gate->model.rotate(PI, Vector3(1, 0, 1));
 
-	//Heart
+	//Heart Level 1
 	Material heart_material;
 	heart_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	heart_material.diffuse = new Texture();
@@ -125,23 +123,13 @@ void GamePlay::init() {
 	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
 	skybox->model.scale(70.f, 70.f, 70.f);
 
+	World::get_instance()->root.addChild(heart);
+	World::get_instance()->root.addChild(key);
+	World::get_instance()->root.addChild(gate);
+
 }
 
-//void GamePlay::OnKeyDown(SDL_KeyboardEvent event) {
-//	switch (event.keysym.sym)
-//	{
-//	case SDLK_TAB:
-//		free_camera = !free_camera;
-//		mouse_locked = !mouse_locked;
-//		SDL_ShowCursor(!mouse_locked);
-//		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
-//		break;
-//	}
-//
-//}
-
 void GamePlay::restart() {
-
 
 }
 
@@ -154,22 +142,14 @@ void GamePlay::render() {
 	skybox->render(camera);
 	glEnable(GL_DEPTH_TEST);
 
-	root = World::get_instance()->root;
-	//gate = World::get_instance()->Gate;
-	root.render(camera);
-
+	//Transformations
 	gate->model.rotate(PI, Vector3(0, 1, 0));
 	gate->model.rotate(PI/2, Vector3(0, 0, 1));
-	//gate->model.rotate(PI, Vector3(1, 0, 1));
-
 	gate->model.scale(25.f, 25.f, 25.f);
-	gate->render(camera);
-
 	key->model.scale(4.f, 4.f, 4.f);
-	key->render(camera);
-	
 	heart->model.scale(0.5f, 0.5f, 0.5f);
-	heart->render(camera);
+
+	World::get_instance()->root.render(camera);
 	player->render(camera);
 
 	glDisable(GL_BLEND);
@@ -258,12 +238,8 @@ void GamePlay::update(float seconds_elapsed) {
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
 
-	gate->update(seconds_elapsed);
-	root.update(seconds_elapsed);
-	key->update(seconds_elapsed);
-	heart->update(seconds_elapsed);
+	World::get_instance()->root.update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
-
 }
 
 

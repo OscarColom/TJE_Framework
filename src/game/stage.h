@@ -75,12 +75,11 @@ public:
 		return instance;
 	}
 
-	Entity root;
+	//Entity root;
 
 	EntityMesh* skybox = nullptr;
 	EntityKey* key = nullptr;
 	EntityHeart* heart = nullptr;
-
 	EntityCollider* gate = nullptr;
 
 	int window_width;

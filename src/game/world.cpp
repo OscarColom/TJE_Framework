@@ -101,82 +101,12 @@ void World::OnKeyDown(SDL_KeyboardEvent event) {
 
 void World::render() {
 	current_stage->render();
-	//camera->enable();
-
-	//glDisable(GL_DEPTH_TEST);
-	//skybox->model.setTranslation(camera->center);
-	//skybox->model.scale(70.f, 70.f, 70.f);
-	//skybox->render(camera);
-	//glEnable(GL_DEPTH_TEST);
-
-	////player->render_player(camera);
-	//root.render(camera);
-	//player->render(camera);
-
-	//glDisable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_CULL_FACE);
 }
 
 
 //
 void World::update(float seconds_elapsed) {
 	current_stage->update(seconds_elapsed);
-	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
-
-	//if (free_camera) {
-	//	if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
-	//	{
-	//		camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
-	//		camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
-	//	}
-
-	//	// Async input to move the camera around
-	//	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 50; //move faster with left shift
-	//	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
-	//	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f, -1.0f) * speed);
-	//	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
-	//	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
-	//}
-	//else {
-
-	//	player->update(seconds_elapsed);
-
-	//	Vector3 eye;
-	//	Vector3 center;
-
-	//	SDL_ShowCursor(!mouse_locked);
-	//	SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
-
-	//	camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f ;
-	//	camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f ;
-
-	//	camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI * 0.4f);
-
-	//	Matrix44 myaw;
-	//	myaw.setRotation(camera_yaw, Vector3(0, 1, 0));
-
-	//	Matrix44 mpitch;
-	//	mpitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
-
-	//	Vector3 front = (mpitch * myaw).frontVector().normalize();
-
-	//	float orbit_dist = 6.f;
-	//	Vector3 corrector = Vector3(0.f, 4.1f, 0.f);
-	//	eye = (player->model.getTranslation() - front * orbit_dist) + corrector;
-	//	center = player->model.getTranslation()  + Vector3(0.f, 4.1f, 0.f); //The last vector is bc we cound be pointing at the char feet otherwise
-
-	//	Vector3 dir = eye - center;
-	//	sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());
-
-	//	if (data.collided) {
-	//		eye = data.col_point;
-	//	}
-
-	//	camera->lookAt(eye, center, Vector3(0, 1, 0));
-	//}
-	//root.update(seconds_elapsed);
-	//skybox->update(seconds_elapsed);
 }
 
 
