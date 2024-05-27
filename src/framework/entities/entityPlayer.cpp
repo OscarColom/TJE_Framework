@@ -213,10 +213,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 	model.setTranslation(position);
 	model.rotate(camera_yaw, Vector3(0, 1, 0));
 
-	if (Input::wasKeyPressed(SDL_SCANCODE_L)) {
+	if (Input::wasKeyPressed(SDL_SCANCODE_P)) {
 		printf("x = %f, y = %f, z = %f", position.x, position.y, position.z);
 	}
-	printf("x = %f, y = %f, z = %f \n", position.x, position.y, position.z);
+	//printf("x = %f, y = %f, z = %f \n", position.x, position.y, position.z);
 
 	EntityMesh::update(seconds_elapsed);
 }

@@ -4,6 +4,7 @@
 #include "graphics/shader.h"
 #include "framework/entities/entity.h"
 #include "framework/entities/entityKey.h"
+#include "framework/entities/entityHeart.h"
 #include "graphics/material.h"
 
 class Camera;

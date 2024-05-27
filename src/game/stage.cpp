@@ -74,9 +74,8 @@ void GamePlay::init() {
 	key_material.diffuse->load("data/key/Key_Material.png");
 	Mesh* key_mesh = Mesh::Get("data/key/key.obj");
 	
-	key = new EntityKey(key_mesh, key_material, "key");
-	//key->model.scale(20.f, 50.f, 0.f); 
-	key->model.translate(6.55f, 55.61f, -94.64f);
+	key = new EntityKey(key_mesh, key_material, "key"); 
+	key->model.translate(6.55f, 55.f, -94.64f);
 	
 	//Gate
 	Material gate_material;
@@ -85,8 +84,7 @@ void GamePlay::init() {
 	gate_material.diffuse->load("data/wall-gate/colormap.png");
 	Mesh* gate_mesh = Mesh::Get("data/wall-gate/wall-gate.obj");
 
-	gate = new EntityGate(gate_mesh, gate_material, "gate");
-	//key->model.scale(20.f, 50.f, 0.f); 
+	gate = new EntityGate(gate_mesh, gate_material, "gate"); 
 	gate->model.translate(0.0f, 15.85f, -189.79f);
 	//gate->model.rotate(PI, Vector3(1, 0, 1));
 
@@ -94,14 +92,11 @@ void GamePlay::init() {
 	Material heart_material;
 	heart_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	heart_material.diffuse = new Texture();
-	heart_material.diffuse->load("data/heart/heart.png");
-	Mesh* heart_mesh = Mesh::Get("data/heart/heart.obj");
+	heart_material.diffuse->load("data/heart_2/red_texture.png");
+	Mesh* heart_mesh = Mesh::Get("data/heart_2/heart.obj");
 
-	heart = new EntityKey(heart_mesh, heart_material, "heart");
-	//key->model.scale(20.f, 50.f, 0.f); 
-	heart->model.translate(0.f, 5.f, 0.f);
-
-	
+	heart = new EntityHeart(heart_mesh, heart_material, "heart");
+	heart->model.translate(5.6f, 60.f, -162.27f);
 	
 	//Player
 	Material player_material;
@@ -172,6 +167,9 @@ void GamePlay::render() {
 
 	key->model.scale(4.f, 4.f, 4.f);
 	key->render(camera);
+	
+	heart->model.scale(0.5f, 0.5f, 0.5f);
+	heart->render(camera);
 	player->render(camera);
 
 	glDisable(GL_BLEND);
@@ -192,7 +190,7 @@ void GamePlay::update(float seconds_elapsed) {
 		}
 
 		// Async input to move the camera around
-		if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 50; //move faster with left shift
+		if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 20; //move faster with left shift
 		if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
 		if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f, -1.0f) * speed);
 		if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
@@ -242,10 +240,15 @@ void GamePlay::update(float seconds_elapsed) {
 
 		if (key->with_player && gate->distance(player) < 40.f) {
 			gate->~EntityCollider();
-
+			key->~EntityKey();
 		}
 
-		//if(key->with_player && )
+		printf("%f \n", heart->distance(player));
+		if (heart->distance(player) < 5.f && !heart->life_added) {
+			heart->~EntityHeart();
+			player->lifes = player->lifes + 1;
+			heart->life_added = true;
+		}
 
 		//Cheat mode: k vagi a la pos de la clau
 		if (Input::isKeyPressed(SDL_SCANCODE_T)) {
@@ -258,6 +261,7 @@ void GamePlay::update(float seconds_elapsed) {
 	gate->update(seconds_elapsed);
 	root.update(seconds_elapsed);
 	key->update(seconds_elapsed);
+	heart->update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
 
 }

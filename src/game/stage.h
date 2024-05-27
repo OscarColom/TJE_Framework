@@ -79,7 +79,7 @@ public:
 
 	EntityMesh* skybox = nullptr;
 	EntityKey* key = nullptr;
-	EntityKey* heart = nullptr;
+	EntityHeart* heart = nullptr;
 
 	EntityCollider* gate = nullptr;
 
