@@ -77,7 +77,9 @@ World::World() {
 	//En world cerar camara 2d ortografica
 	//como renderizar: en el reder de ui: hacer los set_uniform, no usar depth_buffer,,n no usar cull_face word, i viewproj = camera2s->view:projectionmatrix.
 	//al acabar rende hacer , y volver a dejar gl como antes entity::render(camersa2s).
-
+	////
+	//audio hacer chanel1  = Audio::Play().. si llop añadir flag de loop
+	//parq quitar audio usar el chanel
 
 }
 
@@ -211,6 +213,7 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get("...");
 			// Create a different type of entity
 			// new_entity = new ...
+
 		}
 		else {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());

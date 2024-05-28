@@ -219,7 +219,7 @@ void GamePlay::update(float seconds_elapsed) {
 		}
 
 		if (key->with_player && gate->distance(player) < 40.f) {
-			gate->~EntityCollider();
+			delete gate;
 			key->~EntityKey();
 		}
 

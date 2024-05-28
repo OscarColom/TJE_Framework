@@ -151,11 +151,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (!is_grounded) {
-		velocity.y -= 50.f * seconds_elapsed;
+		velocity.y -= 25.f * seconds_elapsed;
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 30.f;
+		velocity.y = 15.f;
 		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
 	}

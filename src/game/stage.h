@@ -2,6 +2,7 @@
 #include <vector>
 #include "world.h"
 #include "game.h"
+#include "framework/entities/entity_Gate.h"
 
 enum eStages {
 	UNDEFINED,
@@ -80,7 +81,7 @@ public:
 	EntityMesh* skybox = nullptr;
 	EntityKey* key = nullptr;
 	EntityHeart* heart = nullptr;
-	EntityCollider* gate = nullptr;
+	EntityGate* gate = nullptr;
 
 	int window_width;
 	int window_height;

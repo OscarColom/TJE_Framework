@@ -1,7 +1,6 @@
 #include "entity_Gate.h"
 #include "game/game.h"
 #include "framework/input.h"
-#include "game/stage.h"
 #include "framework/entities/entityPlayer.h"
 
 EntityGate::EntityGate(Mesh* player_mesh, const Material& player_material, const std::string& name) {
