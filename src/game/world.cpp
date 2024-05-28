@@ -211,27 +211,24 @@ bool World::parseScene(const char* filename, Entity* root)
 		EntityMesh* new_entity = nullptr;
 
 		size_t gate_tag = data.first.find("@gate");
-		//size_t kay = data.first.find("@key");
-		//size_t heart = data.first.find("@heart");
-
+		size_t heart_tag = data.first.find("@heart");
+		size_t key_tag = data.first.find("@key");
+		
 		if (gate_tag != std::string::npos) {
-			
 			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate/wall-gate@gate.obj");
-
-			// Create a different type of entity
-			// new_entity = new ...
 			new_entity = new EntityGate(mesh, mat, "gate");
-			new_entity->model.rotate(PI, Vector3(0, 1, 0));
-			new_entity->model.rotate(PI / 2, Vector3(0, 0, 1));
 		}
-		else {
+		else if (heart_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/heart@heart/heart@heart.obj");
+			new_entity = new EntityHeart(mesh, mat, "heart");
+		}
+		else if (key_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/key@key/key@key.obj");
+			new_entity = new EntityKey(mesh, mat, "key");
+		}
+		else{
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			//mat.diffuse = new Texture();
-			//mat.diffuse->load("data/textures/fat_tree.png");
-			// 
-			//new_entity = new EntityMesh(mesh, mat);
 			new_entity = new EntityCollider(mesh, mat);
-
 		}
 
 		if (!new_entity) {

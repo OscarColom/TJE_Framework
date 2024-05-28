@@ -79,8 +79,8 @@ public:
 	//Entity root;
 
 	EntityMesh* skybox = nullptr;
-	EntityKey* key = nullptr;
-	EntityHeart* heart = nullptr;
+	//EntityKey* key = nullptr;
+	//EntityHeart* heart = nullptr;
 	//EntityGate* gate = nullptr;
 
 	int window_width;

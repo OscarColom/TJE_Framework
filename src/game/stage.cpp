@@ -65,36 +65,6 @@ void GamePlay::init() {
 	window_height = World::get_instance()->window_height;
 
 	instance = this;
-
-	//Key Level 1
-	Material key_material;
-	key_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
-	key_material.diffuse = new Texture();
-	key_material.diffuse->load("data/key/Key_Material.png");
-	Mesh* key_mesh = Mesh::Get("data/key/key.obj");
-	
-	key = new EntityKey(key_mesh, key_material, "key"); 
-	key->model.translate(6.55f, 55.f, -94.64f);
-	
-	//Gate Level 1
-	Material gate_material;
-	gate_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
-	gate_material.diffuse = new Texture();
-	gate_material.diffuse->load("data/wall-gate/colormap.png");
-	Mesh* gate_mesh = Mesh::Get("data/wall-gate/wall-gate.obj");
-
-	//gate = new EntityGate(gate_mesh, gate_material, "gate"); 
-	//gate->model.translate(0.0f, 15.85f, -189.79f);
-
-	//Heart Level 1
-	Material heart_material;
-	heart_material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
-	heart_material.diffuse = new Texture();
-	heart_material.diffuse->load("data/heart_2/red_texture.png");
-	Mesh* heart_mesh = Mesh::Get("data/heart_2/heart.obj");
-
-	heart = new EntityHeart(heart_mesh, heart_material, "heart");
-	heart->model.translate(5.6f, 60.f, -162.27f);
 	
 	//Player
 	Material player_material;
@@ -122,10 +92,6 @@ void GamePlay::init() {
 	Mesh* skybox_mesh = Mesh::Get("data/meshes/cubemap.ASE");
 	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
 	skybox->model.scale(70.f, 70.f, 70.f);
-
-	World::get_instance()->root.addChild(heart);
-	World::get_instance()->root.addChild(key);
-	//World::get_instance()->root.addChild(gate);
 }
 
 void GamePlay::restart() {
@@ -144,17 +110,21 @@ void GamePlay::render() {
 	//Transformations
 	for (auto e : World::get_instance()->root.children) {
 		EntityGate* gate = dynamic_cast<EntityGate*>(e);
+		EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
+		EntityKey* key = dynamic_cast<EntityKey*>(e);
 		if (gate != nullptr) {
 			gate->model.rotate( -(PI / 2), Vector3(1, 0, 0));
 			gate->model.scale(25.f, 25.f, 25.f);
 		}
+		else if (heart != nullptr) {
+			heart->model.scale(0.5f, 0.5f, 0.5f);
+			heart->model.rotate(-(PI / 2), Vector3(1, 0, 0));
+		}
+		else if (key != nullptr) {
+			key->model.rotate(-(PI / 2), Vector3(1, 0, 0));
+			key->model.scale(4.f, 4.f, 4.f);
+		}
 	}
-
-	//gate->model.rotate(PI, Vector3(0, 1, 0));
-	//gate->model.rotate(PI/2, Vector3(0, 0, 1));
-	//gate->model.scale(25.f, 25.f, 25.f);
-	key->model.scale(4.f, 4.f, 4.f);
-	heart->model.scale(0.5f, 0.5f, 0.5f);
 
 	World::get_instance()->root.render(camera);
 	player->render(camera);
@@ -216,38 +186,44 @@ void GamePlay::update(float seconds_elapsed) {
 
 		if (data.collided) {
 			eye = data.col_point;
-		}
-
-		//Key grab
-		Vector3 key_distance = player->position.distance(key->position);
-		//printf("%f \n", key_distance.length());
-		if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
-			key->with_player = true;
-		}
+		}		
 		
-		//Por ahora solo gate
+		//Interactions
 		for (auto e : World::get_instance()->root.children) {
+			EntityKey* key = dynamic_cast<EntityKey*>(e);
 			EntityGate* gate = dynamic_cast<EntityGate*>(e);
-			if (gate != nullptr) {
-				printf("%f \n", gate->distance(player));
-				if (key->with_player && gate->distance(player) < 40.f) {
-					World::get_instance()->root.removeChild(gate);
-					World::get_instance()->root.removeChild(key);
+			EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
+			
+			if (key != nullptr) {
+				Vector3 key_distance = player->position.distance(key->position);
+				if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
+					key->with_player = true;
+				}
+
+				//Cheat mode: k vagi a la pos de la clau
+				if (Input::isKeyPressed(SDL_SCANCODE_T)) {
+					player->model.setTranslation(key->model.getTranslation());
 				}
 			}
-		}
 
-		//printf("%f \n", heart->distance(player));
-		if (heart->distance(player) < 5.f && !heart->life_added) {
-			heart->~EntityHeart();
-			player->lifes = player->lifes + 1;
-			heart->life_added = true;
-		}
+			if (gate != nullptr) {
+				for (auto e : World::get_instance()->root.children) {
+					EntityKey* key_gate = dynamic_cast<EntityKey*>(e);
 
-		//Cheat mode: k vagi a la pos de la clau
-		if (Input::isKeyPressed(SDL_SCANCODE_T)) {
-			player->model.setTranslation(key->model.getTranslation());
-		}
+					if (key_gate != nullptr && key_gate->with_player && gate->distance(player) < 10.f) {
+						World::get_instance()->root.removeChild(gate);
+						World::get_instance()->root.removeChild(key_gate);
+					}
+				}				
+			}
+			
+			if (heart != nullptr) {
+				if (heart->distance(player) < 5.f) {
+					World::get_instance()->root.removeChild(heart);
+					player->lifes = player->lifes + 1;
+				}
+			}
+		}		
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
