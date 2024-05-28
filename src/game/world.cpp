@@ -3,6 +3,9 @@
 #include "framework/entities/entityMesh.h"
 #include "framework/entities/entityPlayer.h"
 #include "framework/entities/entity_collider.h"
+#include "framework/entities/entityHeart.h"
+#include "framework/entities/entityKey.h"
+#include "framework/entities/entity_Gate.h"
 #include "stage.h"
 
 #include "framework/input.h"
@@ -207,13 +210,19 @@ bool World::parseScene(const char* filename, Entity* root)
 		Material mat = render_data.material;
 		EntityMesh* new_entity = nullptr;
 
-		size_t tag = data.first.find("@tag");
+		size_t gate_tag = data.first.find("@gate");
+		//size_t kay = data.first.find("@key");
+		//size_t heart = data.first.find("@heart");
 
-		if (tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("...");
+		if (gate_tag != std::string::npos) {
+			
+			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate/wall-gate@gate.obj");
+
 			// Create a different type of entity
 			// new_entity = new ...
-
+			new_entity = new EntityGate(mesh, mat, "gate");
+			new_entity->model.rotate(PI, Vector3(0, 1, 0));
+			new_entity->model.rotate(PI / 2, Vector3(0, 0, 1));
 		}
 		else {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());

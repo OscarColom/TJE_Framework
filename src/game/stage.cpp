@@ -83,8 +83,8 @@ void GamePlay::init() {
 	gate_material.diffuse->load("data/wall-gate/colormap.png");
 	Mesh* gate_mesh = Mesh::Get("data/wall-gate/wall-gate.obj");
 
-	gate = new EntityGate(gate_mesh, gate_material, "gate"); 
-	gate->model.translate(0.0f, 15.85f, -189.79f);
+	//gate = new EntityGate(gate_mesh, gate_material, "gate"); 
+	//gate->model.translate(0.0f, 15.85f, -189.79f);
 
 	//Heart Level 1
 	Material heart_material;
@@ -125,8 +125,7 @@ void GamePlay::init() {
 
 	World::get_instance()->root.addChild(heart);
 	World::get_instance()->root.addChild(key);
-	World::get_instance()->root.addChild(gate);
-
+	//World::get_instance()->root.addChild(gate);
 }
 
 void GamePlay::restart() {
@@ -143,9 +142,17 @@ void GamePlay::render() {
 	glEnable(GL_DEPTH_TEST);
 
 	//Transformations
-	gate->model.rotate(PI, Vector3(0, 1, 0));
-	gate->model.rotate(PI/2, Vector3(0, 0, 1));
-	gate->model.scale(25.f, 25.f, 25.f);
+	for (auto e : World::get_instance()->root.children) {
+		EntityGate* gate = dynamic_cast<EntityGate*>(e);
+		if (gate != nullptr) {
+			gate->model.rotate( -(PI / 2), Vector3(1, 0, 0));
+			gate->model.scale(25.f, 25.f, 25.f);
+		}
+	}
+
+	//gate->model.rotate(PI, Vector3(0, 1, 0));
+	//gate->model.rotate(PI/2, Vector3(0, 0, 1));
+	//gate->model.scale(25.f, 25.f, 25.f);
 	key->model.scale(4.f, 4.f, 4.f);
 	heart->model.scale(0.5f, 0.5f, 0.5f);
 
@@ -217,13 +224,20 @@ void GamePlay::update(float seconds_elapsed) {
 		if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
 			key->with_player = true;
 		}
-
-		if (key->with_player && gate->distance(player) < 40.f) {
-			delete gate;
-			key->~EntityKey();
+		
+		//Por ahora solo gate
+		for (auto e : World::get_instance()->root.children) {
+			EntityGate* gate = dynamic_cast<EntityGate*>(e);
+			if (gate != nullptr) {
+				printf("%f \n", gate->distance(player));
+				if (key->with_player && gate->distance(player) < 40.f) {
+					World::get_instance()->root.removeChild(gate);
+					World::get_instance()->root.removeChild(key);
+				}
+			}
 		}
 
-		printf("%f \n", heart->distance(player));
+		//printf("%f \n", heart->distance(player));
 		if (heart->distance(player) < 5.f && !heart->life_added) {
 			heart->~EntityHeart();
 			player->lifes = player->lifes + 1;

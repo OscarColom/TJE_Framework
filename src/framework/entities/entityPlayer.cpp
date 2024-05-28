@@ -119,14 +119,21 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	for (auto e : World::get_instance()->root.children) {
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+		EntityGate* gate = dynamic_cast<EntityGate*>(e);
 		if (ec != nullptr) {
 			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);
 		}
+		if (gate != nullptr) {
+			EntityGate* gt = dynamic_cast<EntityGate*>(gate);
+			gt->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);
+		}
 	}
 
-	EntityCollider* gate = GamePlay::get_instance()->gate;
+	/*EntityCollider* gate = GamePlay::get_instance()->gate;
 	EntityCollider* gt = dynamic_cast<EntityCollider*>(gate);
-	gt->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);
+	gt->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);*/
+
+
 	//COLISION PARAGATE
 	//for (auto e : World::get_instance()->Gate.children) {
 	//	EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
