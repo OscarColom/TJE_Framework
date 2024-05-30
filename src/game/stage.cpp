@@ -1,3 +1,4 @@
+#pragma once
 #include "stage.h"
 #include "framework/input.h"
 #include "framework/entities/entityPlayer.h"
@@ -32,6 +33,31 @@ void Menu::init() {
 	world_width = World::get_instance()->window_width;
 	world_height = World::get_instance()->window_height;
 
+	camera2d = World::get_instance()->camera2D;
+
+	Material background_mat;
+	background_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	background_mat.diffuse = new Texture();
+	background_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+	background = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_mat);
+
+
+	Material play_mat;
+	play_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	play_mat.diffuse = new Texture();
+	play_mat.diffuse = Texture::Get("data/ui/play_button.png");
+	play_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), play_mat, eButtonId::PlayButton);
+
+	Material exit_mat;
+	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	exit_mat.diffuse = new Texture();
+	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), play_mat, eButtonId::EndButton);
+
+	background->addChild(play_button);
+	background->addChild(exit_button);
+
+
 }
 
 void Menu::restart() {
@@ -39,21 +65,40 @@ void Menu::restart() {
 }
 
 void Menu::render() {
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	drawText(world_width/2, world_height /2, "Clica para entarr al juego", Vector3(1, 1, 1), 2);
-	drawText(world_width / 2, (world_height / 2  )+20, "Apreta G para cojer la llave cuando estes cerca de ella", Vector3(1, 1, 1), 2);
+	//glClearColor(0.0, 0.0, 0.0, 1.0);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//drawText(world_width/2, world_height /2, "Clica para entarr al juego", Vector3(1, 1, 1), 2);
+	//drawText(world_width / 2, (world_height / 2  )+20, "Apreta G para cojer la llave cuando estes cerca de ella", Vector3(1, 1, 1), 2);
 
-	//SDL_GL_SwapWindow(this->window);
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	////SDL_GL_SwapWindow(this->window);
+	//glDisable(GL_BLEND);
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_CULL_FACE);
+
+	background->render(camera2d);
+
 }
 
 void Menu::update(float seconds_elapsed) {
-	if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
-		World* world = World::get_instance();
+	//if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
+	//	World* world = World::get_instance();
+	//	world->current_stage = world->game_stage;
+	//}
+	background->update(seconds_elapsed);
+}
+
+void Menu::onButtonPressed(eButtonId buttonid) {
+	World* world = World::get_instance();
+
+	switch (buttonid) {
+	
+	case PlayButton:
 		world->current_stage = world->game_stage;
+		break;
+	
+	case EndButton:
+		exit(0);
+		break;
 	}
 }
 

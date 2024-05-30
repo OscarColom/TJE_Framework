@@ -27,6 +27,12 @@ World::World() {
 	camera->lookAt(Vector3(0.f, 1.f, 1.f), Vector3(0.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f));
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f);
 
+	//craete 2d camera
+	camera2D = new Camera();
+	camera2D->view_matrix.setIdentity();
+	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
+	
+
 	menu_stage = new Menu();
 	game_stage = new GamePlay();
 
@@ -34,7 +40,7 @@ World::World() {
 	menu_stage->init();
 	game_stage->init();
 
-	current_stage = menu_stage;
+	current_stage = game_stage;
 
 
 

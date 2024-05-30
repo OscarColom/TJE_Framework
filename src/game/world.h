@@ -45,6 +45,8 @@ public:
 	int window_height;
 
 	Camera* camera = nullptr;
+	Camera* camera2D = nullptr;
+
 	float angle = 0;
 	bool mouse_locked = true; //tells if the mouse is locked (not seen)
 

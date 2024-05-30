@@ -3,6 +3,8 @@
 #include "world.h"
 #include "game.h"
 #include "framework/entities/entity_Gate.h"
+#include "framework/entities/entityUI.h"
+
 
 enum eStages {
 	UNDEFINED,
@@ -36,6 +38,7 @@ public:
 	virtual void render() {};
 	virtual void update(float elapsed_time) {};
 	virtual void MouseButDown(SDL_MouseButtonEvent event) {};
+	void onButtonPressed(eButtonId buttonid) {};
 
 
 	// Pointer to parent
@@ -56,10 +59,18 @@ public:
 	int world_width;
 	int world_height;
 
+	Camera* camera2d;
+
+	Entity* background;
+	Entity* play_button;
+	Entity* exit_button;
+
+
 	void init();
 	void restart();
 	void render();
 	void update(float seconds_elapsed);
+	void onButtonPressed(eButtonId buttonid);
 };
 
 
