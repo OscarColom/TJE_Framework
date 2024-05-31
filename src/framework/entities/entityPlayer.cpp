@@ -199,9 +199,38 @@ void EntityPlayer::update(float seconds_elapsed) {
 	position += velocity * seconds_elapsed;
 
 	//Por si el jugador se cae
-	if (position.y < -100 || (position.y < 34.f && is_on_plataform)) {
-		lifes -= 1;
-		is_on_plataform = false;
+	//if (position.y < -100 || (position.y < 34.f && is_on_plataform)) {
+	//	lifes -= 1;
+	//	is_on_plataform = false;
+	//}
+
+	static float fall_start_height = 0.0f;
+	static bool is_falling = false;
+
+	if (is_grounded) {
+		if (is_falling) {
+			// Calcula la distancia de caída
+			float fall_distance = fall_start_height - position.y;
+			if (fall_distance > 10.0f && fall_distance < 20.f) { // Umbral de daño por caída
+				lifes -= 1; // Ajusta la fórmula de daño
+			}
+			else if (fall_distance > 20.0f && fall_distance < 30.f) { // Umbral de daño por caída
+				lifes -= 2; // Ajusta la fórmula de daño
+			}
+			else if (fall_distance > 30.0f) { // Umbral de daño por caída
+				lifes -= 3; // Ajusta la fórmula de daño
+			}
+			is_falling = false; // Resetea el estado de caída
+		}
+		// Actualiza la altura de inicio de la caída
+		fall_start_height = position.y;
+	}
+	else {
+		if (!is_falling) {
+			is_falling = true;
+			// Marca la altura de inicio cuando comienza a caer
+			fall_start_height = position.y;
+		}
 	}
 
 	if (lifes == 0) {
@@ -209,9 +238,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 		lifes = 3;
 	}
 
-	if (position.y > 34.f) {
-		is_on_plataform = true;
-	}
+	//if (position.y > 34.f) {
+	//	is_on_plataform = true;
+	//}
 
 	//Update player position
 	velocity.x *= 0.5f;
