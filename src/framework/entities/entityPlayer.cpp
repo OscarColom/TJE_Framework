@@ -190,7 +190,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		//printf("%f", velocity.length());
 	}
 
-	if (animation_state == eAnimationState::WALKING && velocity.length() > 20.f && is_sprinting && is_grounded) {
+	if (animation_state == eAnimationState::WALKING && velocity.length() > 2.f && is_sprinting && is_grounded) {
 		animator.playAnimation("data/final_character/animations/run.skanim", true, 0.6f);
 		animation_state = eAnimationState::RUNNING;
 	}
@@ -211,14 +211,14 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (is_falling) {
 			// Calcula la distancia de caída
 			float fall_distance = fall_start_height - position.y;
-			if (fall_distance > 10.0f && fall_distance < 20.f) { // Umbral de daño por caída
-				lifes -= 1; // Ajusta la fórmula de daño
+			if (fall_distance > 10.0f && fall_distance < 20.f) { 
+				lifes -= 1; 
 			}
-			else if (fall_distance > 20.0f && fall_distance < 30.f) { // Umbral de daño por caída
-				lifes -= 2; // Ajusta la fórmula de daño
+			else if (fall_distance > 20.0f && fall_distance < 30.f) {   
+				lifes -= 2; 
 			}
-			else if (fall_distance > 30.0f) { // Umbral de daño por caída
-				lifes -= 3; // Ajusta la fórmula de daño
+			else if (fall_distance > 30.0f) { 
+				lifes -= 3; 
 			}
 			is_falling = false; // Resetea el estado de caída
 		}
@@ -233,7 +233,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		}
 	}
 
-	if (lifes == 0) {
+	if (lifes <= 0) {
 		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
 		lifes = 3;
 	}

@@ -30,7 +30,8 @@ void EntityUI::render(Camera* camera2d) {
 	glDisable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
 	if (material.shader) {
 		printf("g");
@@ -46,7 +47,7 @@ void EntityUI::render(Camera* camera2d) {
 
 	material.shader->disable();
 
-	quad.render(GL_TRIANGLES);
+	//quad.render(GL_TRIANGLES);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
