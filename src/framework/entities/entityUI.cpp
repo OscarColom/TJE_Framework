@@ -20,7 +20,7 @@ EntityUI::EntityUI(Vector2 position, Vector2 size, const Material& material, eBu
 	this->material = material;
 	this->buttonId = buttonId;
 
-	quad.createQuad(position.x, position.y, size.x, size.y, false);
+	quad.createQuad(position.x, position.y, size.x, size.y, true);
 
 }
 void EntityUI::render(Camera* camera2d) {
@@ -29,13 +29,10 @@ void EntityUI::render(Camera* camera2d) {
 
 	glDisable(GL_CULL_FACE);
 
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-	if (material.shader) {
-		printf("g");
-	}
 	material.shader->enable();
 
 	World* world = World::get_instance();
@@ -44,13 +41,17 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera2d->viewprojection_matrix);
 	material.shader->setUniform("u_model", model); //sino getGlobalMatrix()
+	material.shader->setUniform("u_texture", material.diffuse, 0);
+
+	quad.render(GL_TRIANGLES);
 
 	material.shader->disable();
 
 	//quad.render(GL_TRIANGLES);
 
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	Entity::render(camera2d);
 
@@ -58,13 +59,16 @@ void EntityUI::render(Camera* camera2d) {
 }
 
 void EntityUI::update(float seconds_elapsed) {
-	Vector2 mouse_pos = Input::mouse_position;
 
+	Vector2 mouse_pos = Input::mouse_position;
+	printf("%f", mouse_pos.x);
+	printf("%f\n", mouse_pos.y);
+	printf("%f", position.x);
 	if (buttonId != Undefined &&
 		mouse_pos.x > (position.x - size.x * 0.5f) &&
-		mouse_pos.x < (position.x - size.x * 0.5f) &&
+		mouse_pos.x < (position.x + size.x * 0.5f) &&
 		mouse_pos.y >(position.y - size.y * 0.5f) &&
-		mouse_pos.y < (position.y - size.y * 0.5f)) {
+		mouse_pos.y < (position.y + size.y * 0.5f)) {
 
 		material.color = Vector4::RED;
 
@@ -74,7 +78,7 @@ void EntityUI::update(float seconds_elapsed) {
 		}
 	}
 	else {
-		material.color = Vector4::RED;
+		material.color = Vector4::WHITE;
 
 	}
 	Entity::update(seconds_elapsed);

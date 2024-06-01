@@ -38,7 +38,7 @@ public:
 	virtual void render() {};
 	virtual void update(float elapsed_time) {};
 	virtual void MouseButDown(SDL_MouseButtonEvent event) {};
-	void onButtonPressed(eButtonId buttonid) {};
+	void onButtonPressed(eButtonId buttonid) ;
 
 
 	// Pointer to parent

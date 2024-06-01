@@ -23,7 +23,20 @@ Stage::~Stage() {
 
 }
 
+void Stage::onButtonPressed(eButtonId buttonid) {
+	World* world = World::get_instance();
 
+	switch (buttonid) {
+
+	case PlayButton:
+		world->current_stage = world->game_stage;
+		break;
+
+	case EndButton:
+		exit(0);
+		break;
+	}
+}
 
 
 //MENU STAGE
@@ -52,10 +65,10 @@ void Menu::init() {
 	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	exit_mat.diffuse = new Texture();
 	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
-	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), play_mat, eButtonId::EndButton);
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), exit_mat, eButtonId::EndButton);
 
-	background->addChild(play_button);
-	background->addChild(exit_button);
+	//background->addChild(play_button);
+	//background->addChild(exit_button);
 
 
 }
@@ -76,6 +89,9 @@ void Menu::render() {
 	//glDisable(GL_CULL_FACE);
 
 	background->render(camera2d);
+	play_button->render(camera2d);
+	exit_button->render(camera2d);
+
 
 }
 
@@ -85,6 +101,8 @@ void Menu::update(float seconds_elapsed) {
 	//	world->current_stage = world->game_stage;
 	//}
 	background->update(seconds_elapsed);
+	play_button->update(seconds_elapsed);
+	exit_button->update(seconds_elapsed);
 }
 
 void Menu::onButtonPressed(eButtonId buttonid) {

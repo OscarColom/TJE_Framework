@@ -29,9 +29,9 @@ World::World() {
 
 	//craete 2d camera
 	camera2D = new Camera();
-	camera2D->view_matrix.setIdentity();
+	//camera2D->view_matrix.setIdentity();
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
-	
+	//camera2D->rotate(PI/2, Vector3(0, 0, 1));
 
 	menu_stage = new Menu();
 	game_stage = new GamePlay();
@@ -40,7 +40,7 @@ World::World() {
 	menu_stage->init();
 	game_stage->init();
 
-	current_stage = game_stage;
+	current_stage = menu_stage;
 
 
 
