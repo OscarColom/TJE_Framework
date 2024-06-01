@@ -1,7 +1,7 @@
 # Blender 4.1.1
 # www.blender.org
 mtllib wall-narrow.002.mtl
-o wall-narrow.005
+o wall-narrow.010
 v -0.500000 0.500000 -0.280000
 v -0.500000 0.500000 0.000000
 v -0.500000 -0.500000 -0.280000
