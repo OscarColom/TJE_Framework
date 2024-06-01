@@ -129,7 +129,16 @@ void GamePlay::init() {
 
 	instance = this;
 	
+	camera2d = World::get_instance()->camera2D;
+
+	//stamina
+	Material stamina_mat;
+	stamina_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
+	stamina_mat.diffuse = new Texture();
+	stamina_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+	stamina_bar = new EntityUI(Vector2(window_width *0.2, window_height/ 10), Vector2(300, 20), stamina_mat, eButtonId::Stamina);
 	//Player
+
 	Material player_material;
 	player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shaders/texture.fs");
 	player_material.diffuse = new Texture();
@@ -191,6 +200,8 @@ void GamePlay::render() {
 
 	World::get_instance()->root.render(camera);
 	player->render(camera);
+	stamina_bar->render(camera2d);
+
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -293,6 +304,8 @@ void GamePlay::update(float seconds_elapsed) {
 
 	World::get_instance()->root.update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
+	stamina_bar->update(seconds_elapsed);
+
 }
 
 

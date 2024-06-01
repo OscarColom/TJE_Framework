@@ -1,4 +1,6 @@
 #include "framework/entities/entityUI.h"
+#include "framework/entities/entityPlayer.h"
+
 #include "framework/input.h"
 #include "game/world.h"
 #include "game/game.h"
@@ -61,9 +63,7 @@ void EntityUI::render(Camera* camera2d) {
 void EntityUI::update(float seconds_elapsed) {
 
 	Vector2 mouse_pos = Input::mouse_position;
-	printf("%f", mouse_pos.x);
-	printf("%f\n", mouse_pos.y);
-	printf("%f", position.x);
+
 	if (buttonId != Undefined &&
 		mouse_pos.x > (position.x - size.x * 0.5f) &&
 		mouse_pos.x < (position.x + size.x * 0.5f) &&
@@ -76,6 +76,14 @@ void EntityUI::update(float seconds_elapsed) {
 			World* world = World::get_instance();
 			world->current_stage->onButtonPressed(buttonId); //ONbUTTONPRESSED
 		}
+	}
+	else if (buttonId == Stamina) {
+		material.color = Vector4::GREEN;
+		float stamina = GamePlay::get_instance()->player->stamina;
+		//float stamina = World::get_instance()->player->stamina;
+		printf("%f", stamina);
+		size.x = (stamina / 50) *size.x;
+		//quad.
 	}
 	else {
 		material.color = Vector4::WHITE;

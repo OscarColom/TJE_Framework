@@ -5,7 +5,8 @@
 enum eButtonId{
 	Undefined,
 	PlayButton,
-	EndButton
+	EndButton,
+	Stamina
 };
 
 class EntityUI : public EntityMesh {

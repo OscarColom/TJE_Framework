@@ -97,6 +97,10 @@ public:
 	int window_width;
 	int window_height;
 
+	Camera* camera2d;
+	Entity* stamina_bar;
+
+
 	//Camera* camera = nullptr;
 	float angle = 0;
 	bool mouse_locked = true; //tells if the mouse is locked (not seen)
