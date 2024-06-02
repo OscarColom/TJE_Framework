@@ -28,6 +28,7 @@ public:
 	Material material;
 
 	void render(Camera* camera2d);
+	void render_stamina(Camera* camera2d, float current_stamina);
 	void update(float seconds_elapsed);
 
 };

@@ -98,7 +98,7 @@ public:
 	int window_height;
 
 	Camera* camera2d;
-	Entity* stamina_bar;
+	EntityUI* stamina_bar;
 
 
 	//Camera* camera = nullptr;

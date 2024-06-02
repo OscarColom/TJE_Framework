@@ -25,6 +25,43 @@ EntityUI::EntityUI(Vector2 position, Vector2 size, const Material& material, eBu
 	quad.createQuad(position.x, position.y, size.x, size.y, true);
 
 }
+
+void EntityUI::render_stamina(Camera* camera2d, float current_stamina) {
+
+	glDisable(GL_DEPTH_TEST);
+
+	glDisable(GL_CULL_FACE);
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	material.shader->enable();
+
+	World* world = World::get_instance();
+	//Matrix44 viewProj = camera2d->viewprojection_matrix;
+
+	material.shader->setUniform("u_color", material.color);
+	material.shader->setUniform("u_viewprojection", camera2d->viewprojection_matrix);
+	material.shader->setUniform("u_model", model); //sino getGlobalMatrix()
+	material.shader->setUniform("u_texture", material.diffuse, 0);
+
+	material.shader->setFloat("stamina", current_stamina);
+
+	quad.render(GL_TRIANGLES);
+
+	material.shader->disable();
+
+	//quad.render(GL_TRIANGLES);
+
+	//glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	Entity::render(camera2d);
+
+
+}
 void EntityUI::render(Camera* camera2d) {
 
 	glDisable(GL_DEPTH_TEST);
@@ -44,6 +81,10 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_viewprojection", camera2d->viewprojection_matrix);
 	material.shader->setUniform("u_model", model); //sino getGlobalMatrix()
 	material.shader->setUniform("u_texture", material.diffuse, 0);
+
+	
+
+
 
 	quad.render(GL_TRIANGLES);
 
