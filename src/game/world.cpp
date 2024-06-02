@@ -233,7 +233,7 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get("data/scene/key@key/key@key.obj");
 			new_entity = new EntityKey(mesh, mat, "key");
 		}
-		if (gate_tag != std::string::npos) {
+		else if (gate_tag != std::string::npos) {
 			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate1/wall-gate@gate1.obj");
 			new_entity = new EntityGate(mesh, mat, "gate1");
 		}
