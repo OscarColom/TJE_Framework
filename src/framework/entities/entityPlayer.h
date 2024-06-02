@@ -35,4 +35,8 @@ public:
 	void update(float seconds_elapsed);
 	void render(Camera* camera);
 
+	Vector3 GetPostion() {
+		return position;
+	};
+
 };
