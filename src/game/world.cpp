@@ -245,6 +245,22 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get("data/scene/key@key1/key@key1.obj");
 			new_entity = new EntityKey(mesh, mat, "key1");
 		}
+		else if (gate_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate2/wall-gate@gate2.obj");
+			new_entity = new EntityGate(mesh, mat, "gate2");
+		}
+		else if (heart_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/heart@heart2/heart@heart2.obj");
+			new_entity = new EntityHeart(mesh, mat, "heart2");
+		}
+		else if (key_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/key@key2/key@key2.obj");
+			new_entity = new EntityKey(mesh, mat, "key2");
+		}
+		else if (gate_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate3/wall-gate@gate3.obj");
+			new_entity = new EntityGate(mesh, mat, "gate3");
+		}
 
 
 		else if (ground_tag != std::string::npos) {

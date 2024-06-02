@@ -122,7 +122,7 @@ void EntityUI::update(float seconds_elapsed) {
 		material.color = Vector4::GREEN;
 		float stamina = GamePlay::get_instance()->player->stamina;
 		//float stamina = World::get_instance()->player->stamina;
-		printf("%f", stamina);
+		//printf("%f", stamina);
 		size.x = (stamina / 50) *size.x;
 		//quad.
 	}

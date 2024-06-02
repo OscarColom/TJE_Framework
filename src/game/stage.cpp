@@ -91,8 +91,6 @@ void Menu::render() {
 	background->render(camera2d);
 	play_button->render(camera2d);
 	exit_button->render(camera2d);
-
-
 }
 
 void Menu::update(float seconds_elapsed) {
@@ -185,8 +183,12 @@ void GamePlay::render() {
 		EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
 		EntityKey* key = dynamic_cast<EntityKey*>(e);
 		if (gate != nullptr) {
-			gate->model.rotate( -(PI / 2), Vector3(1, 0, 0));
 			gate->model.scale(25.f, 25.f, 25.f);
+			gate->model.rotate(-(PI / 2), Vector3(1, 0, 0));
+
+			if (strcmp(gate->name.c_str(), "scene/wall-gate@gate2/wall-gate@gate2.obj") || strcmp(gate->name.c_str(), "scene/wall-gate@gate3/wall-gate@gate3.obj")) {
+				gate->model.rotate(-(PI / 2), Vector3(0, 0, 1));
+			}
 		}
 		else if (heart != nullptr) {
 			heart->model.scale(0.5f, 0.5f, 0.5f);
