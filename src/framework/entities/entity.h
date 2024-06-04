@@ -46,6 +46,7 @@ public:
 	void removeChild(Entity* child);
 
 
+
 	// Methods that should be overwritten
 	// by derived classes 
 	virtual void render(Camera* camera);

@@ -5,7 +5,7 @@
 #include "graphics/fbo.h"
 #include "graphics/shader.h"
 #include "framework/input.h"
-
+#include "framework/entities/entityPlayer.h"
 #include <cmath>
 
 //some globals

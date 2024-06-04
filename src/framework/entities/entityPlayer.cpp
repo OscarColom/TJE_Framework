@@ -234,12 +234,18 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (lifes <= 0) {
-		World* world = World::get_instance();
+		//World::get_instance()->root.;
+		//Entity root = World::get_instance()->root;
+		//Entity newroot;
+		//World::get_instance()->parseScene("data/myscene.scene", &newroot);
 		//world->restart();
-		//world->~World();
+		//World world.delete;
 		//world = new World();
-		GamePlay* game = GamePlay::get_instance();
-		game->restart();///////////etso no esta bien, no funciona.
+		//GamePlay* game = GamePlay::get_instance();
+		//game->~Stage();
+		//game = new GamePlay();
+		//GamePlay* game = GamePlay::get_instance();
+		//game->restart();///////////etso no esta bien, no funciona.
 		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
 		lifes = 3;
 	}

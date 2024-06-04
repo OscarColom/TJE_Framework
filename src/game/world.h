@@ -61,7 +61,7 @@ public:
 	float sphere_grow = .3f;
 	float player_height = 3.f;
 
-	Vector3 current_checkpoint = Vector3(0.0f, 5.0f, 0.0f);
+	Vector3 current_checkpoint = Vector3(0.0f, 10.0f, 0.0f);
 
 	void render();
 	void update(float seconds_elapsed);
