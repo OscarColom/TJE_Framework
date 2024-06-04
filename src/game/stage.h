@@ -99,6 +99,8 @@ public:
 
 	Camera* camera2d;
 	EntityUI* stamina_bar;
+	EntityUI* lifes_bar;
+
 
 
 	//Camera* camera = nullptr;

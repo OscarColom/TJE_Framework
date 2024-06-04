@@ -13,6 +13,7 @@ Vector4 Vector4::WHITE(1.f, 1.f, 1.f, 1.f);
 Vector4 Vector4::RED(1.f, 0.f, 0.f, 1.f);
 Vector4 Vector4::GREEN(0.f, 1.f, 0.f, 1.f);
 Vector4 Vector4::BLUE(0.f, 0.f, 1.f, 1.f);
+Vector4 Vector4::YELLOW(1.f, 1.f, 0.f, 1.f);
 
 //**************************************
 float Vector2::distance(const Vector2& v)

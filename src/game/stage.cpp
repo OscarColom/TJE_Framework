@@ -135,8 +135,18 @@ void GamePlay::init() {
 	stamina_mat.diffuse = new Texture();
 	stamina_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	stamina_bar = new EntityUI(Vector2(window_width *0.2, window_height/ 10), Vector2(300, 20), stamina_mat, eButtonId::Stamina);
-	//Player
 
+	//lifes
+	Material life_mat;
+	life_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/lifes.fs");
+	life_mat.diffuse = new Texture();
+	life_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+	lifes_bar = new EntityUI(Vector2(window_width - 160, window_height / 10), Vector2(300, 20), life_mat, eButtonId::Life);
+
+
+
+
+	//Player
 	Material player_material;
 	player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shaders/texture.fs");
 	player_material.diffuse = new Texture();
@@ -203,6 +213,7 @@ void GamePlay::render() {
 	World::get_instance()->root.render(camera);
 	player->render(camera);
 	stamina_bar->render_stamina(camera2d, GamePlay::get_instance()->player->stamina);
+	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
 
 
 	glDisable(GL_BLEND);
@@ -307,6 +318,7 @@ void GamePlay::update(float seconds_elapsed) {
 	World::get_instance()->root.update(seconds_elapsed);
 	skybox->update(seconds_elapsed);
 	stamina_bar->update(seconds_elapsed);
+	lifes_bar->update(seconds_elapsed);
 
 }
 

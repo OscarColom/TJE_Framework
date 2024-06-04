@@ -62,6 +62,46 @@ void EntityUI::render_stamina(Camera* camera2d, float current_stamina) {
 
 
 }
+
+
+void EntityUI::render_lifes(Camera* camera2d, int current_lifes) {
+
+	glDisable(GL_DEPTH_TEST);
+
+	glDisable(GL_CULL_FACE);
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	material.shader->enable();
+
+	World* world = World::get_instance();
+	//Matrix44 viewProj = camera2d->viewprojection_matrix;
+
+	material.shader->setUniform("u_color", material.color);
+	material.shader->setUniform("u_viewprojection", camera2d->viewprojection_matrix);
+	material.shader->setUniform("u_model", model); //sino getGlobalMatrix()
+	material.shader->setUniform("u_texture", material.diffuse, 0);
+
+	material.shader->setInt("lifes", current_lifes);
+
+	quad.render(GL_TRIANGLES);
+
+	material.shader->disable();
+
+	//quad.render(GL_TRIANGLES);
+
+	//glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	Entity::render(camera2d);
+
+
+}
+
+
 void EntityUI::render(Camera* camera2d) {
 
 	glDisable(GL_DEPTH_TEST);
@@ -119,12 +159,11 @@ void EntityUI::update(float seconds_elapsed) {
 		}
 	}
 	else if (buttonId == Stamina) {
-		material.color = Vector4::GREEN;
+		material.color = Vector4::YELLOW;
 		float stamina = GamePlay::get_instance()->player->stamina;
-		//float stamina = World::get_instance()->player->stamina;
-		//printf("%f", stamina);
-		size.x = (stamina / 50) *size.x;
-		//quad.
+	}
+	else if (buttonId == Life) {
+		material.color = Vector4::RED;
 	}
 	else {
 		material.color = Vector4::WHITE;

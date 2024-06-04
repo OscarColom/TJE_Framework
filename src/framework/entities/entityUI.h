@@ -6,7 +6,8 @@ enum eButtonId{
 	Undefined,
 	PlayButton,
 	EndButton,
-	Stamina
+	Stamina,
+	Life
 };
 
 class EntityUI : public EntityMesh {
@@ -29,6 +30,7 @@ public:
 
 	void render(Camera* camera2d);
 	void render_stamina(Camera* camera2d, float current_stamina);
+	void render_lifes(Camera* camera2d, int current_lifes);
 	void update(float seconds_elapsed);
 
 };
