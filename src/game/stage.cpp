@@ -174,9 +174,6 @@ void GamePlay::init() {
 	skybox->model.scale(70.f, 70.f, 70.f);
 }
 
-void GamePlay::restart() {
-
-}
 
 void GamePlay::render() {
 	camera->enable();
@@ -298,7 +295,12 @@ void GamePlay::update(float seconds_elapsed) {
 
 }
 
+void GamePlay::restart() {
+	Entity root = World::get_instance()->root;
+	World::get_instance()->parseScene("data/myscene.scene", &root);
+	root.render(camera);
 
+}
 
 void Death::init() {
 	

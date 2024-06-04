@@ -234,6 +234,12 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (lifes <= 0) {
+		World* world = World::get_instance();
+		//world->restart();
+		//world->~World();
+		//world = new World();
+		GamePlay* game = GamePlay::get_instance();
+		game->restart();///////////etso no esta bien, no funciona.
 		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
 		lifes = 3;
 	}
