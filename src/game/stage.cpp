@@ -187,34 +187,10 @@ void GamePlay::render() {
 	skybox->render(camera);
 	glEnable(GL_DEPTH_TEST);
 
-	//Transformations
-	for (auto e : World::get_instance()->root.children) {
-		EntityGate* gate = dynamic_cast<EntityGate*>(e);
-		EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
-		EntityKey* key = dynamic_cast<EntityKey*>(e);
-		if (gate != nullptr) {
-			gate->model.scale(25.f, 25.f, 25.f);
-			gate->model.rotate(-(PI / 2), Vector3(1, 0, 0));
-
-			if (strcmp(gate->name.c_str(), "scene/wall-gate@gate2/wall-gate@gate2.obj") || strcmp(gate->name.c_str(), "scene/wall-gate@gate3/wall-gate@gate3.obj")) {
-				gate->model.rotate(-(PI / 2), Vector3(0, 0, 1));
-			}
-		}
-		else if (heart != nullptr) {
-			heart->model.scale(0.5f, 0.5f, 0.5f);
-			heart->model.rotate(-(PI / 2), Vector3(1, 0, 0));
-		}
-		else if (key != nullptr) {
-			key->model.rotate(-(PI / 2), Vector3(1, 0, 0));
-			key->model.scale(4.f, 4.f, 4.f);
-		}
-	}
-
 	World::get_instance()->root.render(camera);
 	player->render(camera);
 	stamina_bar->render_stamina(camera2d, GamePlay::get_instance()->player->stamina);
 	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
-
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
