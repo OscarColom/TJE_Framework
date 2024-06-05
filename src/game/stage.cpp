@@ -154,7 +154,7 @@ void GamePlay::init() {
 	Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
 
 	player = new EntityPlayer(player_mesh, player_material, "player");
-	player->model.translate(0.f, 5.f, 0.f);
+	player->model.translate(0.f, 6.f, 0.f);
 	player->isAnimated = true;
 
 	//Skybox

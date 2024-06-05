@@ -8,6 +8,8 @@
 #include "framework/entities/entityPlayer.h"
 #include <cmath>
 
+#include "stage.h"
+
 //some globals
 Mesh* mesh = NULL;
 Texture* texture = NULL;
@@ -120,7 +122,14 @@ void Game::update(double seconds_elapsed)
 {
 
 	world->update(seconds_elapsed);
+	int lifes = GamePlay::get_instance()->player->lifes;
+	if (lifes <= 0) {
+		GamePlay::get_instance()->player->lifes = 3;
+		world = new World();
+		//World* world = World::get_instance();
+		world->current_stage = world->game_stage;
 
+	}
 
 	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
@@ -199,6 +208,8 @@ void Game::onResize(int width, int height)
 	camera = Camera::current;//No estaab, al pasar camera a world poner cual se usta usando 
 
 	camera->aspect =  width / (float)height;
+
+
 	window_width = width;
 	window_height = height;
 }

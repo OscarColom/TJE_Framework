@@ -112,20 +112,26 @@ void World::OnKeyDown(SDL_KeyboardEvent event) {
 
 void World::render() {
 	current_stage->render();
+
 }
 
 
 //
 void World::update(float seconds_elapsed) {
-	int lifes = GamePlay::get_instance()->player->lifes;
-	if (lifes <= 0) {
-		GamePlay::get_instance()->player->lifes = 3;
-		for (Entity* child : root.children) {
-			root.removeChild(child);
-		}
-		parseScene("data/myscene.scene", &root);
-	}
+
 	current_stage->update(seconds_elapsed);
+	//int lifes = GamePlay::get_instance()->player->lifes;
+	//if (lifes <= 0) {
+	//	GamePlay::get_instance()->player->lifes = 3;
+	//	//for (Entity* child : root.children ) {
+	//	//	root.removeChild(child);
+	//	//	  //delete child;
+	//	//}
+	//	//parseScene("data/myscene.scene", &root);
+	//	game_stage = new GamePlay();
+	//	game_stage->init();
+
+	//}
 }
 
 
