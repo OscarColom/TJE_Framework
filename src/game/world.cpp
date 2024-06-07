@@ -35,10 +35,12 @@ World::World() {
 
 	menu_stage = new Menu();
 	game_stage = new GamePlay();
+	death_stage = new Death();
 
 
 	menu_stage->init();
 	game_stage->init();
+	death_stage->init();
 
 	current_stage = menu_stage;
 

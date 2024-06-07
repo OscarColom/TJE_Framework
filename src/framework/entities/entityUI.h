@@ -6,6 +6,8 @@ enum eButtonId{
 	Undefined,
 	PlayButton,
 	EndButton,
+	PlayAgainButton,
+	MenuButton,
 	Stamina,
 	Life
 };

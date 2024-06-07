@@ -127,7 +127,7 @@ void Game::update(double seconds_elapsed)
 		GamePlay::get_instance()->player->lifes = 3;
 		world = new World();
 		//World* world = World::get_instance();
-		world->current_stage = world->game_stage;
+		world->current_stage = world->death_stage;
 
 	}
 

@@ -22,6 +22,8 @@ public:
 	std::map<int, Stage*> stages;
 	Stage* menu_stage = nullptr;
 	Stage* game_stage = nullptr;
+	Stage* death_stage = nullptr;
+
 
 
 	static World* get_instance() {
