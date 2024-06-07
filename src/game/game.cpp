@@ -61,7 +61,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 
 	// Hide the cursor
-	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+	//SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 }
 
 //what to do when the image has to be draw

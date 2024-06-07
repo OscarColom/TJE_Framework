@@ -30,6 +30,7 @@ public:
 	int window_width;
 	int window_height;
 	Camera* camera = nullptr;
+	bool mouse_locked = true;
 
 
 	// Methods that should be overwritten
@@ -134,6 +135,32 @@ class Death : public Stage {
 	eStages type = DEATH;
 public:
 	Death() {};
+
+
+	//Texture* fondo;
+	int world_width;
+	int world_height;
+
+	Camera* camera2d;
+
+	Entity* background_death;
+	Entity* play_again_button;
+	Entity* menu_button;
+
+
+	void init();
+	void restart();
+	void render();
+	void update(float seconds_elapsed);
+	void onButtonPressed(eButtonId buttonid) {};
+};
+
+
+
+class Final : public Stage {
+	eStages type = FINAL;
+public:
+	Final() {};
 
 
 	//Texture* fondo;

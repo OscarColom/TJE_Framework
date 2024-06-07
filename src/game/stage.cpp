@@ -4,6 +4,8 @@
 #include "framework/entities/entityPlayer.h"
 #include "framework/entities/entityKey.h"
 #include "framework/entities/entity_Gate.h"
+#include "framework/entities/entity_Flag.h"
+
 
 
 
@@ -46,7 +48,9 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 }
 
 
-//MENU STAGE
+/*MENU STAGE
+#############################################################################
+##############################################################################*/
 void Menu::init() {
 	Game::instance->mouse_locked = false;
 	isFinished = false;
@@ -85,48 +89,25 @@ void Menu::restart() {
 }
 
 void Menu::render() {
-	//glClearColor(0.0, 0.0, 0.0, 1.0);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//drawText(world_width/2, world_height /2, "Clica para entarr al juego", Vector3(1, 1, 1), 2);
-	//drawText(world_width / 2, (world_height / 2  )+20, "Apreta G para cojer la llave cuando estes cerca de ella", Vector3(1, 1, 1), 2);
-
-	////SDL_GL_SwapWindow(this->window);
-	//glDisable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_CULL_FACE);
 
 	background->render(camera2d);
 	play_button->render(camera2d);
 	exit_button->render(camera2d);
+
 }
 
 void Menu::update(float seconds_elapsed) {
-	//if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
-	//	World* world = World::get_instance();
-	//	world->current_stage = world->game_stage;
-	//}
+
 	background->update(seconds_elapsed);
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
 }
 
-//void Menu::onButtonPressed(eButtonId buttonid) {
-//	World* world = World::get_instance();
-//
-//	switch (buttonid) {
-//	
-//	case PlayButton:
-//		world->current_stage = world->game_stage;
-//		break;
-//	
-//	case EndButton:
-//		exit(0);
-//		break;
-//	}
-//}
 
+				/*GAME STAGE
+#############################################################################
+##############################################################################*/
 
-//GAME STAGE
 void GamePlay::init() {
 
 	window_width = World::get_instance()->window_width;
@@ -260,6 +241,8 @@ void GamePlay::update(float seconds_elapsed) {
 			EntityKey* key = dynamic_cast<EntityKey*>(e);
 			EntityGate* gate = dynamic_cast<EntityGate*>(e);
 			EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
+			EntityFlag* flag = dynamic_cast<EntityFlag*>(e);
+
 			
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
@@ -290,6 +273,14 @@ void GamePlay::update(float seconds_elapsed) {
 					player->lifes = player->lifes + 1;
 				}
 			}
+
+			if (flag != nullptr) {
+				if (flag->distance(player) < 10.f) {
+					player->lifes = player->lifes + 1;/////////////////////
+					World* world  =World::get_instance();
+					world->current_stage = world->menu_stage;
+				}
+			}
 		}		
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
@@ -309,6 +300,11 @@ void GamePlay::restart() {
 
 }
 
+
+
+/*DEATH STAGE
+#############################################################################
+##############################################################################*/
 void Death::init() {
 	Game::instance->mouse_locked = false;
 	world_width = World::get_instance()->window_width;
@@ -353,4 +349,55 @@ void Death::update(float seconds_elapsed) {
 	background_death->update(seconds_elapsed);
 	play_again_button->update(seconds_elapsed);
 	menu_button->update(seconds_elapsed);
+}
+
+
+				/*FINAL STAGE
+#############################################################################
+##############################################################################*/
+
+void Final::init() {
+	/*Game::instance->mouse_locked = false;
+	world_width = World::get_instance()->window_width;
+	world_height = World::get_instance()->window_height;
+
+	camera2d = World::get_instance()->camera2D;
+
+	Material background_death_mat;
+	background_death_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	background_death_mat.diffuse = new Texture();
+	background_death_mat.diffuse = Texture::Get("data/ui/fondo_muerte.png");
+	background_death = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_death_mat);
+
+
+	Material play_again_mat;
+	play_again_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	play_again_mat.diffuse = new Texture();
+	play_again_mat.diffuse = Texture::Get("data/ui/play_again_button.png");
+	play_again_button = new EntityUI(Vector2(world_width * 0.3, 520), Vector2(240, 60), play_again_mat, eButtonId::PlayAgainButton);
+
+	Material menu_mat;
+	menu_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	menu_mat.diffuse = new Texture();
+	menu_mat.diffuse = Texture::Get("data/ui/menu_button.png");
+	menu_button = new EntityUI(Vector2(world_width * 0.7, 520), Vector2(240, 60), menu_mat, eButtonId::MenuButton);*/
+
+}
+
+void Final::restart() {
+
+}
+
+void Final::render() {
+
+	//background_death->render(camera2d);
+	//play_again_button->render(camera2d);
+	//menu_button->render(camera2d);
+
+}
+
+void Final::update(float seconds_elapsed) {
+	//background_death->update(seconds_elapsed);
+	//play_again_button->update(seconds_elapsed);
+	//menu_button->update(seconds_elapsed);
 }

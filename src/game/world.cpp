@@ -6,6 +6,8 @@
 #include "framework/entities/entityHeart.h"
 #include "framework/entities/entityKey.h"
 #include "framework/entities/entity_Gate.h"
+#include "framework/entities/entity_Flag.h"
+
 #include "stage.h"
 
 #include "framework/input.h"
@@ -122,6 +124,12 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 	current_stage->update(seconds_elapsed);
+	if (current_stage != game_stage) {
+		mouse_locked = !mouse_locked;
+		SDL_ShowCursor(!mouse_locked);
+		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+	}
+
 	//int lifes = GamePlay::get_instance()->player->lifes;
 	//if (lifes <= 0) {
 	//	GamePlay::get_instance()->player->lifes = 3;
@@ -235,6 +243,8 @@ bool World::parseScene(const char* filename, Entity* root)
 		size_t gate_tag = data.first.find("@gate");
 		size_t heart_tag = data.first.find("@heart");
 		size_t key_tag = data.first.find("@key");
+		size_t flag_tag = data.first.find("@flag");
+
 		size_t ground_tag = data.first.find("@ground");
 		
 		if (gate_tag != std::string::npos) {
@@ -249,35 +259,35 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get("data/scene/key@key/key@key.obj");
 			new_entity = new EntityKey(mesh, mat, "key");
 		}
-		else if (gate_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate1/wall-gate@gate1.obj");
-			new_entity = new EntityGate(mesh, mat, "gate1");
+		else if (flag_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/flag-pennant@flag/flag-pennant@flag.obj");
+			new_entity = new EntityFlag(mesh, mat, "flag");
 		}
-		else if (heart_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/heart@heart1/heart@heart1.obj");
-			new_entity = new EntityHeart(mesh, mat, "heart1");
-		}
-		else if (key_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/key@key1/key@key1.obj");
-			new_entity = new EntityKey(mesh, mat, "key1");
-		}
-		else if (gate_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate2/wall-gate@gate2.obj");
-			new_entity = new EntityGate(mesh, mat, "gate2");
-		}
-		else if (heart_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/heart@heart2/heart@heart2.obj");
-			new_entity = new EntityHeart(mesh, mat, "heart2");
-		}
-		else if (key_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/key@key2/key@key2.obj");
-			new_entity = new EntityKey(mesh, mat, "key2");
-		}
-		else if (gate_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate3/wall-gate@gate3.obj");
-			new_entity = new EntityGate(mesh, mat, "gate3");
-		}
+		//else if (gate_tag != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate1/wall-gate@gate1.obj");
+		//	new_entity = new EntityGate(mesh, mat, "gate1");
 
+		//}
+		//else if (heart_tag != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/heart@heart1/heart@heart1.obj");
+		//	new_entity = new EntityHeart(mesh, mat, "heart1");
+		//}
+		//else if (key_tag != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/key@key1/key@key1.obj");
+		//	new_entity = new EntityKey(mesh, mat, "key1");
+		//}
+		//else if (gate_tag2 != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate2.001/wall-gate@gate2.001.obj");
+		//	new_entity = new EntityGate(mesh, mat, "gate2");
+		//}
+		//else if (heart_tag != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/heart@heart2/heart@heart2.obj");
+		//	new_entity = new EntityHeart(mesh, mat, "heart2");
+		//}
+		//else if (key_tag != std::string::npos) {
+		//	Mesh* mesh = Mesh::Get("data/scene/key@key2/key@key2.obj");
+		//	new_entity = new EntityKey(mesh, mat, "key2");
+		//}
 
 		else if (ground_tag != std::string::npos) {
 			Mesh* mesh = Mesh::Get("data/scene/ground.002@ground/ground.002@ground.obj");
