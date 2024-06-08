@@ -151,7 +151,12 @@ void EntityUI::update(float seconds_elapsed) {
 		mouse_pos.y >(position.y - size.y * 0.5f) &&
 		mouse_pos.y < (position.y + size.y * 0.5f)) {
 
-		material.color = Vector4::RED;
+		if (buttonId == PlayAgainButton || buttonId == PlayButton) {
+			material.color = Vector4::GREEN;
+		}
+		else if(buttonId != PlayAgainButton || buttonId != PlayButton) {
+			material.color = Vector4::RED;
+		}
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			World* world = World::get_instance();
