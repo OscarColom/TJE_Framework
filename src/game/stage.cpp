@@ -52,7 +52,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 #############################################################################
 ##############################################################################*/
 void Menu::init() {
-	Game::instance->mouse_locked = false;
+	//Game::instance->mouse_locked = false;
 	isFinished = false;
 	world_width = World::get_instance()->window_width;
 	world_height = World::get_instance()->window_height;
@@ -112,6 +112,7 @@ void GamePlay::init() {
 
 	window_width = World::get_instance()->window_width;
 	window_height = World::get_instance()->window_height;
+	//World::get_instance()->mouse_locked = true;
 
 	instance = this;
 	
@@ -277,8 +278,8 @@ void GamePlay::update(float seconds_elapsed) {
 			if (flag != nullptr) {
 				if (flag->distance(player) < 10.f) {
 					player->lifes = player->lifes + 1;/////////////////////
-					World* world  =World::get_instance();
-					world->current_stage = world->menu_stage;
+					World* world = World::get_instance();
+					world->current_stage = world->final_stage;
 				}
 			}
 		}		
@@ -306,7 +307,7 @@ void GamePlay::restart() {
 #############################################################################
 ##############################################################################*/
 void Death::init() {
-	Game::instance->mouse_locked = false;
+	//World::get_instance()->mouse_locked  = false;
 	world_width = World::get_instance()->window_width;
 	world_height = World::get_instance()->window_height;
 
@@ -357,7 +358,7 @@ void Death::update(float seconds_elapsed) {
 ##############################################################################*/
 
 void Final::init() {
-	/*Game::instance->mouse_locked = false;
+	//Game::instance->mouse_locked = false;
 	world_width = World::get_instance()->window_width;
 	world_height = World::get_instance()->window_height;
 
@@ -366,11 +367,11 @@ void Final::init() {
 	Material background_death_mat;
 	background_death_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	background_death_mat.diffuse = new Texture();
-	background_death_mat.diffuse = Texture::Get("data/ui/fondo_muerte.png");
+	background_death_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	background_death = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_death_mat);
 
 
-	Material play_again_mat;
+	/*Material play_again_mat;
 	play_again_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	play_again_mat.diffuse = new Texture();
 	play_again_mat.diffuse = Texture::Get("data/ui/play_again_button.png");
@@ -390,14 +391,17 @@ void Final::restart() {
 
 void Final::render() {
 
-	//background_death->render(camera2d);
+	background_death->render(camera2d);
 	//play_again_button->render(camera2d);
 	//menu_button->render(camera2d);
+	long elapsed_time_game = World::get_instance()->elapsed_time_game;
+	std::string str_total_time = "Time to complete teh game: " + std::to_string(elapsed_time_game) + " seconds";
+	drawText(world_width* 0.2 , world_height* 0.5, str_total_time, Vector3(0, 0, 0), 3);
 
 }
 
 void Final::update(float seconds_elapsed) {
-	//background_death->update(seconds_elapsed);
+	background_death->update(seconds_elapsed);
 	//play_again_button->update(seconds_elapsed);
 	//menu_button->update(seconds_elapsed);
 }

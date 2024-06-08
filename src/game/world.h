@@ -23,6 +23,7 @@ public:
 	Stage* menu_stage = nullptr;
 	Stage* game_stage = nullptr;
 	Stage* death_stage = nullptr;
+	Stage* final_stage = nullptr;
 
 
 
@@ -51,6 +52,13 @@ public:
 
 	float angle = 0;
 	bool mouse_locked = true; //tells if the mouse is locked (not seen)
+
+	long start_game_time;
+	long end_game_time;  //to compute time you comlete the game
+	long elapsed_time_game;
+	bool start_time_recorded;
+	bool end_time_recorded;
+
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;

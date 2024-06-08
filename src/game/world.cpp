@@ -38,48 +38,24 @@ World::World() {
 	menu_stage = new Menu();
 	game_stage = new GamePlay();
 	death_stage = new Death();
+	final_stage = new Final();
 
 
 	menu_stage->init();
 	game_stage->init();
 	death_stage->init();
+	final_stage->init();
 
 	current_stage = menu_stage;
 
+	start_time_recorded = false;
+	end_time_recorded = false;
 
 
 
-	//Player
-	//Material player_material;
-	//player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shaders/texture.fs");
-	//player_material.diffuse = new Texture();
-	//player_material.diffuse->load("data/final_character/survivorFemaleA.png");
-	//Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
-	//
-	//player = new EntityPlayer(player_mesh, player_material, "player");
-	//player->model.translate(0.f, 5.f, 0.f);
-	//player->isAnimated = true;
-
-	////Skybox
-	//Material sky_cubemap;
-	//sky_cubemap.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
-	//sky_cubemap.diffuse = new Texture();
-	//sky_cubemap.diffuse->loadCubemap("landscape", {
-	//	"data/CubeSky/px.png",
-	//	"data/CubeSky/nx.png",
-	//	"data/CubeSky/ny.png",
-	//	"data/CubeSky/py.png",
-	//	"data/CubeSky/pz.png",
-	//	"data/CubeSky/nz.png"
-	//	});
-	//Mesh* skybox_mesh = Mesh::Get("data/meshes/cubemap.ASE");
-	//skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
-	//skybox->model.scale(70.f, 70.f, 70.f);
 
 	parseScene("data/myscene.scene", &root);
 
-	//cargar l agate
-	//parseScene("data/myGate.scene", &Gate);
 
 
 	// Nombre de la entidad que deseas encontrar
@@ -124,25 +100,31 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 	current_stage->update(seconds_elapsed);
+
 	if (current_stage != game_stage) {
-		mouse_locked = !mouse_locked;
-		SDL_ShowCursor(!mouse_locked);
-		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+		mouse_locked = false; 
+	}
+	else {
+		mouse_locked = true; 
 	}
 
-	//int lifes = GamePlay::get_instance()->player->lifes;
-	//if (lifes <= 0) {
-	//	GamePlay::get_instance()->player->lifes = 3;
-	//	//for (Entity* child : root.children ) {
-	//	//	root.removeChild(child);
-	//	//	  //delete child;
-	//	//}
-	//	//parseScene("data/myscene.scene", &root);
-	//	game_stage = new GamePlay();
-	//	game_stage->init();
+	SDL_ShowCursor(mouse_locked ? SDL_DISABLE : SDL_ENABLE);
+	SDL_SetRelativeMouseMode(mouse_locked ? SDL_TRUE : SDL_FALSE);
 
-	//}
+	if (current_stage == game_stage && !start_time_recorded) {
+		start_game_time = SDL_GetTicks();
+		start_time_recorded = true; // Marcar que el tiempo de inicio ha sido registrado
+		end_time_recorded = false;  // Reiniciar el marcador de tiempo de fin
+	}
+
+	if (current_stage == final_stage && !end_time_recorded) {
+		end_game_time = SDL_GetTicks();
+		elapsed_time_game = (end_game_time - start_game_time) / 1000.0f; // Calcular el tiempo transcurrido en segundos
+		end_time_recorded = true; // Marcar que el tiempo de fin ha sido registrado
+
+	}
 }
+
 
 
 sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist) {
@@ -263,31 +245,8 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get("data/scene/flag-pennant@flag/flag-pennant@flag.obj");
 			new_entity = new EntityFlag(mesh, mat, "flag");
 		}
-		//else if (gate_tag != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate1/wall-gate@gate1.obj");
-		//	new_entity = new EntityGate(mesh, mat, "gate1");
 
-		//}
-		//else if (heart_tag != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/heart@heart1/heart@heart1.obj");
-		//	new_entity = new EntityHeart(mesh, mat, "heart1");
-		//}
-		//else if (key_tag != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/key@key1/key@key1.obj");
-		//	new_entity = new EntityKey(mesh, mat, "key1");
-		//}
-		//else if (gate_tag2 != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate2.001/wall-gate@gate2.001.obj");
-		//	new_entity = new EntityGate(mesh, mat, "gate2");
-		//}
-		//else if (heart_tag != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/heart@heart2/heart@heart2.obj");
-		//	new_entity = new EntityHeart(mesh, mat, "heart2");
-		//}
-		//else if (key_tag != std::string::npos) {
-		//	Mesh* mesh = Mesh::Get("data/scene/key@key2/key@key2.obj");
-		//	new_entity = new EntityKey(mesh, mat, "key2");
-		//}
+
 
 		else if (ground_tag != std::string::npos) {
 			Mesh* mesh = Mesh::Get("data/scene/ground.002@ground/ground.002@ground.obj");
