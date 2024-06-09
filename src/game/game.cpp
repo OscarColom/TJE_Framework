@@ -51,17 +51,11 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	world = new World();
 
 	Camera::current = World::get_instance()->camera;
-	// Load one texture using the Texture Manager
-	//texture = Texture::Get("data/textures/texture.tga");
+	
+	//Audio
+	audio->Init();
 
-	// Example of loading Mesh from Mesh Manager
-	//mesh = Mesh::Get("data/meshes/box.ASE");
-
-	// Example of shader loading using the shaders manager
-	//shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
-
-	// Hide the cursor
-	//SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+	channel = audio->Play("data/audio/temple-sound.wav", 0.5, BASS_SAMPLE_LOOP);
 }
 
 //what to do when the image has to be draw

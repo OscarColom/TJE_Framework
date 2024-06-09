@@ -21,53 +21,15 @@ void EntityPlayer::render(Camera* camera) {
 	EntityMesh::render(camera);
 	int world_width = World::get_instance()->window_width;
 
-	//float sphere_radius = World::get_instance()->sphere_radius;
-	//float sphere_ground_radius = World::get_instance()->sphere_grow;
-	//float player_height = World::get_instance()->player_height;
-
-	//Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
-	//Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
-	//Matrix44 m = model;
-
-	//shader->enable();
-
-	////1st sphere
-	//{
-	//	m.translate(0.0f, sphere_ground_radius, 0.0f);
-	//	m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
-
-	//	shader->setUniform("u_color", Vector4(1.0f, 1.0f, 0.0f, 1.0f));
-	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-	//	shader->setUniform("u_model", m);
-
-	//	mesh->render(GL_LINES);
-	//}
-
-	////2nd sphere
-	//{
-	//	m = model;
-	//	m.translate(0.0f, player_height, 0.0f);
-	//	m.scale(sphere_radius, sphere_radius, sphere_radius);
-
-	//	shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-	//	shader->setUniform("u_model", m);
-
-	//	mesh->render(GL_LINES);
-	//}
-
 	std::string str_stam = "Stamina: " + std::to_string(stamina);
 	drawText(20, 20, str_stam, Vector3(1, 1, 1), 2);
 
 	std::string str_lifes = "Lifes: " + std::to_string(lifes);
-	drawText(world_width - 100, 20, str_lifes, Vector3(1, 1, 1), 2);
-
-	//shader->disable();	
+	drawText(world_width - 100, 20, str_lifes, Vector3(1, 1, 1), 2);	
 }
 
 void EntityPlayer::update(float seconds_elapsed) {
 	float camera_yaw = GamePlay::get_instance()->camera_yaw;
-	//float camera_yaw = Game::instance->camera_yaw;
 
 	Matrix44 mYaw;
 	mYaw.setRotation(camera_yaw, Vector3(0, 1, 0));
@@ -129,19 +91,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 		}
 	}
 
-	/*EntityCollider* gate = GamePlay::get_instance()->gate;
-	EntityCollider* gt = dynamic_cast<EntityCollider*>(gate);
-	gt->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);*/
-
-
-	//COLISION PARAGATE
-	//for (auto e : World::get_instance()->Gate.children) {
-	//	EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
-	//	if (ec != nullptr) {
-	//		ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions, ALL);
-	//	}
-	//}
-
 	//Ground collsisons
 	bool is_grounded = false;
 
@@ -165,6 +114,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		velocity.y = 15.f;
 		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
+		Audio::Play("jump.wav", 1, true);
 	}
 
 	//Env collisions
@@ -176,6 +126,15 @@ void EntityPlayer::update(float seconds_elapsed) {
 		velocity.z -= newDir.z;
 	}
 
+	if (velocity.length() > 0.f && is_grounded) {
+		if (is_sprinting) {
+			Audio::Play("run.wav", 1, BASS_SAMPLE_LOOP);
+		}
+		else {
+			Audio::Play("footstep.wav", 1, BASS_SAMPLE_LOOP);
+		}
+	}
+	
 	//Animation
 	if ( (animation_state == eAnimationState::IDLE || animation_state == eAnimationState::RUNNING) && velocity.length() > 1.f && !is_sprinting) {
 		animator.playAnimation("data/final_character/animations/walk.skanim", true, 0.6f);

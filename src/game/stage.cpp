@@ -395,7 +395,7 @@ void Final::render() {
 	//play_again_button->render(camera2d);
 	//menu_button->render(camera2d);
 	long elapsed_time_game = World::get_instance()->elapsed_time_game;
-	std::string str_total_time = "Time to complete teh game: " + std::to_string(elapsed_time_game) + " seconds";
+	std::string str_total_time = "Time to complete the game: " + std::to_string(elapsed_time_game) + " seconds";
 	drawText(world_width* 0.2 , world_height* 0.5, str_total_time, Vector3(0, 0, 0), 3);
 
 }

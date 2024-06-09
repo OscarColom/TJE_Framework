@@ -8,6 +8,7 @@
 #include "framework/camera.h"
 #include "framework/utils.h"
 #include "world.h"
+#include "framework/audio.h"
 
 class Game
 {
@@ -29,6 +30,8 @@ public:
 	//some vars
 	Camera* camera; //our global camera
 	World* world = nullptr;
+	Audio* audio = new Audio();
+	HCHANNEL channel;
 	bool mouse_locked; //tells if the mouse is locked (not seen)
 
 	Game( int window_width, int window_height, SDL_Window* window );
