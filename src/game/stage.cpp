@@ -74,13 +74,19 @@ void Menu::init() {
 	play_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	play_mat.diffuse = new Texture();
 	play_mat.diffuse = Texture::Get("data/ui/play_button.png");
-	play_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), play_mat, eButtonId::PlayButton);
+	play_button = new EntityUI(Vector2(world_width * 0.5, 300), Vector2(240, 60), play_mat, eButtonId::PlayButton);
 
 	Material exit_mat;
 	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	exit_mat.diffuse = new Texture();
 	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
-	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), exit_mat, eButtonId::EndButton);
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), exit_mat, eButtonId::EndButton);
+
+	Material options_mat;
+	options_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	options_mat.diffuse = new Texture();
+	options_mat.diffuse = Texture::Get("data/ui/options_button.png");
+	options_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), options_mat, eButtonId::OptionsButton);
 
 	//background->addChild(play_button);
 	//background->addChild(exit_button);
@@ -97,6 +103,7 @@ void Menu::render() {
 	background->render(camera2d);
 	play_button->render(camera2d);
 	exit_button->render(camera2d);
+	options_button->render(camera2d);
 
 }
 
@@ -105,6 +112,7 @@ void Menu::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
+	options_button->update(seconds_elapsed);
 }
 
 

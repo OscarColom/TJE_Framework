@@ -66,6 +66,9 @@ public:
 	Entity* background;
 	Entity* play_button;
 	Entity* exit_button;
+	Entity* options_button;
+
+
 
 
 	void init();

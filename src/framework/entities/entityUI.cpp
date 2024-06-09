@@ -154,8 +154,11 @@ void EntityUI::update(float seconds_elapsed) {
 		if (buttonId == PlayAgainButton || buttonId == PlayButton) {
 			material.color = Vector4::GREEN;
 		}
-		else if(buttonId != PlayAgainButton || buttonId != PlayButton) {
+		else if(buttonId == EndButton || buttonId == MenuButton) {
 			material.color = Vector4::RED;
+		}
+		else if (buttonId == OptionsButton) {
+			material.color = Vector4::BLUE;
 		}
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
