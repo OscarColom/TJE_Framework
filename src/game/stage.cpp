@@ -31,16 +31,20 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	switch (buttonid) {
 
 	case PlayButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
 		break;
 
 	case EndButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		exit(0);
 		break;
 	case PlayAgainButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
 		break;
 	case MenuButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		//world->menu_stage->init();
 		world->current_stage = world->menu_stage;
 		break;
@@ -248,6 +252,7 @@ void GamePlay::update(float seconds_elapsed) {
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
 				if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
+					Audio::Play("data/audio/Get_key.wav", 1.5f, BASS_SAMPLE_MONO);
 					key->with_player = true;
 				}
 
@@ -262,6 +267,7 @@ void GamePlay::update(float seconds_elapsed) {
 					EntityKey* key_gate = dynamic_cast<EntityKey*>(e);
 
 					if (key_gate != nullptr && key_gate->with_player && gate->distance(player) < 10.f) {
+						Audio::Play("data/audio/Open_Door.wav", 1.f, BASS_SAMPLE_MONO);
 						World::get_instance()->root.removeChild(gate);
 						World::get_instance()->root.removeChild(key_gate);
 					}
@@ -270,6 +276,7 @@ void GamePlay::update(float seconds_elapsed) {
 			
 			if (heart != nullptr) {
 				if (heart->distance(player) < 5.f) {
+					Audio::Play("data/audio/Get_Life.wav", 1.5f, BASS_SAMPLE_MONO);
 					World::get_instance()->root.removeChild(heart);
 					player->lifes = player->lifes + 1;
 				}
@@ -278,6 +285,7 @@ void GamePlay::update(float seconds_elapsed) {
 			if (flag != nullptr) {
 				if (flag->distance(player) < 10.f) {
 					player->lifes = player->lifes + 1;/////////////////////
+					Audio::Play("data/audio/Victory_sound.wav", 1.5f, BASS_SAMPLE_MONO);
 					World* world = World::get_instance();
 					world->current_stage = world->final_stage;
 				}

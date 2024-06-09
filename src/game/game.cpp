@@ -68,6 +68,7 @@ void Game::update(double seconds_elapsed)
 	world->update(seconds_elapsed);
 	int lifes = GamePlay::get_instance()->player->lifes;
 	if (lifes <= 0) {
+		Audio::Play("data/audio/Death_sound.wav", 1.5f, BASS_SAMPLE_MONO);
 		GamePlay::get_instance()->player->lifes = 3;
 		world = new World();
 		world->current_stage = world->death_stage;

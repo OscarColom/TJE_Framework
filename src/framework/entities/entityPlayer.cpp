@@ -114,7 +114,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		Audio::Play("data/audio/jump.wav", 1.f, BASS_SAMPLE_MONO);
+		Audio::Play("data/audio/jump.wav", 0.6f, BASS_SAMPLE_MONO);
 		velocity.y = 15.f;
 		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
@@ -131,7 +131,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	if (velocity.length() > 0.5f && is_grounded) {
 		if (is_sprinting) {
-			Audio::Play("data/audio/run.wav", 0.5f, BASS_SAMPLE_MONO);
+			Audio::Play("data/audio/run.wav", 1.f, BASS_SAMPLE_MONO);
 		}
 		else {
 			Audio::Play("data/audio/footstep.wav", 0.3f, BASS_SAMPLE_MONO);
@@ -174,12 +174,15 @@ void EntityPlayer::update(float seconds_elapsed) {
 			// Calcula la distancia de caída
 			float fall_distance = fall_start_height - position.y;
 			if (fall_distance > 10.0f && fall_distance < 20.f) { 
+				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 1; 
 			}
-			else if (fall_distance > 20.0f && fall_distance < 30.f) {   
+			else if (fall_distance > 20.0f && fall_distance < 30.f) {  
+				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 2; 
 			}
 			else if (fall_distance > 30.0f) { 
+				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 3; 
 			}
 			is_falling = false; // Resetea el estado de caída
@@ -196,20 +199,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (lifes <= 0) {
-		//World::get_instance()->root.;
-		//Entity root = World::get_instance()->root;
-		//Entity newroot;
-		//World::get_instance()->parseScene("data/myscene.scene", &newroot);
-		//world->restart();
-		//World world.delete;
-		//world = new World();
-		//GamePlay* game = GamePlay::get_instance();
-		//game->~Stage();
-		//game = new GamePlay();
-		//GamePlay* game = GamePlay::get_instance();
-		//game->restart();///////////etso no esta bien, no funciona.
+
 		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
-		//lifes = 3;
 	}
 
 	//if (position.y > 34.f) {
