@@ -9,6 +9,9 @@ EntityPlayer::EntityPlayer(Mesh* player_mesh, const Material& player_material, c
 	this->material = player_material;
 	this->name = name;
 
+	//jump->Init();
+	Audio::Init();
+
 	animator.playAnimation("data/final_character/animations/idle.skanim");
 }
 
@@ -111,10 +114,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	}
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
+		Audio::Play("data/audio/jump.wav", 1.f, BASS_SAMPLE_MONO);
 		velocity.y = 15.f;
 		animator.playAnimation("data/final_character/animations/jump_prueba.skanim", false, 0.6f);
 		animation_state = eAnimationState::JUMP;
-		Audio::Play("jump.wav", 1, true);
 	}
 
 	//Env collisions
@@ -126,12 +129,12 @@ void EntityPlayer::update(float seconds_elapsed) {
 		velocity.z -= newDir.z;
 	}
 
-	if (velocity.length() > 0.f && is_grounded) {
+	if (velocity.length() > 0.5f && is_grounded) {
 		if (is_sprinting) {
-			Audio::Play("run.wav", 1, BASS_SAMPLE_LOOP);
+			Audio::Play("data/audio/run.wav", 0.5f, BASS_SAMPLE_MONO);
 		}
 		else {
-			Audio::Play("footstep.wav", 1, BASS_SAMPLE_LOOP);
+			Audio::Play("data/audio/footstep.wav", 0.3f, BASS_SAMPLE_MONO);
 		}
 	}
 	

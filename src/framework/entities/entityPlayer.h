@@ -1,5 +1,6 @@
 #pragma once
 #include "framework/entities/entityMesh.h"
+#include "framework/audio.h"
 
 enum eAnimationState {
 	IDLE,
@@ -27,7 +28,7 @@ public:
 	float stamina_consumption_rate = 20.0f; // Tasa de consumo por segundo
 	float stamina_recovery_rate = 10.0f; // Tasa de recuperación por segundo
 	bool is_sprinting = false; // Indica si el jugador está esprintando
-
+	
 	EntityPlayer() {};
 	EntityPlayer(Mesh* player_mesh, const Material& player_material, const std::string& name) ;
 	~EntityPlayer();

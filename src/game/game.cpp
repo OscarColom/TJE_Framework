@@ -14,15 +14,9 @@
 Mesh* mesh = NULL;
 Texture* texture = NULL;
 Shader* shader = NULL;
-//float angle = 0;
 float mouse_speed = 100.0f;
 
-//World* world = nullptr; 
-
-
 Game* Game::instance = NULL;
-
-
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
@@ -38,24 +32,14 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	elapsed_time = 0.0f;
 	mouse_locked = false;
 
-	// OpenGL flags
-	//glEnable( GL_CULL_FACE ); //render both sides of every triangle
-	//glEnable( GL_DEPTH_TEST ); //check the occlusions using the Z buffer
-
-	// Create our camera
-	//camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
-	//camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
-
-
-	//world
+	//World
 	world = new World();
 
 	Camera::current = World::get_instance()->camera;
 	
 	//Audio
 	audio->Init();
-
-	channel = audio->Play("data/audio/temple-sound.wav", 0.5, BASS_SAMPLE_LOOP);
+	channel = audio->Play("data/audio/temple-sound.wav", 0.1f, BASS_SAMPLE_LOOP);
 }
 
 //what to do when the image has to be draw
@@ -67,46 +51,12 @@ void Game::render(void)
 	// Clear the window and the depth buffer
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//6x14,  7x10, 3x7, 1x18, 1x5 = 198
-
-	// Set the camera as default
-	//camera->enable();
-
-	// Set flags
-	// 
-	//glDisable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_CULL_FACE);/////////////////////////nidea
    
 	// Create model matrix for cube
 	world->render();
 
-	//if(shader)
-	//{
-	//	// Enable shader
-	//	shader->enable();
-
-	//	// Upload uniforms
-	//	shader->setUniform("u_color", Vector4(1,1,1,1));
-	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
-	//	shader->setUniform("u_texture", texture, 0);
-	//	shader->setUniform("u_model", m);
-	//	shader->setUniform("u_time", time);
-
-	//	// Do the draw call
-	//	mesh->render( GL_TRIANGLES );
-
-	//	// Disable shader
-	//	shader->disable();
-	//}
-
-	// Draw the floor grid
-	//drawGrid();
-
 	// Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
-	
 
 	// Swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
@@ -120,9 +70,7 @@ void Game::update(double seconds_elapsed)
 	if (lifes <= 0) {
 		GamePlay::get_instance()->player->lifes = 3;
 		world = new World();
-		//World* world = World::get_instance();
 		world->current_stage = world->death_stage;
-
 	}
 
 	

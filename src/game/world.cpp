@@ -31,9 +31,7 @@ World::World() {
 
 	//craete 2d camera
 	camera2D = new Camera();
-	//camera2D->view_matrix.setIdentity();
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
-	//camera2D->rotate(PI/2, Vector3(0, 0, 1));
 
 	menu_stage = new Menu();
 	game_stage = new GamePlay();
@@ -51,25 +49,7 @@ World::World() {
 	start_time_recorded = false;
 	end_time_recorded = false;
 
-
-
-
 	parseScene("data/myscene.scene", &root);
-
-
-
-	// Nombre de la entidad que deseas encontrar
-	//	//Crear entity_ui
-	//herda de entitymesh
-	//2 constuctores
-	//, pos , size , material butonide con un enum, 
-	//En world cerar camara 2d ortografica
-	//como renderizar: en el reder de ui: hacer los set_uniform, no usar depth_buffer,,n no usar cull_face word, i viewproj = camera2s->view:projectionmatrix.
-	//al acabar rende hacer , y volver a dejar gl como antes entity::render(camersa2s).
-	////
-	//audio hacer chanel1  = Audio::Play().. si llop añadir flag de loop
-	//parq quitar audio usar el chanel
-
 }
 
 
@@ -92,11 +72,9 @@ void World::OnKeyDown(SDL_KeyboardEvent event) {
 
 void World::render() {
 	current_stage->render();
-
 }
 
 
-//
 void World::update(float seconds_elapsed) {
 
 	current_stage->update(seconds_elapsed);
@@ -126,7 +104,6 @@ void World::update(float seconds_elapsed) {
 }
 
 
-
 sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist) {
 
 	sCollisionData data;
@@ -147,9 +124,7 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 				if (!ec->mesh->testRayCollision(ec->models[i], origin, direction, col_point, col_normal, max_ray_dist)) {
 					continue;
 				}
-
 			}
-
 		}
 
 		else
@@ -164,7 +139,6 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 			data.collided = true;
 			data.col_point = col_point;
 		}
-
 
 	}
 
