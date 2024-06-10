@@ -146,14 +146,14 @@ void EntityPlayer::update(float seconds_elapsed) {
 		//printf("Walking");
 	} 
 	
-	if (velocity.length() < 1.f && is_grounded) {
+	if (velocity.length() < 1.5f && is_grounded ) {
 		animator.playAnimation("data/final_character/animations/idle.skanim", true, 0.6f);
 		animation_state = eAnimationState::IDLE;
 		//printf("idle");
 		//printf("%f", velocity.length());
 	}
 
-	if ((animation_state == eAnimationState::WALKING || animation_state == eAnimationState::IDLE) && velocity.length() > 1.f && is_sprinting && is_grounded) {
+	if ((animation_state == eAnimationState::WALKING || animation_state == eAnimationState::IDLE) && velocity.length() > 4.f && is_sprinting && is_grounded) {
 		animator.playAnimation("data/final_character/animations/run.skanim", true, 0.6f);
 		animation_state = eAnimationState::RUNNING;
 	}

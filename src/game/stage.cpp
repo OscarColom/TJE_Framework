@@ -31,40 +31,43 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	switch (buttonid) {
 
 	case PlayButton:
+		in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
-		//GamePlay::get_instance()->player->model.translate(0.f, 60.f, 0.f);
 		GamePlay::get_instance()->player->lifes = 3;
-		//world = new World();
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->position = Vector3(0.0f, 10.0f, 0.0f);
-
+		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f, 5.f, 0.f));
 		break;
 
 	case EndButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		exit(0);
 		break;
+
 	case PlayAgainButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
 		break;
+
 	case MenuButton:
+		in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
-		//world->menu_stage->init();
 		world->current_stage = world->menu_stage;
 		break;
 
 	case OptionsButton:
+		//in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->options_stage;
 		break;
 
 	case HighButton:
+		//in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		Game::instance->mouse_speed += 0.01f;
 		break;
 
 	case LowButton:
+		//in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		Game::instance->mouse_speed -= 0.01f;
 		break;
@@ -72,7 +75,8 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	case TutorialButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->model.translate(0.f, -50.f, 0.f);
+		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f,-50.f,0.f));
+		in_tutorial = true;
 		break;
 
 	}
@@ -332,9 +336,15 @@ void GamePlay::render() {
 	stamina_bar->render_stamina(camera2d, GamePlay::get_instance()->player->stamina);
 	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
 
+	if (in_tutorial == true) {
+		drawText(window_width * 0.2, window_height * 0.5, "Salta con raton", Vector3(0, 0, 0), 3);
+
+	}
+
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+
 
 }
 

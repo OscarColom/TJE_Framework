@@ -24,7 +24,6 @@ public:
 	Stage* options_stage = nullptr;
 
 	Stage* game_stage = nullptr;
-	Stage* tutorial_stage = nullptr;
 
 	Stage* death_stage = nullptr;
 	Stage* final_stage = nullptr;

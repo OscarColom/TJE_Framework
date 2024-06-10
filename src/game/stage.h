@@ -28,6 +28,7 @@ public:
 	bool isFinished;
 	int whatStage;
 	int nextStage;
+	bool in_tutorial = false;
 
 	int window_width;
 	int window_height;
