@@ -32,7 +32,12 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 
 	case PlayButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
+		//GamePlay::get_instance()->player->model.translate(0.f, 60.f, 0.f);
+		GamePlay::get_instance()->player->lifes = 3;
+		//world = new World();
 		world->current_stage = world->game_stage;
+		GamePlay::get_instance()->player->position = Vector3(0.0f, 10.0f, 0.0f);
+
 		break;
 
 	case EndButton:
@@ -64,7 +69,14 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		Game::instance->mouse_speed -= 0.01f;
 		break;
 
+	case TutorialButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
+		world->current_stage = world->game_stage;
+		GamePlay::get_instance()->player->model.translate(0.f, -50.f, 0.f);
+		break;
+
 	}
+
 
 }
 
@@ -86,27 +98,39 @@ void Menu::init() {
 	background_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	background = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_mat);
 
+	Material titulo_mat;
+	titulo_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	titulo_mat.diffuse = new Texture();
+	titulo_mat.diffuse = Texture::Get("data/ui/titulo.png");
+	titulo = new EntityUI(Vector2(world_width * 0.5, 80), Vector2(400, 100), titulo_mat, eButtonId::Undefined);
+
 
 	Material play_mat;
 	play_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	play_mat.diffuse = new Texture();
 	play_mat.diffuse = Texture::Get("data/ui/play_button.png");
-	play_button = new EntityUI(Vector2(world_width * 0.5, 300), Vector2(240, 60), play_mat, eButtonId::PlayButton);
+	play_button = new EntityUI(Vector2(world_width * 0.5, 250), Vector2(240, 60), play_mat, eButtonId::PlayButton);
 
 	Material exit_mat;
 	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	exit_mat.diffuse = new Texture();
 	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
-	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), exit_mat, eButtonId::EndButton);
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 490), Vector2(240, 60), exit_mat, eButtonId::EndButton);
 
 	Material options_mat;
 	options_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	options_mat.diffuse = new Texture();
 	options_mat.diffuse = Texture::Get("data/ui/options_button.png");
-	options_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), options_mat, eButtonId::OptionsButton);
+	options_button = new EntityUI(Vector2(world_width * 0.5, 410), Vector2(240, 60), options_mat, eButtonId::OptionsButton);
 
-	//background->addChild(play_button);
-	//background->addChild(exit_button);
+	Material tutorial_mat;
+	tutorial_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	tutorial_mat.diffuse = new Texture();
+	tutorial_mat.diffuse = Texture::Get("data/ui/tutorial_button.png");
+	tutorial_button = new EntityUI(Vector2(world_width * 0.5, 330), Vector2(240, 60), tutorial_mat, eButtonId::TutorialButton);
+
+
+
 
 
 }
@@ -121,6 +145,8 @@ void Menu::render() {
 	play_button->render(camera2d);
 	exit_button->render(camera2d);
 	options_button->render(camera2d);
+	titulo->render(camera2d);
+	tutorial_button->render(camera2d);
 
 }
 
@@ -130,6 +156,8 @@ void Menu::update(float seconds_elapsed) {
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
 	options_button->update(seconds_elapsed);
+	titulo->update(seconds_elapsed);
+	tutorial_button->update(seconds_elapsed);
 }
 
 
@@ -191,7 +219,7 @@ void Options::init() {
 	continue_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	continue_mat.diffuse = new Texture();
 	continue_mat.diffuse = Texture::Get("data/ui/continue_button.png");
-	continue_button = new EntityUI(Vector2(world_width * 0.4, world_height * 0.7), Vector2(60, 60), continue_mat, eButtonId::PlayButton);
+	continue_button = new EntityUI(Vector2(world_width * 0.4, world_height * 0.7), Vector2(60, 60), continue_mat, eButtonId::PlayAgainButton);
 
 
 
@@ -269,7 +297,7 @@ void GamePlay::init() {
 	Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
 
 	player = new EntityPlayer(player_mesh, player_material, "player");
-	player->model.translate(0.f, 6.f, 0.f);
+	//player->model.translate(0.f, 6.f, 0.f);
 	player->isAnimated = true;
 
 	//Skybox
@@ -431,6 +459,204 @@ void GamePlay::restart() {
 	root.render(camera);
 
 }
+
+
+
+
+/*GAME STAGE
+#############################################################################
+##############################################################################*/
+
+//void Tutorial::init() {
+//
+//	window_width = World::get_instance()->window_width;
+//	window_height = World::get_instance()->window_height;
+//	//World::get_instance()->mouse_locked = true;
+//
+//	//instance = this;
+//
+//	camera2d = World::get_instance()->camera2D;
+//
+//	//stamina
+//	Material stamina_mat;
+//	stamina_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/stamina.fs");
+//	stamina_mat.diffuse = new Texture();
+//	stamina_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+//	stamina_bar = new EntityUI(Vector2(window_width * 0.2, window_height / 10), Vector2(300, 20), stamina_mat, eButtonId::Stamina);
+//
+//	//lifes
+//	Material life_mat;
+//	life_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/lifes.fs");
+//	life_mat.diffuse = new Texture();
+//	life_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+//	lifes_bar = new EntityUI(Vector2(window_width - 160, window_height / 10), Vector2(300, 20), life_mat, eButtonId::Life);
+//
+//
+//
+//
+//	//Player
+//	Material player_material;
+//	player_material.shader = Shader::Get("data/shaders/skinning.vs", "data/shaders/texture.fs");
+//	player_material.diffuse = new Texture();
+//	player_material.diffuse->load("data/final_character/survivorFemaleA.png");
+//	Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
+//
+//	player = new EntityPlayer(player_mesh, player_material, "player");
+//	player->model.translate(0.f, -40.f, 0.f);
+//	player->isAnimated = true;
+//
+//	//Skybox
+//	Material sky_cubemap;
+//	sky_cubemap.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
+//	sky_cubemap.diffuse = new Texture();
+//	sky_cubemap.diffuse->loadCubemap("landscape", {
+//		"data/CubeSky/px.png",
+//		"data/CubeSky/nx.png",
+//		"data/CubeSky/ny.png",
+//		"data/CubeSky/py.png",
+//		"data/CubeSky/pz.png",
+//		"data/CubeSky/nz.png"
+//		});
+//	Mesh* skybox_mesh = Mesh::Get("data/meshes/cubemap.ASE");
+//	skybox = new EntityMesh(skybox_mesh, sky_cubemap, "landscape");
+//	skybox->model.scale(70.f, 70.f, 70.f);
+//}
+//
+//
+//void Tutorial::render() {
+//	camera->enable();
+//
+//	glDisable(GL_DEPTH_TEST);
+//	skybox->model.setTranslation(camera->center);
+//	skybox->model.scale(70.f, 70.f, 70.f);
+//	skybox->render(camera);
+//	glEnable(GL_DEPTH_TEST);
+//
+//	World::get_instance()->root.render(camera);
+//	player->render(camera);
+//	stamina_bar->render_stamina(camera2d, GamePlay::get_instance()->player->stamina);
+//	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
+//
+//	glDisable(GL_BLEND);
+//	glEnable(GL_DEPTH_TEST);
+//	glDisable(GL_CULL_FACE);
+//
+//}
+//
+//void Tutorial::update(float seconds_elapsed) {
+//	float mouse_speed = Game::instance->mouse_speed;
+//	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
+//	free_camera = World::get_instance()->free_camera;
+//	mouse_locked = World::get_instance()->mouse_locked;
+//	if (free_camera) {
+//		if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
+//		{
+//			camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
+//			camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
+//		}
+//
+//		// Async input to move the camera around
+//		if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 20; //move faster with left shift
+//		if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
+//		if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f, -1.0f) * speed);
+//		if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
+//		if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
+//	}
+//	else {
+//
+//		player->update(seconds_elapsed);
+//
+//		Vector3 eye;
+//		Vector3 center;
+//
+//		SDL_ShowCursor(!mouse_locked);
+//		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
+//
+//		camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f * (0.1 * mouse_speed);
+//		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f * (0.1 * mouse_speed);
+//
+//		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI * 0.4f);
+//
+//		Matrix44 myaw;
+//		myaw.setRotation(camera_yaw, Vector3(0, 1, 0));  //sensibilidad
+//
+//		Matrix44 mpitch;
+//		mpitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
+//
+//		Vector3 front = (mpitch * myaw).frontVector().normalize();
+//
+//		float orbit_dist = 6.f;
+//		Vector3 corrector = Vector3(0.f, 4.1f, 0.f);
+//		eye = (player->model.getTranslation() - front * orbit_dist) + corrector;
+//		center = player->model.getTranslation() + Vector3(0.f, 4.1f, 0.f); //The last vector is bc we cound be pointing at the char feet otherwise
+//
+//		Vector3 dir = eye - center;
+//		sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());///////////////PELIOGROO
+//
+//		if (data.collided) {
+//			eye = data.col_point;
+//		}
+//
+//		//Interactions
+//		for (auto e : World::get_instance()->root.children) {
+//			EntityKey* key = dynamic_cast<EntityKey*>(e);
+//			EntityGate* gate = dynamic_cast<EntityGate*>(e);
+//			EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
+//			EntityFlag* flag = dynamic_cast<EntityFlag*>(e);
+//
+//
+//			if (key != nullptr) {
+//				Vector3 key_distance = player->position.distance(key->position);
+//				if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
+//					Audio::Play("data/audio/Get_key.wav", 1.5f, BASS_SAMPLE_MONO);
+//					key->with_player = true;
+//				}
+//
+//				//Cheat mode: k vagi a la pos de la clau
+//				if (Input::isKeyPressed(SDL_SCANCODE_T)) {
+//					player->model.setTranslation(key->model.getTranslation());
+//				}
+//			}
+//
+//			if (gate != nullptr) {
+//				for (auto e : World::get_instance()->root.children) {
+//					EntityKey* key_gate = dynamic_cast<EntityKey*>(e);
+//
+//					if (key_gate != nullptr && key_gate->with_player && gate->distance(player) < 10.f) {
+//						Audio::Play("data/audio/Open_Door.wav", 1.f, BASS_SAMPLE_MONO);
+//						World::get_instance()->root.removeChild(gate);
+//						World::get_instance()->root.removeChild(key_gate);
+//					}
+//				}
+//			}
+//
+//			if (heart != nullptr) {
+//				if (heart->distance(player) < 5.f) {
+//					Audio::Play("data/audio/Get_Life.wav", 1.5f, BASS_SAMPLE_MONO);
+//					World::get_instance()->root.removeChild(heart);
+//					player->lifes = player->lifes + 1;
+//				}
+//			}
+//
+//			if (flag != nullptr) {
+//				if (flag->distance(player) < 10.f) {
+//					player->lifes = player->lifes + 1;/////////////////////
+//					Audio::Play("data/audio/Victory_sound.wav", 1.5f, BASS_SAMPLE_MONO);
+//					World* world = World::get_instance();
+//					world->current_stage = world->final_stage;
+//				}
+//			}
+//		}
+//
+//		camera->lookAt(eye, center, Vector3(0, 1, 0));
+//	}
+//
+//	World::get_instance()->root.update(seconds_elapsed);
+//	skybox->update(seconds_elapsed);
+//	stamina_bar->update(seconds_elapsed);
+//	lifes_bar->update(seconds_elapsed);
+//
+//}
 
 
 

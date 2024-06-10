@@ -36,6 +36,7 @@ World::World() {
 	menu_stage = new Menu();
 	options_stage = new Options();
 	game_stage = new GamePlay();
+	//tutorial_stage = new Tutorial();
 	death_stage = new Death();
 	final_stage = new Final();
 
@@ -44,6 +45,7 @@ World::World() {
 	options_stage->init();
 	game_stage->init();
 	death_stage->init();
+	//tutorial_stage->init();
 	final_stage->init();
 
 	current_stage = menu_stage;

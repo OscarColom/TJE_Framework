@@ -157,7 +157,7 @@ void EntityUI::update(float seconds_elapsed) {
 		else if(buttonId == EndButton || buttonId == MenuButton) {
 			material.color = Vector4::RED;
 		}
-		else if (buttonId == OptionsButton || buttonId == HighButton || buttonId == LowButton ) {
+		else if (buttonId == OptionsButton || buttonId == HighButton || buttonId == LowButton || buttonId == TutorialButton) {
 			material.color = Vector4::BLUE;
 		}
 

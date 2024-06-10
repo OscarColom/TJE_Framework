@@ -11,6 +11,7 @@ enum eStages {
 	MENU,
 	OPTIONS,
 	GAMEPLAY,
+	TUTORIAL,
 	DEATH,
 	FINAL
 };
@@ -68,6 +69,8 @@ public:
 	Entity* play_button;
 	Entity* exit_button;
 	Entity* options_button;
+	Entity* titulo;
+	Entity* tutorial_button;
 
 
 
@@ -169,6 +172,57 @@ public:
 	void OnKeyDown(SDL_KeyboardEvent event);
 
 };
+
+
+
+
+//class Tutorial : public Stage {
+//	//static Tutorial* instance;
+//
+//	eStages type = TUTORIAL;
+//public:
+//
+//	//static Tutorial* get_instance() {
+//	//	if (instance == nullptr) {
+//	//		instance = new Tutorial();
+//	//	}
+//	//	return instance;
+//	//}
+//
+//
+//	EntityMesh* skybox = nullptr;
+//
+//
+//	int window_width;
+//	int window_height;
+//
+//	Camera* camera2d;
+//	EntityUI* stamina_bar;
+//	EntityUI* lifes_bar;
+//
+//
+//	float angle = 0;
+//	bool mouse_locked = true; //tells if the mouse is locked (not seen)
+//
+//	float camera_yaw = 0.f;
+//	float camera_pitch = 0.f;
+//	float camera_speed = 2.0f;
+//
+//	bool free_camera = false;
+//
+//	float  sphere_radius = 1.0f;
+//	float sphere_grow = .3f;
+//	float player_height = 3.f;
+//
+//	Vector3 current_checkpoint = Vector3(0.0f, 5.0f, 0.0f);
+//
+//	void init();
+//	void render();
+//	void update(float seconds_elapsed);
+//	void OnKeyDown(SDL_KeyboardEvent event);
+//
+//};
+
 
 
 class Death : public Stage {

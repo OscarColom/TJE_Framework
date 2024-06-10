@@ -11,6 +11,7 @@ enum eButtonId{
 	OptionsButton,
 	HighButton,
 	LowButton,
+	TutorialButton,
 	Stamina,
 	Life
 };
