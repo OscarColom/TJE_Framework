@@ -152,7 +152,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		//printf("%f", velocity.length());
 	}
 
-	if (animation_state == eAnimationState::WALKING && velocity.length() > 2.f && is_sprinting && is_grounded) {
+	if ( (animation_state == eAnimationState::WALKING ) && velocity.length() > 1.f && is_sprinting && is_grounded) {
 		animator.playAnimation("data/final_character/animations/run.skanim", true, 0.6f);
 		animation_state = eAnimationState::RUNNING;
 	}
