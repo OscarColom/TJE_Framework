@@ -27,11 +27,10 @@ Stage::~Stage() {
 
 void Stage::onButtonPressed(eButtonId buttonid) {
 	World* world = World::get_instance();
-
 	switch (buttonid) {
 
 	case PlayButton:
-		in_tutorial = false;
+		GamePlay::get_instance()->in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		GamePlay::get_instance()->player->lifes = 3;
 		world->current_stage = world->game_stage;
@@ -49,7 +48,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		break;
 
 	case MenuButton:
-		in_tutorial = false;
+		GamePlay::get_instance()->in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->menu_stage;
 		break;
@@ -76,7 +75,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
 		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f,-50.f,0.f));
-		in_tutorial = true;
+		GamePlay::get_instance()->in_tutorial = true;
 		break;
 
 	}
@@ -337,7 +336,16 @@ void GamePlay::render() {
 	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
 
 	if (in_tutorial == true) {
-		drawText(window_width * 0.2, window_height * 0.5, "Salta con raton", Vector3(0, 0, 0), 3);
+		drawText(window_width * 0.02, window_height * 0.30, "Press W to move forward.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.35, "Press S to move backward.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.40, "Press A to move left.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.45, "Press D to move right.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.50, "Press Space to jump.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.55, "Press Shift to sprint.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.15, "Click with left to pick up the keys.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.20, "With the keys, you can open the doors.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.60, window_height * 0.35, "Reach the flag to win.", Vector3(0, 0, 0), 2.5f);
+
 
 	}
 

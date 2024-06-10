@@ -28,7 +28,6 @@ public:
 	bool isFinished;
 	int whatStage;
 	int nextStage;
-	bool in_tutorial = false;
 
 	int window_width;
 	int window_height;
@@ -147,6 +146,7 @@ public:
 	EntityUI* stamina_bar;
 	EntityUI* lifes_bar;
 
+	bool in_tutorial = false;
 
 
 	//Camera* camera = nullptr;
