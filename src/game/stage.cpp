@@ -74,7 +74,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	case TutorialButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f,-50.f,0.f));
+		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f,400.f,0.f));
 		GamePlay::get_instance()->in_tutorial = true;
 		break;
 
