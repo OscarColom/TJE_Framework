@@ -26,6 +26,7 @@ public:
 	float elapsed_time;
 	int fps;
 	bool must_exit;
+	float mouse_speed = 10.f;
 
 	//some vars
 	Camera* camera; //our global camera

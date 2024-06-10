@@ -9,6 +9,7 @@
 enum eStages {
 	UNDEFINED,
 	MENU,
+	OPTIONS,
 	GAMEPLAY,
 	DEATH,
 	FINAL
@@ -79,6 +80,42 @@ public:
 };
 
 
+
+
+class Options : public Stage {
+
+	eStages type = OPTIONS;
+public:
+	Options() {};
+
+	Texture* fondo;
+	int world_width;
+	int world_height;
+
+	Camera* camera2d;
+
+	Entity* background;
+	Entity* sensitivity;
+
+	Entity* low_button;
+	Entity* hueco;
+	Entity* high_button;
+	Entity* back_button;
+	Entity* continue_button;
+
+
+
+	void init();
+	void restart();
+	void render();
+	void update(float seconds_elapsed);
+	void onButtonPressed(eButtonId buttonid) {};
+};
+
+
+
+
+
 class GamePlay : public Stage {
 	static GamePlay* instance;
 
@@ -115,7 +152,7 @@ public:
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
 	float camera_speed = 2.0f;
-	float mouse_speed = 10.f;
+	//float mouse_speed = 10.f;
 
 	bool free_camera = false;
 

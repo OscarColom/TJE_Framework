@@ -48,7 +48,24 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		//world->menu_stage->init();
 		world->current_stage = world->menu_stage;
 		break;
+
+	case OptionsButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
+		world->current_stage = world->options_stage;
+		break;
+
+	case HighButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
+		Game::instance->mouse_speed += 0.01f;
+		break;
+
+	case LowButton:
+		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
+		Game::instance->mouse_speed -= 0.01f;
+		break;
+
 	}
+
 }
 
 
@@ -80,13 +97,13 @@ void Menu::init() {
 	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	exit_mat.diffuse = new Texture();
 	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
-	exit_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), exit_mat, eButtonId::EndButton);
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), exit_mat, eButtonId::EndButton);
 
 	Material options_mat;
 	options_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	options_mat.diffuse = new Texture();
 	options_mat.diffuse = Texture::Get("data/ui/options_button.png");
-	options_button = new EntityUI(Vector2(world_width * 0.5, 500), Vector2(240, 60), options_mat, eButtonId::OptionsButton);
+	options_button = new EntityUI(Vector2(world_width * 0.5, 400), Vector2(240, 60), options_mat, eButtonId::OptionsButton);
 
 	//background->addChild(play_button);
 	//background->addChild(exit_button);
@@ -115,6 +132,103 @@ void Menu::update(float seconds_elapsed) {
 	options_button->update(seconds_elapsed);
 }
 
+
+
+
+
+
+
+/*OPTIONS STAGE
+#############################################################################
+##############################################################################*/
+void Options::init() {
+	//Game::instance->mouse_locked = false;
+	isFinished = false;
+	world_width = World::get_instance()->window_width;
+	world_height = World::get_instance()->window_height;
+
+	camera2d = World::get_instance()->camera2D;
+
+	Material background_mat;
+	background_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	background_mat.diffuse = new Texture();
+	background_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+	background = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_mat);
+
+
+	Material sensitivity_mat;
+	sensitivity_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	sensitivity_mat.diffuse = new Texture();
+	sensitivity_mat.diffuse = Texture::Get("data/ui/Sensivility_button.png");
+	sensitivity = new EntityUI(Vector2(world_width * 0.4, world_height * 0.5), Vector2(270, 60), sensitivity_mat, eButtonId::Undefined);
+
+
+	Material low_mat;
+	low_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	low_mat.diffuse = new Texture();
+	low_mat.diffuse = Texture::Get("data/ui/low_button.png");
+	low_button = new EntityUI(Vector2(world_width * 0.65, (world_height * 0.5) + 100), Vector2(60, 60), low_mat, eButtonId::LowButton);
+
+	Material hueco_mat;
+	hueco_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	hueco_mat.diffuse = new Texture();
+	hueco_mat.diffuse = Texture::Get("data/ui/hueco.png");
+	hueco = new EntityUI(Vector2(world_width * 0.65, world_height * 0.5), Vector2(60, 60), hueco_mat, eButtonId::Undefined);
+
+	Material high_mat;
+	high_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	high_mat.diffuse = new Texture();
+	high_mat.diffuse = Texture::Get("data/ui/high_button.png");
+	high_button = new EntityUI(Vector2(world_width * 0.65, (world_height * 0.5) - 100), Vector2(60, 60), high_mat, eButtonId::HighButton);
+
+	Material goback_mat;
+	goback_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	goback_mat.diffuse = new Texture();
+	goback_mat.diffuse = Texture::Get("data/ui/atras_button.png");
+	back_button = new EntityUI(Vector2(world_width * 0.1, world_height * 0.1), Vector2(60, 60), goback_mat, eButtonId::MenuButton);
+
+	Material continue_mat;
+	continue_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	continue_mat.diffuse = new Texture();
+	continue_mat.diffuse = Texture::Get("data/ui/continue_button.png");
+	continue_button = new EntityUI(Vector2(world_width * 0.4, world_height * 0.7), Vector2(60, 60), continue_mat, eButtonId::PlayButton);
+
+
+
+}
+
+void Options::restart() {
+
+}
+
+void Options::render() {
+
+	background->render(camera2d);
+	sensitivity->render(camera2d);
+	low_button->render(camera2d);
+	hueco->render(camera2d);
+	high_button->render(camera2d);
+	back_button->render(camera2d);
+	continue_button->render(camera2d);
+
+	long sensibilidad = Game::instance->mouse_speed;
+	std::string str_sensibilidad = std::to_string(sensibilidad);
+	drawText(world_width * 0.63, world_height * 0.48, str_sensibilidad, Vector3(1, 1, 1), 3);
+
+
+
+}
+
+void Options::update(float seconds_elapsed) {
+
+	background->update(seconds_elapsed);
+	sensitivity->update(seconds_elapsed);
+	low_button->update(seconds_elapsed);
+	hueco->update(seconds_elapsed);
+	high_button->update(seconds_elapsed);
+	back_button->update(seconds_elapsed);
+	continue_button->update(seconds_elapsed);
+}
 
 				/*GAME STAGE
 #############################################################################
@@ -197,6 +311,7 @@ void GamePlay::render() {
 }
 
 void GamePlay::update(float seconds_elapsed) {
+	float mouse_speed = Game::instance->mouse_speed;
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 	free_camera = World::get_instance()->free_camera;
 	mouse_locked = World::get_instance()->mouse_locked;
@@ -224,16 +339,16 @@ void GamePlay::update(float seconds_elapsed) {
 		SDL_ShowCursor(!mouse_locked);
 		SDL_SetRelativeMouseMode((SDL_bool)(mouse_locked));
 
-		camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f;
-		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f;
+		camera_yaw -= Input::mouse_delta.x * Game::instance->elapsed_time * 2.f * (0.1 * mouse_speed);
+		camera_pitch -= Input::mouse_delta.y * Game::instance->elapsed_time * 2.f * (0.1 * mouse_speed);
 
 		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI * 0.4f);
 
 		Matrix44 myaw;
-		myaw.setRotation(camera_yaw, Vector3(0, 1, 0));
+		myaw.setRotation(camera_yaw , Vector3(0, 1, 0));  //sensibilidad
 
 		Matrix44 mpitch;
-		mpitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
+		mpitch.setRotation(camera_pitch , Vector3(-1, 0, 0));
 
 		Vector3 front = (mpitch * myaw).frontVector().normalize();
 

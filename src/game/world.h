@@ -21,6 +21,8 @@ public:
 	Stage* current_stage = nullptr;
 	std::map<int, Stage*> stages;
 	Stage* menu_stage = nullptr;
+	Stage* options_stage = nullptr;
+
 	Stage* game_stage = nullptr;
 	Stage* death_stage = nullptr;
 	Stage* final_stage = nullptr;
@@ -63,7 +65,6 @@ public:
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
 	float camera_speed = 2.0f;
-	float mouse_speed = 10.f;
 
 	bool free_camera = false;
 

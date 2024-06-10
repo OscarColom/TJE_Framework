@@ -34,12 +34,14 @@ World::World() {
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
 
 	menu_stage = new Menu();
+	options_stage = new Options();
 	game_stage = new GamePlay();
 	death_stage = new Death();
 	final_stage = new Final();
 
 
 	menu_stage->init();
+	options_stage->init();
 	game_stage->init();
 	death_stage->init();
 	final_stage->init();

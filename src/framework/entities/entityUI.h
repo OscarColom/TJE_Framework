@@ -9,6 +9,8 @@ enum eButtonId{
 	PlayAgainButton,
 	MenuButton,
 	OptionsButton,
+	HighButton,
+	LowButton,
 	Stamina,
 	Life
 };

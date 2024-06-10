@@ -80,9 +80,18 @@ void Game::update(double seconds_elapsed)
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )
 {
+	Stage* stage = World::get_instance()->current_stage;
 	switch(event.keysym.sym)
 	{
-		case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
+		case SDLK_ESCAPE: 
+			if (stage == World::get_instance()->game_stage) {
+				World* world = World::get_instance();
+				world->current_stage = world->options_stage;
+			}
+			else {
+				must_exit = true; 
+				break; //ESC key, kill the app
+			}
 		case SDLK_F1: Shader::ReloadAll(); break; 
 	}
 
