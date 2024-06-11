@@ -148,6 +148,9 @@ public:
 	EntityUI* fondo_barra;
 	EntityUI* fondo_barra2;
 
+	//Audio* audio = new Audio();
+	//HCHANNEL channel_vidas;
+
 
 	bool in_tutorial = false;
 

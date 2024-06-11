@@ -426,7 +426,9 @@ void GamePlay::update(float seconds_elapsed) {
 			eye = data.col_point;
 		}		
 		
-
+		if (player->lifes == 1) {
+			Audio::Play("data/audio/poca_vida.wav", 0.07f, BASS_SAMPLE_MONO);
+		}
 
 
 		//Interactions
@@ -445,13 +447,6 @@ void GamePlay::update(float seconds_elapsed) {
 					key->with_player = true;
 				}
 
-				//if (player->lifes <= 0){/////////////////////7
-				//	if (key->with_player = true) {
-				//		World::get_instance()->root.removeChild(key);
-				//	}
-				//}
-				// 
-				//Cheat mode: k vagi a la pos de la clau
 				if (Input::isKeyPressed(SDL_SCANCODE_T)) {
 					player->model.setTranslation(key->model.getTranslation());
 				}
