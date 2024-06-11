@@ -422,7 +422,7 @@ void GamePlay::update(float seconds_elapsed) {
 			
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
-				if (key_distance.length() < 7.f && Input::isKeyPressed(SDL_SCANCODE_G)) {
+				if (key_distance.length() < 7.f && Input::isMousePressed(SDL_BUTTON_LEFT)/*Input::isKeyPressed(SDL_SCANCODE_G)*/) {
 					Audio::Play("data/audio/Get_key.wav", 1.5f, BASS_SAMPLE_MONO);
 					key->with_player = true;
 				}
