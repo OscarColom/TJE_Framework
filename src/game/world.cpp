@@ -93,7 +93,9 @@ void World::update(float seconds_elapsed) {
 	SDL_ShowCursor(mouse_locked ? SDL_DISABLE : SDL_ENABLE);
 	SDL_SetRelativeMouseMode(mouse_locked ? SDL_TRUE : SDL_FALSE);
 
-	if (current_stage == game_stage && !start_time_recorded) {
+
+	
+	if (current_stage == game_stage && !start_time_recorded && GamePlay::get_instance()->in_tutorial == false ) {
 		start_game_time = SDL_GetTicks();
 		start_time_recorded = true; // Marcar que el tiempo de inicio ha sido registrado
 		end_time_recorded = false;  // Reiniciar el marcador de tiempo de fin
@@ -204,6 +206,9 @@ bool World::parseScene(const char* filename, Entity* root)
 		size_t heart_tag = data.first.find("@heart");
 		size_t key_tag = data.first.find("@key");
 		size_t flag_tag = data.first.find("@flag");
+		size_t flag_tutorial_tag = data.first.find("@tutorial_flag");
+
+
 
 		size_t ground_tag = data.first.find("@ground");
 		
@@ -222,6 +227,10 @@ bool World::parseScene(const char* filename, Entity* root)
 		else if (flag_tag != std::string::npos) {
 			Mesh* mesh = Mesh::Get("data/scene/flag-pennant@flag/flag-pennant@flag.obj");
 			new_entity = new EntityFlag(mesh, mat, "flag");
+		}
+		else if (flag_tutorial_tag != std::string::npos) {
+			Mesh* mesh = Mesh::Get("data/scene/flag@tutorial_flag/flag@tutorial_flag.obj");
+			new_entity = new EntityFlag(mesh, mat, "tutorial_flag");
 		}
 
 

@@ -33,8 +33,9 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		GamePlay::get_instance()->in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		GamePlay::get_instance()->player->lifes = 3;
+		GamePlay::get_instance()->player->stamina = 50.f;
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f, 5.f, 0.f));
+		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f, 2.f, 0.f));
 		break;
 
 	case EndButton:
@@ -74,7 +75,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	case TutorialButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f,400.f,0.f));
+		GamePlay::get_instance()->player->model.setTranslation(Vector3(380.f,32.f,330.f));
 		GamePlay::get_instance()->in_tutorial = true;
 		break;
 
@@ -417,6 +418,7 @@ void GamePlay::update(float seconds_elapsed) {
 			EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
 			EntityFlag* flag = dynamic_cast<EntityFlag*>(e);
 
+
 			
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
@@ -451,7 +453,7 @@ void GamePlay::update(float seconds_elapsed) {
 				}
 			}
 
-			if (flag != nullptr) {
+			if (flag != nullptr && flag->name == "scene/flag-pennant@flag/flag-pennant@flag.obj") {
 				if (flag->distance(player) < 10.f) {
 					player->lifes = player->lifes + 1;/////////////////////
 					Audio::Play("data/audio/Victory_sound.wav", 1.5f, BASS_SAMPLE_MONO);
@@ -459,6 +461,15 @@ void GamePlay::update(float seconds_elapsed) {
 					world->current_stage = world->final_stage;
 				}
 			}
+			if (flag != nullptr && flag->name != "scene/flag-pennant@flag/flag-pennant@flag.obj") {
+				if (flag->distance(player) < 10.f) {
+					Audio::Play("data/audio/Victory_sound.wav", 0.5f, BASS_SAMPLE_MONO);
+					World* world = World::get_instance();
+					world->current_stage = world->menu_stage;
+				}
+			}
+
+
 		}		
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));

@@ -62,7 +62,7 @@ void EntityMesh::render(Camera* camera) {
 
 	}
 	material.shader->setUniform("u_camera_position", camera->eye);
-	material.shader->setUniform("u_light_pos", Vector3(0, 500, 0));
+	material.shader->setUniform("u_light_pos", Vector3(0, 5000, 0));
 	material.shader->setUniform("u_time", time);
 
 	Mesh* final_mesh = mesh;
