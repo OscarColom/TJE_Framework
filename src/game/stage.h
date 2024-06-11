@@ -145,6 +145,9 @@ public:
 	Camera* camera2d;
 	EntityUI* stamina_bar;
 	EntityUI* lifes_bar;
+	EntityUI* fondo_barra;
+	EntityUI* fondo_barra2;
+
 
 	bool in_tutorial = false;
 
