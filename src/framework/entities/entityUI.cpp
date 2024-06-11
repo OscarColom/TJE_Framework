@@ -151,13 +151,13 @@ void EntityUI::update(float seconds_elapsed) {
 		mouse_pos.y >(position.y - size.y * 0.5f) &&
 		mouse_pos.y < (position.y + size.y * 0.5f)) {
 
-		if (buttonId == PlayAgainButton || buttonId == PlayButton) {
+		if (buttonId == PlayAgainButton || buttonId == PlayButton || buttonId == TutorialButton) {
 			material.color = Vector4::GREEN;
 		}
 		else if(buttonId == EndButton || buttonId == MenuButton) {
 			material.color = Vector4::RED;
 		}
-		else if (buttonId == OptionsButton || buttonId == HighButton || buttonId == LowButton || buttonId == TutorialButton) {
+		else if (buttonId == OptionsButton || buttonId == HighButton || buttonId == LowButton) {
 			material.color = Vector4::BLUE;
 		}
 
