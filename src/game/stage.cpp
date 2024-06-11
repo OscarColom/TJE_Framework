@@ -411,6 +411,9 @@ void GamePlay::update(float seconds_elapsed) {
 			eye = data.col_point;
 		}		
 		
+
+
+
 		//Interactions
 		for (auto e : World::get_instance()->root.children) {
 			EntityKey* key = dynamic_cast<EntityKey*>(e);
@@ -422,11 +425,17 @@ void GamePlay::update(float seconds_elapsed) {
 			
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
-				if (key_distance.length() < 7.f && Input::isMousePressed(SDL_BUTTON_LEFT)/*Input::isKeyPressed(SDL_SCANCODE_G)*/) {
+				if (key_distance.length() < 7.f && Input::isMousePressed(SDL_BUTTON_RIGHT)/*Input::isKeyPressed(SDL_SCANCODE_G)*/) {
 					Audio::Play("data/audio/Get_key.wav", 1.5f, BASS_SAMPLE_MONO);
 					key->with_player = true;
 				}
 
+				//if (player->lifes <= 0){/////////////////////7
+				//	if (key->with_player = true) {
+				//		World::get_instance()->root.removeChild(key);
+				//	}
+				//}
+				// 
 				//Cheat mode: k vagi a la pos de la clau
 				if (Input::isKeyPressed(SDL_SCANCODE_T)) {
 					player->model.setTranslation(key->model.getTranslation());
