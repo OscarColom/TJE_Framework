@@ -48,6 +48,9 @@ void EntityUI::render_stamina(Camera* camera2d, float current_stamina) {
 
 	material.shader->setFloat("stamina", current_stamina);
 
+	float time = Game::instance->time;
+	material.shader->setUniform("u_time", time);
+
 	quad.render(GL_TRIANGLES);
 
 	material.shader->disable();
@@ -85,6 +88,11 @@ void EntityUI::render_lifes(Camera* camera2d, int current_lifes) {
 	material.shader->setUniform("u_texture", material.diffuse, 0);
 
 	material.shader->setInt("lifes", current_lifes);
+
+	float time = Game::instance->time;
+	//printf("%d", time);
+	material.shader->setUniform("u_time", time);
+
 
 	quad.render(GL_TRIANGLES);
 

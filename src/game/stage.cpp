@@ -285,7 +285,7 @@ void GamePlay::init() {
 
 	//lifes
 	Material life_mat;
-	life_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/lifes.fs");
+	life_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/lifes2.fs");
 	life_mat.diffuse = new Texture();
 	life_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	lifes_bar = new EntityUI(Vector2(window_width - 160, window_height / 10), Vector2(300, 20), life_mat, eButtonId::Life);
