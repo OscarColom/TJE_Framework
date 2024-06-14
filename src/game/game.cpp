@@ -74,8 +74,16 @@ void Game::update(double seconds_elapsed)
 		world->current_stage = world->death_stage;
 	}
 
-	
+	bool is_new_game = GamePlay::get_instance()->new_game;
+	if (is_new_game == true) {
+		GamePlay::get_instance()->player->lifes = 3;
+		world = new World();
+		world->current_stage = world->game_stage;
+	}
 }
+
+	
+
 
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )

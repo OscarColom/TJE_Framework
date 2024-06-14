@@ -32,10 +32,12 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 	case PlayButton:
 		GamePlay::get_instance()->in_tutorial = false;
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
-		GamePlay::get_instance()->player->lifes = 3;
-		GamePlay::get_instance()->player->stamina = 50.f;
+		//GamePlay::get_instance()->player->lifes = 3;
+		//GamePlay::get_instance()->player->stamina = 50.f;
 		world->current_stage = world->game_stage;
-		GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f, 2.f, 0.f));
+		GamePlay::get_instance()->new_game = true;
+
+		//GamePlay::get_instance()->player->model.setTranslation(Vector3(0.f, 2.f, 0.f));
 		break;
 
 	case EndButton:

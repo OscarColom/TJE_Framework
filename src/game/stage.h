@@ -147,7 +147,7 @@ public:
 	EntityUI* lifes_bar;
 	EntityUI* fondo_barra;
 	EntityUI* fondo_barra2;
-
+	bool new_game = false;
 	//Audio* audio = new Audio();
 	//HCHANNEL channel_vidas;
 
