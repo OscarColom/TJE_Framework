@@ -35,7 +35,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//World
 	world = new World();
 
-	Camera::current = World::get_instance()->camera;
+	Camera::current = World::get_instance()->camera2D;
 	
 	//Audio
 	audio->Init();
@@ -148,9 +148,16 @@ void Game::onResize(int width, int height)
 {
     std::cout << "window resized: " << width << "," << height << std::endl;
 	glViewport( 0,0, width, height );
-	camera = Camera::current;//No estaab, al pasar camera a world poner cual se usta usando 
-
-	camera->aspect =  width / (float)height;
+	//camera = Camera::current;//No estaab, al pasar camera a world poner cual se usta usando 
+	
+	//  Camera::current = World::get_instance()->camera;
+	//if (World::get_instance()->current_stage != world->game_stage) {
+	//	Camera::current = World::get_instance()->camera2D;
+	//}
+	//else {
+	//	//Camera::current = World::get_instance()->camera;
+	//}
+	Camera::current->aspect =  width / (float)height;
 
 
 	window_width = width;

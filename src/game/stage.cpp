@@ -17,7 +17,7 @@ Stage::Stage() {
 	window_width = World::get_instance()->window_width;
 	window_height = World::get_instance()->window_height;
 
-	camera = camera = World::get_instance()->camera;
+	camera = World::get_instance()->camera;
 
 }
 
