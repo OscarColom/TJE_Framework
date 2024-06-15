@@ -28,6 +28,9 @@ public:
 	bool must_exit;
 	float mouse_speed = 10.f;
 
+
+	bool resizedde  = false;
+
 	//some vars
 	Camera* camera; //our global camera
 	World* world = nullptr;

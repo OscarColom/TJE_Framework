@@ -69,16 +69,23 @@ void Game::update(double seconds_elapsed)
 	int lifes = GamePlay::get_instance()->player->lifes;
 	if (lifes <= 0) {
 		Audio::Play("data/audio/Death_sound.wav", 1.5f, BASS_SAMPLE_MONO);
-		GamePlay::get_instance()->player->lifes = 3;
+		//GamePlay::get_instance()->player->lifes = 3;
 		world = new World();
 		world->current_stage = world->death_stage;
 	}
 
 	bool is_new_game = GamePlay::get_instance()->new_game;
 	if (is_new_game == true) {
-		GamePlay::get_instance()->player->lifes = 3;
+		//GamePlay::get_instance()->player->lifes = 3;
 		world = new World();
 		world->current_stage = world->game_stage;
+	}
+
+	if (resizedde == true) {
+		world = new World();
+		//World::get_instance()->menu_stage = new Menu();
+		//World::get_instance()->menu_stage->init();
+		resizedde = false;
 	}
 }
 
@@ -144,17 +151,12 @@ void Game::onGamepadButtonUp(SDL_JoyButtonEvent event)
 
 void Game::onResize(int width, int height)
 {
+	resizedde = true;
+
+
     std::cout << "window resized: " << width << "," << height << std::endl;
 	glViewport( 0,0, width, height );
-	//camera = Camera::current;//No estaab, al pasar camera a world poner cual se usta usando 
-	
-	//  Camera::current = World::get_instance()->camera;
-	//if (World::get_instance()->current_stage != world->game_stage) {
-	//	Camera::current = World::get_instance()->camera2D;
-	//}
-	//else {
-	//	//Camera::current = World::get_instance()->camera;
-	//}
+
 	Camera::current->aspect =  width / (float)height;
 
 	window_width = width;
