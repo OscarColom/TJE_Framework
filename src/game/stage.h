@@ -147,11 +147,12 @@ public:
 	EntityUI* lifes_bar;
 	EntityUI* fondo_barra;
 	EntityUI* fondo_barra2;
+	EntityUI* level;
 	bool new_game = false;
 	//Audio* audio = new Audio();
 	//HCHANNEL channel_vidas;
 
-
+	int num_doors = 1;
 	bool in_tutorial = false;
 
 

@@ -161,12 +161,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 	// Update players position
 	position += velocity * seconds_elapsed;
 
-	//Por si el jugador se cae
-	//if (position.y < -100 || (position.y < 34.f && is_on_plataform)) {
-	//	lifes -= 1;
-	//	is_on_plataform = false;
-	//}
-
 	static float fall_start_height = 0.0f;
 	static bool is_falling = false;
 
@@ -174,17 +168,17 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (is_falling) {
 			// Calcula la distancia de caída
 			float fall_distance = fall_start_height - position.y;
-			if (fall_distance > 10.0f && fall_distance < 20.f) { 
+			if (fall_distance > 10.0f && fall_distance < 40.f) { 
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 1; 
 			}
-			else if (fall_distance > 20.0f && fall_distance < 30.f) {  
+			else if (fall_distance > 40.0f) {  
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 2; 
 			}
-			else if (fall_distance > 30.0f) { 
+			else if (position.y < -50.0f) { 
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
-				lifes -= 3; 
+				lifes = 0; 
 			}
 			is_falling = false; // Resetea el estado de caída
 		}
@@ -204,10 +198,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 		position = World::get_instance()->current_checkpoint; // Enviar a pantalla de inicio
 	}
 
-	//if (position.y > 34.f) {
-	//	is_on_plataform = true;
-	//}
-
 	//Update player position
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
@@ -218,7 +208,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 	if (Input::wasKeyPressed(SDL_SCANCODE_P)) {
 		printf("x = %f, y = %f, z = %f", position.x, position.y, position.z);
 	}
-	//printf("x = %f, y = %f, z = %f \n", position.x, position.y, position.z);
 
 	EntityMesh::update(seconds_elapsed);
 }

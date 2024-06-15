@@ -278,14 +278,12 @@ void GamePlay::init() {
 	
 	camera2d = World::get_instance()->camera2D;
 
-	//stamina
+	//Stamina
 	Material stamina_mat;
 	stamina_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/stamina.fs");
 	stamina_mat.diffuse = new Texture();
 	stamina_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	stamina_bar = new EntityUI(Vector2(window_width *0.2, window_height/ 10), Vector2(300, 20), stamina_mat, eButtonId::Stamina);
-
-
 
 	Material fondo_barra_mat;
 	fondo_barra_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
@@ -293,17 +291,13 @@ void GamePlay::init() {
 	fondo_barra_mat.diffuse = Texture::Get("data/ui/barra_fondo.png");
 	fondo_barra = new EntityUI(Vector2(window_width * 0.2, window_height / 10), Vector2(310, 30), fondo_barra_mat, eButtonId::Undefined);
 
-
-	//lifes
+	//Lifes
 	Material life_mat;
 	life_mat.shader = Shader::Get("data/shaders/stamina_quad.vs", "data/shaders/lifes2.fs");
 	life_mat.diffuse = new Texture();
 	life_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	lifes_bar = new EntityUI(Vector2(window_width - 160, window_height / 10), Vector2(300, 20), life_mat, eButtonId::Life);
 	fondo_barra2 = new EntityUI(Vector2(window_width - 160, window_height / 10), Vector2(310, 30), fondo_barra_mat, eButtonId::Undefined);
-
-
-
 
 	//Player
 	Material player_material;
@@ -313,7 +307,6 @@ void GamePlay::init() {
 	Mesh* player_mesh = Mesh::Get("data/final_character/animations/character.MESH");
 
 	player = new EntityPlayer(player_mesh, player_material, "player");
-	//player->model.translate(0.f, 6.f, 0.f);
 	player->isAnimated = true;
 
 	//Skybox
@@ -349,9 +342,9 @@ void GamePlay::render() {
 	fondo_barra->render(camera2d);
 	fondo_barra2->render(camera2d);
 
-
 	stamina_bar->render_stamina(camera2d, GamePlay::get_instance()->player->stamina);
 	lifes_bar->render_lifes(camera2d, GamePlay::get_instance()->player->lifes);
+	//level->render_lifes(camera2d, num_doors);
 
 	if (in_tutorial == true) {
 		drawText(window_width * 0.02, window_height * 0.30, "Press W to move forward.", Vector3(0, 0, 0), 2.5f);
@@ -360,12 +353,13 @@ void GamePlay::render() {
 		drawText(window_width * 0.02, window_height * 0.45, "Press D to move right.", Vector3(0, 0, 0), 2.5f);
 		drawText(window_width * 0.02, window_height * 0.50, "Press Space to jump.", Vector3(0, 0, 0), 2.5f);
 		drawText(window_width * 0.02, window_height * 0.55, "Press Shift to sprint.", Vector3(0, 0, 0), 2.5f);
-		drawText(window_width * 0.02, window_height * 0.15, "Click with left to pick up the keys.", Vector3(0, 0, 0), 2.5f);
-		drawText(window_width * 0.02, window_height * 0.20, "With the keys, you can open the doors.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.15, "Left-click mouse to pick up the keys.", Vector3(0, 0, 0), 2.5f);
+		drawText(window_width * 0.02, window_height * 0.20, "Keys open doors.", Vector3(0, 0, 0), 2.5f);
 		drawText(window_width * 0.60, window_height * 0.35, "Reach the flag to win.", Vector3(0, 0, 0), 2.5f);
-
-
 	}
+
+	std::string str_num_doors = "Level: " + std::to_string(num_doors) + "/3";
+	drawText(World::get_instance()->window_width / 2.3, World::get_instance()->window_width / 15, str_num_doors, Vector3(1, 1, 1), 2);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -427,11 +421,6 @@ void GamePlay::update(float seconds_elapsed) {
 		if (data.collided) {
 			eye = data.col_point;
 		}		
-		
-		if (player->lifes == 1) {
-			Audio::Play("data/audio/poca_vida.wav", 0.07f, BASS_SAMPLE_MONO);
-		}
-
 
 		//Interactions
 		for (auto e : World::get_instance()->root.children) {
@@ -440,8 +429,6 @@ void GamePlay::update(float seconds_elapsed) {
 			EntityHeart* heart = dynamic_cast<EntityHeart*>(e);
 			EntityFlag* flag = dynamic_cast<EntityFlag*>(e);
 
-
-			
 			if (key != nullptr) {
 				Vector3 key_distance = player->position.distance(key->position);
 				if (key_distance.length() < 7.f && Input::isMousePressed(SDL_BUTTON_RIGHT)/*Input::isKeyPressed(SDL_SCANCODE_G)*/) {
@@ -459,9 +446,10 @@ void GamePlay::update(float seconds_elapsed) {
 					EntityKey* key_gate = dynamic_cast<EntityKey*>(e);
 
 					if (key_gate != nullptr && key_gate->with_player && gate->distance(player) < 10.f) {
-						Audio::Play("data/audio/Open_Door.wav", 1.f, BASS_SAMPLE_MONO);
+						Audio::Play("data/audio/Open_Door.wav", 0.5f, BASS_SAMPLE_MONO);
 						World::get_instance()->root.removeChild(gate);
 						World::get_instance()->root.removeChild(key_gate);
+						num_doors += 1;
 					}
 				}				
 			}
@@ -489,10 +477,7 @@ void GamePlay::update(float seconds_elapsed) {
 					world->current_stage = world->menu_stage;
 				}
 			}
-
-
 		}		
-
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 	}
 
@@ -500,7 +485,6 @@ void GamePlay::update(float seconds_elapsed) {
 	skybox->update(seconds_elapsed);
 	stamina_bar->update(seconds_elapsed);
 	lifes_bar->update(seconds_elapsed);
-
 }
 
 void GamePlay::restart() {
