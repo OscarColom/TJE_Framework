@@ -168,7 +168,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (is_falling) {
 			// Calcula la distancia de caída
 			float fall_distance = fall_start_height - position.y;
-			if (fall_distance > 10.0f && fall_distance < 40.f) { 
+			if (fall_distance > 15.0f && fall_distance < 40.f) { 
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 1; 
 			}
