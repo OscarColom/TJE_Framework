@@ -42,8 +42,8 @@ public:
 	virtual void render() {};
 	virtual void update(float elapsed_time) {};
 	virtual void MouseButDown(SDL_MouseButtonEvent event) {};
-	void onButtonPressed(eButtonId buttonid) ;
-
+	void onButtonPressed(eButtonId buttonid);
+	virtual void onResize(int width, int height);
 
 	// Pointer to parent
 	Stage* parent;
@@ -65,21 +65,19 @@ public:
 
 	Camera* camera2d;
 
-	Entity* background;
-	Entity* play_button;
-	Entity* exit_button;
-	Entity* options_button;
-	Entity* titulo;
-	Entity* tutorial_button;
-
-
-
+	EntityUI* background;
+	EntityUI* play_button;
+	EntityUI* exit_button;
+	EntityUI* options_button;
+	EntityUI* titulo;
+	EntityUI* tutorial_button;
 
 	void init();
 	void restart();
 	void render();
 	void update(float seconds_elapsed);
 	void onButtonPressed(eButtonId buttonid) {};
+	void onResize(int width, int height);
 };
 
 
@@ -106,13 +104,12 @@ public:
 	Entity* back_button;
 	Entity* continue_button;
 
-
-
 	void init();
 	void restart();
 	void render();
 	void update(float seconds_elapsed);
 	void onButtonPressed(eButtonId buttonid) {};
+	void onResize(int width, int height) {};
 };
 
 
@@ -132,12 +129,7 @@ public:
 		return instance;
 	}
 
-	//Entity root;
-
 	EntityMesh* skybox = nullptr;
-	//EntityKey* key = nullptr;
-	//EntityHeart* heart = nullptr;
-	//EntityGate* gate = nullptr;
 
 	int window_width;
 	int window_height;
@@ -149,21 +141,16 @@ public:
 	EntityUI* fondo_barra2;
 	EntityUI* level;
 	bool new_game = false;
-	//Audio* audio = new Audio();
-	//HCHANNEL channel_vidas;
 
 	int num_doors = 1;
 	bool in_tutorial = false;
 
-
-	//Camera* camera = nullptr;
 	float angle = 0;
 	bool mouse_locked = true; //tells if the mouse is locked (not seen)
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
 	float camera_speed = 2.0f;
-	//float mouse_speed = 10.f;
 
 	bool free_camera = false;
 
@@ -177,60 +164,10 @@ public:
 	void restart();
 	void render();
 	void update(float seconds_elapsed);
-	void OnKeyDown(SDL_KeyboardEvent event);
+	void OnKeyDown(SDL_KeyboardEvent event) {};
+	void onResize(int width, int height) {};
 
 };
-
-
-
-
-//class Tutorial : public Stage {
-//	//static Tutorial* instance;
-//
-//	eStages type = TUTORIAL;
-//public:
-//
-//	//static Tutorial* get_instance() {
-//	//	if (instance == nullptr) {
-//	//		instance = new Tutorial();
-//	//	}
-//	//	return instance;
-//	//}
-//
-//
-//	EntityMesh* skybox = nullptr;
-//
-//
-//	int window_width;
-//	int window_height;
-//
-//	Camera* camera2d;
-//	EntityUI* stamina_bar;
-//	EntityUI* lifes_bar;
-//
-//
-//	float angle = 0;
-//	bool mouse_locked = true; //tells if the mouse is locked (not seen)
-//
-//	float camera_yaw = 0.f;
-//	float camera_pitch = 0.f;
-//	float camera_speed = 2.0f;
-//
-//	bool free_camera = false;
-//
-//	float  sphere_radius = 1.0f;
-//	float sphere_grow = .3f;
-//	float player_height = 3.f;
-//
-//	Vector3 current_checkpoint = Vector3(0.0f, 5.0f, 0.0f);
-//
-//	void init();
-//	void render();
-//	void update(float seconds_elapsed);
-//	void OnKeyDown(SDL_KeyboardEvent event);
-//
-//};
-
 
 
 class Death : public Stage {
@@ -255,6 +192,7 @@ public:
 	void render();
 	void update(float seconds_elapsed);
 	void onButtonPressed(eButtonId buttonid) {};
+	void onResize(int width, int height) {};
 };
 
 
@@ -281,4 +219,5 @@ public:
 	void render();
 	void update(float seconds_elapsed);
 	void onButtonPressed(eButtonId buttonid) {};
+	void onResize(int width, int height) {};
 };

@@ -82,8 +82,6 @@ void Game::update(double seconds_elapsed)
 	}
 }
 
-	
-
 
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )
@@ -158,7 +156,6 @@ void Game::onResize(int width, int height)
 	//	//Camera::current = World::get_instance()->camera;
 	//}
 	Camera::current->aspect =  width / (float)height;
-
 
 	window_width = width;
 	window_height = height;
