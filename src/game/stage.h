@@ -209,9 +209,13 @@ public:
 
 	Camera* camera2d;
 
-	Entity* background_death;
-	Entity* play_again_button;
-	Entity* menu_button;
+	EntityUI* background_death;
+	EntityUI* play_again_button;
+	EntityUI* menu_button_f;
+
+	EntityUI* bronce;
+	EntityUI* plata;
+	EntityUI* oro;
 
 
 	void init();

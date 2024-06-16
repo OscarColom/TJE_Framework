@@ -105,6 +105,9 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_model", model); //sino getGlobalMatrix()
 	material.shader->setUniform("u_texture", material.diffuse, 0);
 
+	float time = Game::instance->time;
+	material.shader->setUniform("u_time", time);
+
 	quad.render(GL_TRIANGLES);
 
 	material.shader->disable();

@@ -39,6 +39,7 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
 		world->current_stage = world->game_stage;
 		GamePlay::get_instance()->new_game = true;
+		GamePlay::get_instance()->player->lifes = 3;
 		break;
 
 	case EndButton:
@@ -570,6 +571,34 @@ void Final::init() {
 	background_death_mat.diffuse = new Texture();
 	background_death_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
 	background_death = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_death_mat);
+
+	Material menu_mat;
+	menu_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	menu_mat.diffuse = new Texture();
+	menu_mat.diffuse = Texture::Get("data/ui/menu_button.png");
+	menu_button_f = new EntityUI(Vector2(world_width * 0.7, 520), Vector2(240, 60), menu_mat, eButtonId::MenuButton);
+
+
+
+	//medallas
+	Material bronce_mat;
+	bronce_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/medallas.fs");
+	bronce_mat.diffuse = new Texture();
+	bronce_mat.diffuse = Texture::Get("data/ui/bronce.png");
+	bronce = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(200, 200), bronce_mat, eButtonId::Undefined);
+
+	Material plata_mat;
+	plata_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/medallas.fs");
+	plata_mat.diffuse = new Texture();
+	plata_mat.diffuse = Texture::Get("data/ui/plata.png");
+	plata = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(200, 200), plata_mat, eButtonId::Undefined);
+
+	Material oro_mat;
+	oro_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/medallas.fs");
+	oro_mat.diffuse = new Texture();
+	oro_mat.diffuse = Texture::Get("data/ui/oro.png");
+	oro = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(200, 200), oro_mat, eButtonId::Undefined);
+
 }
 
 void Final::restart() {
@@ -580,11 +609,30 @@ void Final::render() {
 
 	background_death->render(camera2d);
 	long elapsed_time_game = World::get_instance()->elapsed_time_game;
-	std::string str_total_time = "Time to complete the game: " + std::to_string(elapsed_time_game) + " seconds";
-	drawText(world_width* 0.2 , world_height* 0.5, str_total_time, Vector3(0, 0, 0), 3);
+	std::string str_total_time = "Time to complete: " + std::to_string(elapsed_time_game) + " seconds";
+	drawText(world_width* 0.1 , world_height* 0.2, str_total_time, Vector3(0, 0, 0), 3);
+
+	menu_button_f->render(camera2d);
+
+	if (World::get_instance()->elapsed_time_game < 180.0f) {
+		oro->render(camera2d);
+	}
+	else if (World::get_instance()->elapsed_time_game <= 250.0f) {
+		plata->render(camera2d);
+	}
+	else {
+		bronce->render(camera2d);
+	}
+
 
 }
 
 void Final::update(float seconds_elapsed) {
 	background_death->update(seconds_elapsed);
+	menu_button_f->update(seconds_elapsed);
+
+	bronce->update(seconds_elapsed);
+	plata->update(seconds_elapsed);
+	oro->update(seconds_elapsed);
+
 }
