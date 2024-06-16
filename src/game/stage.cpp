@@ -44,7 +44,9 @@ void Stage::onButtonPressed(eButtonId buttonid) {
 
 	case EndButton:
 		Audio::Play("data/audio/Click_button.wav", 1.5f, BASS_SAMPLE_MONO);
-		exit(0);
+		if (world->current_stage == world->menu_stage) {
+			exit(0);
+		}
 		break;
 
 	case PlayAgainButton:
@@ -119,7 +121,7 @@ void Menu::init() {
 	exit_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	exit_mat.diffuse = new Texture();
 	exit_mat.diffuse = Texture::Get("data/ui/exit_button.png");
-	exit_button = new EntityUI(Vector2(world_width * 0.5, 490), Vector2(240, 60), exit_mat, eButtonId::EndButton);
+	exit_button = new EntityUI(Vector2(world_width * 0.5, 490), Vector2(220, 50), exit_mat, eButtonId::EndButton);
 
 	Material options_mat;
 	options_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
@@ -526,13 +528,13 @@ void Death::init() {
 	play_again_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	play_again_mat.diffuse = new Texture();
 	play_again_mat.diffuse = Texture::Get("data/ui/play_again_button.png");
-	play_again_button = new EntityUI(Vector2(world_width * 0.3, 520), Vector2(240, 60), play_again_mat, eButtonId::PlayAgainButton);
+	play_again_button = new EntityUI(Vector2(world_width * 0.25, 520), Vector2(220, 50), play_again_mat, eButtonId::PlayAgainButton);
 
 	Material menu_mat;
 	menu_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	menu_mat.diffuse = new Texture();
 	menu_mat.diffuse = Texture::Get("data/ui/menu_button.png");
-	menu_button = new EntityUI(Vector2(world_width * 0.7, 520), Vector2(240, 60), menu_mat, eButtonId::MenuButton);
+	menu_button = new EntityUI(Vector2(world_width * 0.75, 520), Vector2(220, 50), menu_mat, eButtonId::MenuButton);
 
 }
 
