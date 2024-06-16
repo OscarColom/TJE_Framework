@@ -213,7 +213,7 @@ bool World::parseScene(const char* filename, Entity* root)
 		size_t ground_tag = data.first.find("@ground");
 		
 		if (gate_tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("data/scene/wall-gate@gate/wall-gate@gate.obj");
+			Mesh* mesh = Mesh::Get("data/scene/gate@gate/gate@gate.obj");
 			new_entity = new EntityGate(mesh, mat, "gate");
 		}
 		else if (heart_tag != std::string::npos) {

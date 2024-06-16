@@ -571,7 +571,7 @@ void Final::init() {
 	Material background_death_mat;
 	background_death_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	background_death_mat.diffuse = new Texture();
-	background_death_mat.diffuse = Texture::Get("data/ui/fondo_menu.png");
+	background_death_mat.diffuse = Texture::Get("data/ui/fondo_final.png");
 	background_death = new EntityUI(Vector2(world_width * 0.5, world_height * 0.5), Vector2(world_width, world_height), background_death_mat);
 
 	Material menu_mat;
