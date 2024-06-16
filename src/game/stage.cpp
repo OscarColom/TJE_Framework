@@ -372,7 +372,15 @@ void GamePlay::render() {
 	}
 
 	std::string str_num_doors = "Level: " + std::to_string(num_doors) + "/3";
-	drawText(World::get_instance()->window_width / 2.3, World::get_instance()->window_width / 15, str_num_doors, Vector3(1, 1, 1), 2);
+	if (num_doors <= 3) {
+		drawText(World::get_instance()->window_width / 2.3, World::get_instance()->window_width / 15, str_num_doors, Vector3(1, 1, 1), 2);
+
+	}
+	else if (num_doors > 3) {
+		std::string str_num_doors = "Level: " + std::to_string(num_doors-1) + "/3";
+		drawText(World::get_instance()->window_width / 2.3, World::get_instance()->window_width / 15, str_num_doors, Vector3(1, 1, 1), 2);
+
+	}
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
