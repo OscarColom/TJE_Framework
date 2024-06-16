@@ -478,14 +478,14 @@ void GamePlay::update(float seconds_elapsed) {
 			if (flag != nullptr && flag->name == "scene/flag-pennant@flag/flag-pennant@flag.obj") {
 				if (flag->distance(player) < 10.f) {
 					player->lifes = player->lifes + 1;/////////////////////
-					Audio::Play("data/audio/Victory_sound.wav", 1.5f, BASS_SAMPLE_MONO);
+					Audio::Play("data/audio/Victory_sound.wav", 1.0f, BASS_SAMPLE_MONO);
 					World* world = World::get_instance();
 					world->current_stage = world->final_stage;
 				}
 			}
 			if (flag != nullptr && flag->name != "scene/flag-pennant@flag/flag-pennant@flag.obj") {
 				if (flag->distance(player) < 10.f) {
-					Audio::Play("data/audio/Victory_sound.wav", 0.5f, BASS_SAMPLE_MONO);
+					Audio::Play("data/audio/Victory_sound.wav", 0.4f, BASS_SAMPLE_MONO);
 					World* world = World::get_instance();
 					world->current_stage = world->menu_stage;
 				}
@@ -581,6 +581,12 @@ void Final::init() {
 	menu_button_f = new EntityUI(Vector2(world_width * 0.7, 520), Vector2(240, 60), menu_mat, eButtonId::MenuButton);
 
 
+	Material bar_tiemp_mat;
+	bar_tiemp_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	bar_tiemp_mat.diffuse = new Texture();
+	bar_tiemp_mat.diffuse = Texture::Get("data/ui/barra_fondo.png");
+	menu_barra_tiempo = new EntityUI(Vector2(world_width * 0.4, world_height * 0.22), Vector2(520, 60), bar_tiemp_mat, eButtonId::Undefined);
+
 
 	//medallas
 	Material bronce_mat;
@@ -610,16 +616,19 @@ void Final::restart() {
 void Final::render() {
 
 	background_death->render(camera2d);
+
+
+	menu_barra_tiempo->render(camera2d);
 	long elapsed_time_game = World::get_instance()->elapsed_time_game;
 	std::string str_total_time = "Time to complete: " + std::to_string(elapsed_time_game) + " seconds";
 	drawText(world_width* 0.1 , world_height* 0.2, str_total_time, Vector3(0, 0, 0), 3);
 
 	menu_button_f->render(camera2d);
 
-	if (World::get_instance()->elapsed_time_game < 180.0f) {
+	if (World::get_instance()->elapsed_time_game < 130.0f) {
 		oro->render(camera2d);
 	}
-	else if (World::get_instance()->elapsed_time_game <= 250.0f) {
+	else if (World::get_instance()->elapsed_time_game <= 200.0f) {
 		plata->render(camera2d);
 	}
 	else {
@@ -632,6 +641,7 @@ void Final::render() {
 void Final::update(float seconds_elapsed) {
 	background_death->update(seconds_elapsed);
 	menu_button_f->update(seconds_elapsed);
+	menu_barra_tiempo->update(seconds_elapsed);
 
 	bronce->update(seconds_elapsed);
 	plata->update(seconds_elapsed);

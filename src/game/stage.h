@@ -212,6 +212,8 @@ public:
 	EntityUI* background_death;
 	EntityUI* play_again_button;
 	EntityUI* menu_button_f;
+	EntityUI* menu_barra_tiempo;
+
 
 	EntityUI* bronce;
 	EntityUI* plata;

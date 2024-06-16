@@ -172,9 +172,13 @@ void EntityPlayer::update(float seconds_elapsed) {
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
 				lifes -= 1; 
 			}
-			else if (fall_distance > 40.0f) {  
+			else if (fall_distance > 40.0f && fall_distance <= 60.0f) {
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
-				lifes -= 2; 
+				lifes -= 2;
+			}
+			else if (fall_distance > 60.0f) {
+				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
+				lifes -= 3;
 			}
 			else if (position.y < -50.0f) { 
 				Audio::Play("data/audio/Fall_damage.wav", 0.5f, BASS_SAMPLE_MONO);
